@@ -26,6 +26,8 @@
       --red-bg: #fef2f2;
       --yellow: #f59e0b;
       --yellow-bg: #fffbeb;
+      --gray: #adb5bd;
+      --gray-bg: #f8f9fa;
       --text-primary: #1a2236;
       --text-secondary: #5b6e8c;
       --text-muted: #94a3b8;
@@ -407,6 +409,48 @@
       border-color: var(--gold);
     }
 
+    /* СТАТУС-ИНДИКАТОРЫ: цвет рамки и фона карточки */
+    .house-card.status-free {
+      border-left: 6px solid #adb5bd;
+      background: #ffffff;
+    }
+    .house-card.status-sold {
+      border-left: 6px solid #20b26b;
+      background: #f0fdf4;
+    }
+    .house-card.status-installment {
+      border-left: 6px solid #e5ad19;
+      background: #fffbeb;
+    }
+    .house-card.status-debtor {
+      border-left: 6px solid #e04455;
+      background: #fef2f2;
+    }
+
+    /* Круглый индикатор статуса */
+    .status-dot {
+      width: 12px;
+      height: 12px;
+      min-width: 12px;
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+    .status-dot.free { background: #adb5bd; }
+    .status-dot.sold { background: #20b26b; }
+    .status-dot.installment { background: #e5ad19; }
+    .status-dot.debtor { background: #e04455; }
+
+    .status-container {
+      display: flex;
+      align-items: center;
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-bottom: 8px;
+      color: var(--text-primary);
+    }
+
     .badge {
       display: inline-block;
       padding: 4px 12px;
@@ -484,27 +528,25 @@
       border-color: var(--gold);
     }
 
+    /* Обновленные стили для ячеек квартир с круглыми индикаторами */
     .apt-free {
-      background: #f0fdf4;
-      border-color: var(--emerald);
-      color: #065f46;
+      background: #ffffff;
+      border-color: #adb5bd;
+      color: #495057;
     }
-
     .apt-sold {
-      background: #ecfdf5;
-      border-color: var(--emerald);
+      background: #f0fdf4;
+      border-color: #20b26b;
       color: #065f46;
     }
-
     .apt-installment {
       background: #fffbeb;
-      border-color: var(--yellow);
+      border-color: #e5ad19;
       color: #92400e;
     }
-
     .apt-overdue {
       background: #fef2f2;
-      border-color: var(--red);
+      border-color: #e04455;
       color: #991b1b;
       animation: pulse 1.5s infinite;
     }
@@ -701,8 +743,8 @@
       </button>
     </nav>
     <div class="bottom-actions">
-      <button class="btn secondary" id="exportBtn">📤 Экспорт</button>
-      <button class="btn secondary" id="importBtn">📥 Импорт</button>
+      <button class="btn secondary" id="exportBtn">Экспорт</button>
+      <button class="btn secondary" id="importBtn">Импорт</button>
       <div id="syncStatus" style="text-align: center; font-size: 0.75rem; color: var(--text-muted); margin-top: 8px;">
         Синхронизация...
       </div>
@@ -712,25 +754,24 @@
   <main class="main-content" id="mainContent"></main>
 
   <div class="mobile-nav" id="mobileNav">
-    <button data-page="dashboard">🏠<span>Главная</span></button>
-    <button data-page="houses">🏢<span>Дома</span></button>
-    <button data-page="payments">💳<span>Платежи</span></button>
-    <button data-page="clients">👥<span>Клиенты</span></button>
-    <button data-page="sales">📊<span>Продажи</span></button>
+    <button data-page="dashboard">Главная</button>
+    <button data-page="houses">Дома</button>
+    <button data-page="payments">Платежи</button>
+    <button data-page="clients">Клиенты</button>
+    <button data-page="sales">Продажи</button>
   </div>
 
   <script>
     (function() {
       // ==================== FIREBASE CONFIGURATION ====================
-      // ЗАМЕНИТЕ ЭТИ ДАННЫЕ НА ВАШИ ИЗ FIREBASE CONSOLE
       const firebaseConfig = {
-  apiKey: "AIzaSyC4fHjSG1gJSlw6w4Y83Ri6vaVGDt5Qkjw",
-  authDomain: "control-dom.firebaseapp.com",
-  projectId: "control-dom",
-  storageBucket: "control-dom.firebasestorage.app",
-  messagingSenderId: "866241459561",
-  appId: "1:866241459561:web:afaa9965846d6e351af9f8"
-};
+        apiKey: "AIzaSyC4fHjSG1gJSlw6w4Y83Ri6vaVGDt5Qkjw",
+        authDomain: "control-dom.firebaseapp.com",
+        projectId: "control-dom",
+        storageBucket: "control-dom.firebasestorage.app",
+        messagingSenderId: "866241459561",
+        appId: "1:866241459561:web:afaa9965846d6e351af9f8"
+      };
 
       // Initialize Firebase
       firebase.initializeApp(firebaseConfig);
@@ -756,28 +797,24 @@
         try {
           const batch = db.batch();
           
-          // Sync houses
           const housesRef = db.collection('houses');
           state.houses.forEach(house => {
             const docRef = housesRef.doc(house.id);
             batch.set(docRef, house, { merge: true });
           });
           
-          // Sync apartments
           const apartmentsRef = db.collection('apartments');
           state.apartments.forEach(apt => {
             const docRef = apartmentsRef.doc(apt.id);
             batch.set(docRef, apt, { merge: true });
           });
           
-          // Sync clients
           const clientsRef = db.collection('clients');
           state.clients.forEach(client => {
             const docRef = clientsRef.doc(client.id);
             batch.set(docRef, client, { merge: true });
           });
           
-          // Sync payments
           const paymentsRef = db.collection('payments');
           state.payments.forEach(payment => {
             const docRef = paymentsRef.doc(payment.id);
@@ -799,22 +836,18 @@
         updateSyncStatus('syncing');
         
         try {
-          // Load houses
           const housesSnapshot = await db.collection('houses').get();
           const houses = [];
           housesSnapshot.forEach(doc => houses.push(doc.data()));
           
-          // Load apartments
           const apartmentsSnapshot = await db.collection('apartments').get();
           const apartments = [];
           apartmentsSnapshot.forEach(doc => apartments.push(doc.data()));
           
-          // Load clients
           const clientsSnapshot = await db.collection('clients').get();
           const clients = [];
           clientsSnapshot.forEach(doc => clients.push(doc.data()));
           
-          // Load payments
           const paymentsSnapshot = await db.collection('payments').get();
           const payments = [];
           paymentsSnapshot.forEach(doc => payments.push(doc.data()));
@@ -846,11 +879,11 @@
             break;
           case 'synced':
             const time = lastSyncTime ? lastSyncTime.toLocaleTimeString('ru-RU') : '';
-            statusElement.innerHTML = `✓ Синхронизировано ${time}`;
+            statusElement.innerHTML = `Синхронизировано ${time}`;
             statusElement.style.color = 'var(--emerald)';
             break;
           case 'error':
-            statusElement.innerHTML = '⚠️ Ошибка синхронизации';
+            statusElement.innerHTML = 'Ошибка синхронизации';
             statusElement.style.color = 'var(--red)';
             break;
           case 'empty':
@@ -864,9 +897,12 @@
       function initDemoData() {
         state = { houses: [], apartments: [], clients: [], payments: [] };
         
-        // Create 3 blocks (А, Б, В)
-    
-        
+        const blocks = [
+          { id: 'block-a', name: 'Блок А', address: 'ул. Мира, 25', status: 'Строится' },
+          { id: 'block-b', name: 'Блок Б', address: 'ул. Мира, 27', status: 'Строится' },
+          { id: 'block-v', name: 'Блок В', address: 'ул. Мира, 29', status: 'Строится' }
+        ];
+
         state.houses = blocks;
 
         const apts = [];
@@ -1068,7 +1104,6 @@
         const container = document.getElementById('mainContent');
         if (!container) return;
         
-        // Add fade-in animation
         container.style.opacity = '0';
         container.style.transition = 'opacity 0.3s';
         
@@ -1101,20 +1136,20 @@
             <h2 style="font-weight:600;">Главная панель</h2>
             <div class="date-profile">
               <span>${new Date().toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
-              <span>👤 Директор</span>
+              <span>Директор</span>
             </div>
           </div>
           
           <div style="margin-bottom: 24px;">
             <div class="search-wrapper" style="width: 100%;">
-              <input placeholder="🔍 Поиск квартиры, клиента, телефона..." id="globalSearch" oninput="window.handleGlobalSearch(this.value)">
+              <input placeholder="Поиск квартиры, клиента, телефона..." id="globalSearch" oninput="window.handleGlobalSearch(this.value)">
             </div>
           </div>
           
           <div class="stats-grid">
             <div class="stat-card">
               <div class="stat-value">${state.houses.length}</div>
-              <div class="stat-label">🏢 Блоков</div>
+              <div class="stat-label">Блоков</div>
             </div>
             <div class="stat-card">
               <div class="stat-value">${stats.totalApts}</div>
@@ -1122,32 +1157,32 @@
             </div>
             <div class="stat-card">
               <div class="stat-value" style="color: var(--emerald);">${stats.free}</div>
-              <div class="stat-label">🟢 Свободно</div>
+              <div class="stat-label"><span class="status-dot free"></span>Свободно</div>
             </div>
             <div class="stat-card">
               <div class="stat-value" style="color: var(--emerald);">${stats.sold}</div>
-              <div class="stat-label">✅ Продано</div>
+              <div class="stat-label"><span class="status-dot sold"></span>Продано</div>
             </div>
             <div class="stat-card">
               <div class="stat-value" style="color: var(--yellow);">${stats.installment}</div>
-              <div class="stat-label">🟡 Рассрочка</div>
+              <div class="stat-label"><span class="status-dot installment"></span>Рассрочка</div>
             </div>
             <div class="stat-card">
               <div class="stat-value" style="color: var(--gold-dark);">${formatMoney(stats.paidTotal)}</div>
-              <div class="stat-label">💰 Получено</div>
+              <div class="stat-label">Получено</div>
             </div>
             <div class="stat-card">
               <div class="stat-value" style="color: var(--red);">${formatMoney(stats.pendingTotal)}</div>
-              <div class="stat-label">⚠️ Остаток</div>
+              <div class="stat-label">Остаток</div>
             </div>
           </div>
           
-          <div class="section-title">🏢 Наши объекты</div>
+          <div class="section-title">Наши объекты</div>
           <div class="houses-grid">
             ${state.houses.map(h => houseCardHTML(h)).join('')}
           </div>
           
-          <div class="section-title">📅 Ближайшие платежи</div>
+          <div class="section-title">Ближайшие платежи</div>
           ${upcoming.length ? upcoming.map(p => `
             <div style="background: var(--bg-card); padding: 16px; border-radius: 12px; margin-bottom: 8px; border: 1px solid var(--border-color);">
               <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -1163,7 +1198,7 @@
             </div>
           `).join('') : '<p style="color: var(--text-muted);">Нет предстоящих платежей</p>'}
           
-          <div class="section-title" style="color: var(--red);">🔴 Требуют внимания</div>
+          <div class="section-title" style="color: var(--red);">Требуют внимания</div>
           ${overdue.length ? overdue.slice(0, 5).map(p => `
             <div style="background: var(--red-bg); padding: 16px; border-radius: 12px; margin-bottom: 8px; border: 1px solid #fecaca;">
               <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -1177,7 +1212,7 @@
                 </div>
               </div>
             </div>
-          `).join('') : '<p style="color: var(--emerald);">✓ Все платежи выполняются вовремя</p>'}
+          `).join('') : '<p style="color: var(--emerald);">Все платежи выполняются вовремя</p>'}
         `;
       }
 
@@ -1196,13 +1231,13 @@
               <span class="badge">${h.status}</span>
             </div>
             <div style="margin-top: 12px; color: var(--text-secondary); font-size: 0.9rem;">
-              <div>📍 ${h.address}</div>
-              <div>🏗️ Этажей: 10 • Объектов: ${total}</div>
+              <div>${h.address}</div>
+              <div>Этажей: 10 • Объектов: ${total}</div>
             </div>
             <div style="margin-top: 12px; display: flex; gap: 12px; font-size: 0.85rem;">
-              <span style="color: var(--emerald);">🟢 ${free}</span>
-              <span style="color: var(--emerald);">✅ ${sold}</span>
-              <span style="color: var(--yellow);">🟡 ${inst}</span>
+              <span style="color: var(--emerald);"><span class="status-dot free"></span> ${free}</span>
+              <span style="color: var(--emerald);"><span class="status-dot sold"></span> ${sold}</span>
+              <span style="color: var(--yellow);"><span class="status-dot installment"></span> ${inst}</span>
             </div>
             <div class="progress-bg">
               <div class="progress-fill" style="width: ${percent}%"></div>
@@ -1233,8 +1268,8 @@
         const floors = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
         const floorNames = {
           0: 'Подвал',
-          1: '1 этаж (Коммерция)',
-          2: '2 этаж (Коммерция)',
+          1: '1 этаж ',
+          2: '2 этаж ',
           3: '3 этаж',
           4: '4 этаж',
           5: '5 этаж',
@@ -1254,16 +1289,15 @@
           
           <div style="margin: 24px 0; display: flex; gap: 12px; flex-wrap: wrap;">
             <button class="filter-btn active" onclick="window.setFilter('all')">Все</button>
-            <button class="filter-btn" onclick="window.setFilter('available')">🟢 Свободные</button>
-            <button class="filter-btn" onclick="window.setFilter('sold')">✅ Проданные</button>
-            <button class="filter-btn" onclick="window.setFilter('installment')">🟡 Рассрочка</button>
-            <button class="filter-btn" onclick="window.setFilter('overdue')">🔴 Должники</button>
+            <button class="filter-btn" onclick="window.setFilter('available')"><span class="status-dot free"></span>Свободные</button>
+            <button class="filter-btn" onclick="window.setFilter('sold')"><span class="status-dot sold"></span>Проданные</button>
+            <button class="filter-btn" onclick="window.setFilter('installment')"><span class="status-dot installment"></span>Рассрочка</button>
+            <button class="filter-btn" onclick="window.setFilter('overdue')"><span class="status-dot debtor"></span>Должники</button>
           </div>
           
           <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 16px; margin-top: 20px;">
             ${floors.map(floor => {
               const floorApts = state.apartments.filter(a => a.houseId === house.id && a.floor === floor);
-              const filteredApts = filterApts(floorApts);
               const soldCount = floorApts.filter(a => a.status === 'sold').length;
               const freeCount = floorApts.filter(a => a.status === 'available').length;
               
@@ -1274,8 +1308,8 @@
                     <span style="color: var(--text-muted); font-size: 0.85rem;">${floorApts.length} об.</span>
                   </div>
                   <div style="margin-top: 12px; display: flex; gap: 8px; font-size: 0.85rem;">
-                    <span style="color: var(--emerald);">🟢 ${freeCount}</span>
-                    <span style="color: var(--emerald);">✅ ${soldCount}</span>
+                    <span style="color: var(--emerald);"><span class="status-dot free"></span> ${freeCount}</span>
+                    <span style="color: var(--emerald);"><span class="status-dot sold"></span> ${soldCount}</span>
                   </div>
                   <div class="progress-bg">
                     <div class="progress-fill" style="width: ${floorApts.length ? (soldCount / floorApts.length * 100) : 0}%"></div>
@@ -1304,10 +1338,10 @@
           
           <div style="margin: 24px 0; display: flex; gap: 12px; flex-wrap: wrap;">
             <button class="filter-btn ${currentFilter === 'all' ? 'active' : ''}" onclick="window.setFilter('all')">Все</button>
-            <button class="filter-btn ${currentFilter === 'available' ? 'active' : ''}" onclick="window.setFilter('available')">🟢 Свободные</button>
-            <button class="filter-btn ${currentFilter === 'sold' ? 'active' : ''}" onclick="window.setFilter('sold')">✅ Проданные</button>
-            <button class="filter-btn ${currentFilter === 'installment' ? 'active' : ''}" onclick="window.setFilter('installment')">🟡 Рассрочка</button>
-            <button class="filter-btn ${currentFilter === 'overdue' ? 'active' : ''}" onclick="window.setFilter('overdue')">🔴 Должники</button>
+            <button class="filter-btn ${currentFilter === 'available' ? 'active' : ''}" onclick="window.setFilter('available')"><span class="status-dot free"></span>Свободные</button>
+            <button class="filter-btn ${currentFilter === 'sold' ? 'active' : ''}" onclick="window.setFilter('sold')"><span class="status-dot sold"></span>Проданные</button>
+            <button class="filter-btn ${currentFilter === 'installment' ? 'active' : ''}" onclick="window.setFilter('installment')"><span class="status-dot installment"></span>Рассрочка</button>
+            <button class="filter-btn ${currentFilter === 'overdue' ? 'active' : ''}" onclick="window.setFilter('overdue')"><span class="status-dot debtor"></span>Должники</button>
           </div>
           
           <div class="apartment-grid">
@@ -1333,35 +1367,36 @@
 
       function apartmentCell(apt) {
         let cls = 'apt-free';
-        let statusIcon = '🟢';
         let statusText = 'Свободен';
+        let dotClass = 'free';
         
         if (apt.status === 'sold') {
           cls = 'apt-sold';
-          statusIcon = '✅';
           statusText = 'Продан';
+          dotClass = 'sold';
         } else if (apt.status === 'installment') {
           const hasOverdue = state.payments.some(p => p.apartmentId === apt.id && p.status === 'overdue');
           if (hasOverdue) {
             cls = 'apt-overdue';
-            statusIcon = '🔴';
-            statusText = 'Долг';
+            statusText = 'Должник';
+            dotClass = 'debtor';
           } else {
             cls = 'apt-installment';
-            statusIcon = '🟡';
             statusText = 'Рассрочка';
+            dotClass = 'installment';
           }
         }
         
-        const typeIcon = apt.type === 'basement' ? '🏠' : apt.type === 'commercial' ? '🏪' : apt.type === 'penthouse' ? '🏰' : '🏢';
+        const typeIcon = apt.type === 'basement' ? 'Подвал' : apt.type === 'commercial' ? 'Комм.' : apt.type === 'penthouse' ? 'Пентхаус' : 'Квартира';
         
         return `
           <div class="apt-cell ${cls}" onclick="window.openApartmentModal('${apt.id}')">
-            <div style="font-size: 1.5rem; margin-bottom: 8px;">${typeIcon}</div>
             <div style="font-weight: 700; font-size: 1.1rem;">№${apt.number}</div>
             ${apt.rooms > 0 ? `<div style="color: var(--text-secondary); font-size: 0.9rem;">${apt.rooms} комн.</div>` : '<div style="color: var(--text-muted); font-size: 0.9rem;">помещение</div>'}
             <div style="color: var(--text-secondary); font-size: 0.9rem;">${apt.area} м²</div>
-            <div style="margin-top: 8px; font-size: 0.8rem;">${statusIcon} ${statusText}</div>
+            <div style="margin-top: 8px; font-size: 0.8rem; display: flex; align-items: center; justify-content: center;">
+              <span class="status-dot ${dotClass}"></span> ${statusText}
+            </div>
           </div>
         `;
       }
@@ -1380,6 +1415,15 @@
                          apt.type === 'commercial' ? 'Коммерческое помещение' : 
                          apt.type === 'penthouse' ? 'Пентхаус' : 'Квартира';
         
+        let dotClass = 'free';
+        let statusLabel = 'Свободен';
+        if (apt.status === 'sold') { dotClass = 'sold'; statusLabel = 'Продан'; }
+        else if (apt.status === 'installment') {
+          const hasOverdue = state.payments.some(p => p.apartmentId === apt.id && p.status === 'overdue');
+          dotClass = hasOverdue ? 'debtor' : 'installment';
+          statusLabel = hasOverdue ? 'Должник' : 'Рассрочка';
+        }
+        
         const modal = document.createElement('div');
         modal.className = 'modal';
         modal.innerHTML = `
@@ -1395,15 +1439,9 @@
                 <span style="color: var(--text-secondary);">Этаж:</span>
                 <strong>${apt.floor === 0 ? 'Подвал' : apt.floor === 10 ? 'Пентхаус' : apt.floor + ' этаж'}</strong>
               </div>
-              <div style="display: flex; justify-content: space-between;">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
                 <span style="color: var(--text-secondary);">Статус:</span>
-                <strong style="color: ${
-                  apt.status === 'available' ? 'var(--emerald)' : 
-                  apt.status === 'sold' ? 'var(--emerald)' : 'var(--yellow)'
-                };">${
-                  apt.status === 'available' ? '🟢 Свободен' : 
-                  apt.status === 'sold' ? '✅ Продан' : '🟡 Рассрочка'
-                }</strong>
+                <strong style="display: flex; align-items: center;"><span class="status-dot ${dotClass}"></span>${statusLabel}</strong>
               </div>
               <div style="display: flex; justify-content: space-between;">
                 <span style="color: var(--text-secondary);">Площадь:</span>
@@ -1450,12 +1488,12 @@
             
             <div style="margin-top: 24px; display: flex; gap: 12px; flex-wrap: wrap;">
               ${apt.status === 'available' ? `
-                <button class="btn" onclick="window.sellApartment('${apt.id}')">💼 Продать</button>
+                <button class="btn" onclick="window.sellApartment('${apt.id}')">Продать</button>
               ` : ''}
               ${apt.installment ? `
-                <button class="btn secondary" onclick="window.openInstallmentPayments('${apt.id}')">📊 График платежей</button>
+                <button class="btn secondary" onclick="window.openInstallmentPayments('${apt.id}')">График платежей</button>
               ` : ''}
-              <button class="btn secondary" onclick="window.editApartment('${apt.id}')">✏️ Редактировать</button>
+              <button class="btn secondary" onclick="window.editApartment('${apt.id}')">Редактировать</button>
             </div>
           </div>
         `;
@@ -1536,7 +1574,7 @@
           syncToFirebase();
           modal.remove();
           render();
-          toast('✓ Продажа завершена');
+          toast('Продажа завершена');
         };
       };
 
@@ -1556,9 +1594,9 @@
                   <td>${formatDate(p.date)}</td>
                   <td>${formatMoney(p.amount)}</td>
                   <td>${
-                    p.status === 'paid' ? '<span style="color: var(--emerald);">✓ Оплачен</span>' : 
-                    p.status === 'overdue' ? '<span style="color: var(--red);">🔴 Просрочен</span>' : 
-                    '<span style="color: var(--yellow);">Ожидает</span>'
+                    p.status === 'paid' ? 'Оплачен' : 
+                    p.status === 'overdue' ? 'Просрочен' : 
+                    'Ожидает'
                   }</td>
                   <td>${
                     p.status !== 'paid' ? 
@@ -1581,7 +1619,7 @@
           syncToFirebase();
           render(); 
           document.querySelector('.modal')?.remove(); 
-          toast('✓ Платеж отмечен'); 
+          toast('Платеж отмечен'); 
         }
       };
 
@@ -1606,9 +1644,9 @@
               <input id="aPrice" type="number" value="${apt.price}" style="width:100%;padding:12px;border-radius:12px;border:1px solid var(--border-color);background:var(--bg-primary);color:var(--text-primary);">
               <label style="color: var(--text-secondary);">Статус</label>
               <select id="aStatus" style="width:100%;padding:12px;border-radius:12px;border:1px solid var(--border-color);background:var(--bg-primary);color:var(--text-primary);">
-                <option value="available" ${apt.status === 'available' ? 'selected' : ''}>🟢 Свободен</option>
-                <option value="sold" ${apt.status === 'sold' ? 'selected' : ''}>✅ Продан</option>
-                <option value="installment" ${apt.status === 'installment' ? 'selected' : ''}>🟡 Рассрочка</option>
+                <option value="available" ${apt.status === 'available' ? 'selected' : ''}>Свободен</option>
+                <option value="sold" ${apt.status === 'sold' ? 'selected' : ''}>Продан</option>
+                <option value="installment" ${apt.status === 'installment' ? 'selected' : ''}>Рассрочка</option>
               </select>
               <button class="btn" id="saveApt" style="margin-top:8px;">Сохранить</button>
             </div>
@@ -1625,7 +1663,7 @@
           syncToFirebase();
           modal.remove();
           render();
-          toast('✓ Изменения сохранены');
+          toast('Изменения сохранены');
         };
       };
 
@@ -1660,10 +1698,8 @@
           
           state.houses.push(newHouse);
           
-          // Create full structure for new block
           let aptCounter = state.apartments.length;
           
-          // Basement
           for (let i = 1; i <= 5; i++) {
             state.apartments.push({
               id: `apt-${++aptCounter}`,
@@ -1680,7 +1716,6 @@
             });
           }
           
-          // Commercial floors
           for (let floor = 1; floor <= 2; floor++) {
             for (let room = 1; room <= 8; room++) {
               state.apartments.push({
@@ -1699,7 +1734,6 @@
             }
           }
           
-          // Residential floors
           for (let floor = 3; floor <= 9; floor++) {
             for (let room = 1; room <= 8; room++) {
               const rooms = (room % 3) + 1;
@@ -1719,7 +1753,6 @@
             }
           }
           
-          // Penthouse
           for (let room = 1; room <= 5; room++) {
             state.apartments.push({
               id: `apt-${++aptCounter}`,
@@ -1739,7 +1772,7 @@
           syncToFirebase();
           modal.remove();
           render();
-          toast('✓ Блок создан');
+          toast('Блок создан');
         };
       };
 
@@ -1778,7 +1811,7 @@
           syncToFirebase();
           modal.remove();
           render();
-          toast('✓ Объект добавлен');
+          toast('Объект добавлен');
         };
       };
 
@@ -1812,15 +1845,15 @@
           <div class="stats-grid" style="margin-top: 20px;">
             <div class="stat-card">
               <div class="stat-value" style="color: var(--emerald);">${formatMoney(paidTotal)}</div>
-              <div class="stat-label">✅ Оплачено</div>
+              <div class="stat-label"><span class="status-dot sold"></span>Оплачено</div>
             </div>
             <div class="stat-card">
               <div class="stat-value" style="color: var(--yellow);">${formatMoney(pendingTotal)}</div>
-              <div class="stat-label">🟡 Ожидает</div>
+              <div class="stat-label"><span class="status-dot installment"></span>Ожидает</div>
             </div>
             <div class="stat-card">
               <div class="stat-value" style="color: var(--red);">${formatMoney(overdueTotal)}</div>
-              <div class="stat-label">🔴 Просрочено</div>
+              <div class="stat-label"><span class="status-dot debtor"></span>Просрочено</div>
             </div>
           </div>
           
@@ -1844,9 +1877,9 @@
                     <td>${formatDate(p.date)}</td>
                     <td>${formatMoney(p.amount)}</td>
                     <td>${
-                      p.status === 'paid' ? '<span style="color: var(--emerald);">✓ Оплачен</span>' : 
-                      p.status === 'overdue' ? '<span style="color: var(--red);">🔴 Просрочен</span>' : 
-                      '<span style="color: var(--yellow);">Ожидает</span>'
+                      p.status === 'paid' ? 'Оплачен' : 
+                      p.status === 'overdue' ? 'Просрочен' : 
+                      'Ожидает'
                     }</td>
                     <td>${
                       p.status !== 'paid' ? 
@@ -1872,8 +1905,8 @@
               return `
                 <div class="house-card">
                   <strong>${c.name}</strong>
-                  <div style="color: var(--text-secondary); margin-top: 8px;">📞 ${c.phone}</div>
-                  ${c.email ? `<div style="color: var(--text-secondary);">✉️ ${c.email}</div>` : ''}
+                  <div style="color: var(--text-secondary); margin-top: 8px;">${c.phone}</div>
+                  ${c.email ? `<div style="color: var(--text-secondary);">${c.email}</div>` : ''}
                   <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border-color);">
                     <div style="color: var(--text-secondary);">Объектов: ${clientApts.length}</div>
                     <div style="color: var(--gold-dark); font-weight: 600;">Выплачено: ${formatMoney(totalPaid)}</div>
@@ -1900,11 +1933,11 @@
           <div class="stats-grid" style="margin-top: 20px;">
             <div class="stat-card">
               <div class="stat-value" style="color: var(--gold-dark);">${formatMoney(total)}</div>
-              <div class="stat-label">💰 Общая выручка</div>
+              <div class="stat-label">Общая выручка</div>
             </div>
             <div class="stat-card">
               <div class="stat-value" style="color: var(--emerald);">${state.apartments.filter(a => a.status === 'sold').length}</div>
-              <div class="stat-label">✅ Продано объектов</div>
+              <div class="stat-label"><span class="status-dot sold"></span>Продано объектов</div>
             </div>
           </div>
           
@@ -1927,7 +1960,7 @@
         a.href = URL.createObjectURL(blob);
         a.download = 'backup_khisrav.json';
         a.click();
-        toast('📤 Данные экспортированы');
+        toast('Данные экспортированы');
       });
       
       document.getElementById('importBtn').addEventListener('click', () => {
@@ -1941,7 +1974,7 @@
             state = JSON.parse(reader.result); 
             syncToFirebase();
             render(); 
-            toast('📥 Данные импортированы'); 
+            toast('Данные импортированы'); 
           }; 
           reader.readAsText(file); 
         };
@@ -1951,12 +1984,9 @@
       // -------------------- INIT --------------------
       window.navigate = navigate;
       
-      // Initialize application
       async function initApp() {
-        // Try to load from Firebase first
         const loaded = await loadFromFirebase();
         
-        // If Firebase is empty, initialize with demo data
         if (!loaded) {
           initDemoData();
           await syncToFirebase();
@@ -1974,8 +2004,6 @@
         });
       });
     })();
-
-    
   </script>
 </body>
 </html>
