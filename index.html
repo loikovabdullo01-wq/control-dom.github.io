@@ -743,8 +743,8 @@
       </button>
     </nav>
     <div class="bottom-actions">
-      <button class="btn secondary" id="exportBtn">Экспорт</button>
-      <button class="btn secondary" id="importBtn">Импорт</button>
+      <button class="btn secondary" id="exportBtn">📤 Экспорт</button>
+      <button class="btn secondary" id="importBtn">📥 Импорт</button>
       <div id="syncStatus" style="text-align: center; font-size: 0.75rem; color: var(--text-muted); margin-top: 8px;">
         Синхронизация...
       </div>
@@ -754,11 +754,11 @@
   <main class="main-content" id="mainContent"></main>
 
   <div class="mobile-nav" id="mobileNav">
-    <button data-page="dashboard">Главная</button>
-    <button data-page="houses">Дома</button>
-    <button data-page="payments">Платежи</button>
-    <button data-page="clients">Клиенты</button>
-    <button data-page="sales">Продажи</button>
+    <button data-page="dashboard">🏠<span>Главная</span></button>
+    <button data-page="houses">🏢<span>Дома</span></button>
+    <button data-page="payments">💳<span>Платежи</span></button>
+    <button data-page="clients">👥<span>Клиенты</span></button>
+    <button data-page="sales">📊<span>Продажи</span></button>
   </div>
 
   <script>
@@ -879,11 +879,11 @@
             break;
           case 'synced':
             const time = lastSyncTime ? lastSyncTime.toLocaleTimeString('ru-RU') : '';
-            statusElement.innerHTML = `Синхронизировано ${time}`;
+            statusElement.innerHTML = `✅ Синхронизировано ${time}`;
             statusElement.style.color = 'var(--emerald)';
             break;
           case 'error':
-            statusElement.innerHTML = 'Ошибка синхронизации';
+            statusElement.innerHTML = '⚠️ Ошибка синхронизации';
             statusElement.style.color = 'var(--red)';
             break;
           case 'empty':
@@ -1136,53 +1136,53 @@
             <h2 style="font-weight:600;">Главная панель</h2>
             <div class="date-profile">
               <span>${new Date().toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
-              <span>Директор</span>
+              <span>👤 Директор</span>
             </div>
           </div>
           
           <div style="margin-bottom: 24px;">
             <div class="search-wrapper" style="width: 100%;">
-              <input placeholder="Поиск квартиры, клиента, телефона..." id="globalSearch" oninput="window.handleGlobalSearch(this.value)">
+              <input placeholder="🔍 Поиск квартиры, клиента, телефона..." id="globalSearch" oninput="window.handleGlobalSearch(this.value)">
             </div>
           </div>
           
           <div class="stats-grid">
             <div class="stat-card">
               <div class="stat-value">${state.houses.length}</div>
-              <div class="stat-label">Блоков</div>
+              <div class="stat-label">🏢 Блоков</div>
             </div>
             <div class="stat-card">
               <div class="stat-value">${stats.totalApts}</div>
-              <div class="stat-label">Объектов</div>
+              <div class="stat-label">🏢 Объектов</div>
             </div>
             <div class="stat-card">
               <div class="stat-value" style="color: var(--emerald);">${stats.free}</div>
-              <div class="stat-label"><span class="status-dot free"></span>Свободно</div>
+              <div class="stat-label">⚪ Свободно</div>
             </div>
             <div class="stat-card">
               <div class="stat-value" style="color: var(--emerald);">${stats.sold}</div>
-              <div class="stat-label"><span class="status-dot sold"></span>Продано</div>
+              <div class="stat-label">✅ Продано</div>
             </div>
             <div class="stat-card">
               <div class="stat-value" style="color: var(--yellow);">${stats.installment}</div>
-              <div class="stat-label"><span class="status-dot installment"></span>Рассрочка</div>
+              <div class="stat-label">🟡 Рассрочка</div>
             </div>
             <div class="stat-card">
               <div class="stat-value" style="color: var(--gold-dark);">${formatMoney(stats.paidTotal)}</div>
-              <div class="stat-label">Получено</div>
+              <div class="stat-label">💰 Получено</div>
             </div>
             <div class="stat-card">
               <div class="stat-value" style="color: var(--red);">${formatMoney(stats.pendingTotal)}</div>
-              <div class="stat-label">Остаток</div>
+              <div class="stat-label">⚠️ Остаток</div>
             </div>
           </div>
           
-          <div class="section-title">Наши объекты</div>
+          <div class="section-title">🏢 Наши объекты</div>
           <div class="houses-grid">
             ${state.houses.map(h => houseCardHTML(h)).join('')}
           </div>
           
-          <div class="section-title">Ближайшие платежи</div>
+          <div class="section-title">📅 Ближайшие платежи</div>
           ${upcoming.length ? upcoming.map(p => `
             <div style="background: var(--bg-card); padding: 16px; border-radius: 12px; margin-bottom: 8px; border: 1px solid var(--border-color);">
               <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -1198,7 +1198,7 @@
             </div>
           `).join('') : '<p style="color: var(--text-muted);">Нет предстоящих платежей</p>'}
           
-          <div class="section-title" style="color: var(--red);">Требуют внимания</div>
+          <div class="section-title" style="color: var(--red);">🔴 Требуют внимания</div>
           ${overdue.length ? overdue.slice(0, 5).map(p => `
             <div style="background: var(--red-bg); padding: 16px; border-radius: 12px; margin-bottom: 8px; border: 1px solid #fecaca;">
               <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -1212,7 +1212,7 @@
                 </div>
               </div>
             </div>
-          `).join('') : '<p style="color: var(--emerald);">Все платежи выполняются вовремя</p>'}
+          `).join('') : '<p style="color: var(--emerald);">✅ Все платежи выполняются вовремя</p>'}
         `;
       }
 
@@ -1231,13 +1231,13 @@
               <span class="badge">${h.status}</span>
             </div>
             <div style="margin-top: 12px; color: var(--text-secondary); font-size: 0.9rem;">
-              <div>${h.address}</div>
-              <div>Этажей: 10 • Объектов: ${total}</div>
+              <div>📍 ${h.address}</div>
+              <div>🏗️ Этажей: 10 • Объектов: ${total}</div>
             </div>
             <div style="margin-top: 12px; display: flex; gap: 12px; font-size: 0.85rem;">
-              <span style="color: var(--emerald);"><span class="status-dot free"></span> ${free}</span>
-              <span style="color: var(--emerald);"><span class="status-dot sold"></span> ${sold}</span>
-              <span style="color: var(--yellow);"><span class="status-dot installment"></span> ${inst}</span>
+              <span style="color: var(--emerald);">⚪ ${free}</span>
+              <span style="color: var(--emerald);">✅ ${sold}</span>
+              <span style="color: var(--yellow);">🟡 ${inst}</span>
             </div>
             <div class="progress-bg">
               <div class="progress-fill" style="width: ${percent}%"></div>
@@ -1289,10 +1289,10 @@
           
           <div style="margin: 24px 0; display: flex; gap: 12px; flex-wrap: wrap;">
             <button class="filter-btn active" onclick="window.setFilter('all')">Все</button>
-            <button class="filter-btn" onclick="window.setFilter('available')"><span class="status-dot free"></span>Свободные</button>
-            <button class="filter-btn" onclick="window.setFilter('sold')"><span class="status-dot sold"></span>Проданные</button>
-            <button class="filter-btn" onclick="window.setFilter('installment')"><span class="status-dot installment"></span>Рассрочка</button>
-            <button class="filter-btn" onclick="window.setFilter('overdue')"><span class="status-dot debtor"></span>Должники</button>
+            <button class="filter-btn" onclick="window.setFilter('available')">⚪ Свободные</button>
+            <button class="filter-btn" onclick="window.setFilter('sold')">✅ Проданные</button>
+            <button class="filter-btn" onclick="window.setFilter('installment')">🟡 Рассрочка</button>
+            <button class="filter-btn" onclick="window.setFilter('overdue')">🔴 Должники</button>
           </div>
           
           <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 16px; margin-top: 20px;">
@@ -1308,8 +1308,8 @@
                     <span style="color: var(--text-muted); font-size: 0.85rem;">${floorApts.length} об.</span>
                   </div>
                   <div style="margin-top: 12px; display: flex; gap: 8px; font-size: 0.85rem;">
-                    <span style="color: var(--emerald);"><span class="status-dot free"></span> ${freeCount}</span>
-                    <span style="color: var(--emerald);"><span class="status-dot sold"></span> ${soldCount}</span>
+                    <span style="color: var(--emerald);">⚪ ${freeCount}</span>
+                    <span style="color: var(--emerald);">✅ ${soldCount}</span>
                   </div>
                   <div class="progress-bg">
                     <div class="progress-fill" style="width: ${floorApts.length ? (soldCount / floorApts.length * 100) : 0}%"></div>
@@ -1338,10 +1338,10 @@
           
           <div style="margin: 24px 0; display: flex; gap: 12px; flex-wrap: wrap;">
             <button class="filter-btn ${currentFilter === 'all' ? 'active' : ''}" onclick="window.setFilter('all')">Все</button>
-            <button class="filter-btn ${currentFilter === 'available' ? 'active' : ''}" onclick="window.setFilter('available')"><span class="status-dot free"></span>Свободные</button>
-            <button class="filter-btn ${currentFilter === 'sold' ? 'active' : ''}" onclick="window.setFilter('sold')"><span class="status-dot sold"></span>Проданные</button>
-            <button class="filter-btn ${currentFilter === 'installment' ? 'active' : ''}" onclick="window.setFilter('installment')"><span class="status-dot installment"></span>Рассрочка</button>
-            <button class="filter-btn ${currentFilter === 'overdue' ? 'active' : ''}" onclick="window.setFilter('overdue')"><span class="status-dot debtor"></span>Должники</button>
+            <button class="filter-btn ${currentFilter === 'available' ? 'active' : ''}" onclick="window.setFilter('available')">⚪ Свободные</button>
+            <button class="filter-btn ${currentFilter === 'sold' ? 'active' : ''}" onclick="window.setFilter('sold')">✅ Проданные</button>
+            <button class="filter-btn ${currentFilter === 'installment' ? 'active' : ''}" onclick="window.setFilter('installment')">🟡 Рассрочка</button>
+            <button class="filter-btn ${currentFilter === 'overdue' ? 'active' : ''}" onclick="window.setFilter('overdue')">🔴 Должники</button>
           </div>
           
           <div class="apartment-grid">
@@ -1367,36 +1367,35 @@
 
       function apartmentCell(apt) {
         let cls = 'apt-free';
+        let statusIcon = '⚪';
         let statusText = 'Свободен';
-        let dotClass = 'free';
         
         if (apt.status === 'sold') {
           cls = 'apt-sold';
+          statusIcon = '✅';
           statusText = 'Продан';
-          dotClass = 'sold';
         } else if (apt.status === 'installment') {
           const hasOverdue = state.payments.some(p => p.apartmentId === apt.id && p.status === 'overdue');
           if (hasOverdue) {
             cls = 'apt-overdue';
-            statusText = 'Должник';
-            dotClass = 'debtor';
+            statusIcon = '🔴';
+            statusText = 'Долг';
           } else {
             cls = 'apt-installment';
+            statusIcon = '🟡';
             statusText = 'Рассрочка';
-            dotClass = 'installment';
           }
         }
         
-        const typeIcon = apt.type === 'basement' ? 'Подвал' : apt.type === 'commercial' ? 'Комм.' : apt.type === 'penthouse' ? 'Пентхаус' : 'Квартира';
+        const typeIcon = apt.type === 'basement' ? '🏠' : apt.type === 'commercial' ? '🏪' : apt.type === 'penthouse' ? '🏰' : '🏢';
         
         return `
           <div class="apt-cell ${cls}" onclick="window.openApartmentModal('${apt.id}')">
+            <div style="font-size: 1.5rem; margin-bottom: 8px;">${typeIcon}</div>
             <div style="font-weight: 700; font-size: 1.1rem;">№${apt.number}</div>
             ${apt.rooms > 0 ? `<div style="color: var(--text-secondary); font-size: 0.9rem;">${apt.rooms} комн.</div>` : '<div style="color: var(--text-muted); font-size: 0.9rem;">помещение</div>'}
             <div style="color: var(--text-secondary); font-size: 0.9rem;">${apt.area} м²</div>
-            <div style="margin-top: 8px; font-size: 0.8rem; display: flex; align-items: center; justify-content: center;">
-              <span class="status-dot ${dotClass}"></span> ${statusText}
-            </div>
+            <div style="margin-top: 8px; font-size: 0.8rem;">${statusIcon} ${statusText}</div>
           </div>
         `;
       }
@@ -1415,15 +1414,6 @@
                          apt.type === 'commercial' ? 'Коммерческое помещение' : 
                          apt.type === 'penthouse' ? 'Пентхаус' : 'Квартира';
         
-        let dotClass = 'free';
-        let statusLabel = 'Свободен';
-        if (apt.status === 'sold') { dotClass = 'sold'; statusLabel = 'Продан'; }
-        else if (apt.status === 'installment') {
-          const hasOverdue = state.payments.some(p => p.apartmentId === apt.id && p.status === 'overdue');
-          dotClass = hasOverdue ? 'debtor' : 'installment';
-          statusLabel = hasOverdue ? 'Должник' : 'Рассрочка';
-        }
-        
         const modal = document.createElement('div');
         modal.className = 'modal';
         modal.innerHTML = `
@@ -1439,9 +1429,15 @@
                 <span style="color: var(--text-secondary);">Этаж:</span>
                 <strong>${apt.floor === 0 ? 'Подвал' : apt.floor === 10 ? 'Пентхаус' : apt.floor + ' этаж'}</strong>
               </div>
-              <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div style="display: flex; justify-content: space-between;">
                 <span style="color: var(--text-secondary);">Статус:</span>
-                <strong style="display: flex; align-items: center;"><span class="status-dot ${dotClass}"></span>${statusLabel}</strong>
+                <strong style="color: ${
+                  apt.status === 'available' ? 'var(--emerald)' : 
+                  apt.status === 'sold' ? 'var(--emerald)' : 'var(--yellow)'
+                };">${
+                  apt.status === 'available' ? '⚪ Свободен' : 
+                  apt.status === 'sold' ? '✅ Продан' : '🟡 Рассрочка'
+                }</strong>
               </div>
               <div style="display: flex; justify-content: space-between;">
                 <span style="color: var(--text-secondary);">Площадь:</span>
@@ -1488,12 +1484,12 @@
             
             <div style="margin-top: 24px; display: flex; gap: 12px; flex-wrap: wrap;">
               ${apt.status === 'available' ? `
-                <button class="btn" onclick="window.sellApartment('${apt.id}')">Продать</button>
+                <button class="btn" onclick="window.sellApartment('${apt.id}')">💼 Продать</button>
               ` : ''}
               ${apt.installment ? `
-                <button class="btn secondary" onclick="window.openInstallmentPayments('${apt.id}')">График платежей</button>
+                <button class="btn secondary" onclick="window.openInstallmentPayments('${apt.id}')">📊 График платежей</button>
               ` : ''}
-              <button class="btn secondary" onclick="window.editApartment('${apt.id}')">Редактировать</button>
+              <button class="btn secondary" onclick="window.editApartment('${apt.id}')">✏️ Редактировать</button>
             </div>
           </div>
         `;
@@ -1574,7 +1570,7 @@
           syncToFirebase();
           modal.remove();
           render();
-          toast('Продажа завершена');
+          toast('✅ Продажа завершена');
         };
       };
 
@@ -1594,9 +1590,9 @@
                   <td>${formatDate(p.date)}</td>
                   <td>${formatMoney(p.amount)}</td>
                   <td>${
-                    p.status === 'paid' ? 'Оплачен' : 
-                    p.status === 'overdue' ? 'Просрочен' : 
-                    'Ожидает'
+                    p.status === 'paid' ? '<span style="color: var(--emerald);">✅ Оплачен</span>' : 
+                    p.status === 'overdue' ? '<span style="color: var(--red);">🔴 Просрочен</span>' : 
+                    '<span style="color: var(--yellow);">Ожидает</span>'
                   }</td>
                   <td>${
                     p.status !== 'paid' ? 
@@ -1619,7 +1615,7 @@
           syncToFirebase();
           render(); 
           document.querySelector('.modal')?.remove(); 
-          toast('Платеж отмечен'); 
+          toast('✅ Платеж отмечен'); 
         }
       };
 
@@ -1644,9 +1640,9 @@
               <input id="aPrice" type="number" value="${apt.price}" style="width:100%;padding:12px;border-radius:12px;border:1px solid var(--border-color);background:var(--bg-primary);color:var(--text-primary);">
               <label style="color: var(--text-secondary);">Статус</label>
               <select id="aStatus" style="width:100%;padding:12px;border-radius:12px;border:1px solid var(--border-color);background:var(--bg-primary);color:var(--text-primary);">
-                <option value="available" ${apt.status === 'available' ? 'selected' : ''}>Свободен</option>
-                <option value="sold" ${apt.status === 'sold' ? 'selected' : ''}>Продан</option>
-                <option value="installment" ${apt.status === 'installment' ? 'selected' : ''}>Рассрочка</option>
+                <option value="available" ${apt.status === 'available' ? 'selected' : ''}>⚪ Свободен</option>
+                <option value="sold" ${apt.status === 'sold' ? 'selected' : ''}>✅ Продан</option>
+                <option value="installment" ${apt.status === 'installment' ? 'selected' : ''}>🟡 Рассрочка</option>
               </select>
               <button class="btn" id="saveApt" style="margin-top:8px;">Сохранить</button>
             </div>
@@ -1663,7 +1659,7 @@
           syncToFirebase();
           modal.remove();
           render();
-          toast('Изменения сохранены');
+          toast('✅ Изменения сохранены');
         };
       };
 
@@ -1772,7 +1768,7 @@
           syncToFirebase();
           modal.remove();
           render();
-          toast('Блок создан');
+          toast('✅ Блок создан');
         };
       };
 
@@ -1811,7 +1807,7 @@
           syncToFirebase();
           modal.remove();
           render();
-          toast('Объект добавлен');
+          toast('✅ Объект добавлен');
         };
       };
 
@@ -1845,15 +1841,15 @@
           <div class="stats-grid" style="margin-top: 20px;">
             <div class="stat-card">
               <div class="stat-value" style="color: var(--emerald);">${formatMoney(paidTotal)}</div>
-              <div class="stat-label"><span class="status-dot sold"></span>Оплачено</div>
+              <div class="stat-label">✅ Оплачено</div>
             </div>
             <div class="stat-card">
               <div class="stat-value" style="color: var(--yellow);">${formatMoney(pendingTotal)}</div>
-              <div class="stat-label"><span class="status-dot installment"></span>Ожидает</div>
+              <div class="stat-label">🟡 Ожидает</div>
             </div>
             <div class="stat-card">
               <div class="stat-value" style="color: var(--red);">${formatMoney(overdueTotal)}</div>
-              <div class="stat-label"><span class="status-dot debtor"></span>Просрочено</div>
+              <div class="stat-label">🔴 Просрочено</div>
             </div>
           </div>
           
@@ -1877,9 +1873,9 @@
                     <td>${formatDate(p.date)}</td>
                     <td>${formatMoney(p.amount)}</td>
                     <td>${
-                      p.status === 'paid' ? 'Оплачен' : 
-                      p.status === 'overdue' ? 'Просрочен' : 
-                      'Ожидает'
+                      p.status === 'paid' ? '<span style="color: var(--emerald);">✅ Оплачен</span>' : 
+                      p.status === 'overdue' ? '<span style="color: var(--red);">🔴 Просрочен</span>' : 
+                      '<span style="color: var(--yellow);">Ожидает</span>'
                     }</td>
                     <td>${
                       p.status !== 'paid' ? 
@@ -1905,8 +1901,8 @@
               return `
                 <div class="house-card">
                   <strong>${c.name}</strong>
-                  <div style="color: var(--text-secondary); margin-top: 8px;">${c.phone}</div>
-                  ${c.email ? `<div style="color: var(--text-secondary);">${c.email}</div>` : ''}
+                  <div style="color: var(--text-secondary); margin-top: 8px;">📞 ${c.phone}</div>
+                  ${c.email ? `<div style="color: var(--text-secondary);">✉️ ${c.email}</div>` : ''}
                   <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border-color);">
                     <div style="color: var(--text-secondary);">Объектов: ${clientApts.length}</div>
                     <div style="color: var(--gold-dark); font-weight: 600;">Выплачено: ${formatMoney(totalPaid)}</div>
@@ -1933,11 +1929,11 @@
           <div class="stats-grid" style="margin-top: 20px;">
             <div class="stat-card">
               <div class="stat-value" style="color: var(--gold-dark);">${formatMoney(total)}</div>
-              <div class="stat-label">Общая выручка</div>
+              <div class="stat-label">💰 Общая выручка</div>
             </div>
             <div class="stat-card">
               <div class="stat-value" style="color: var(--emerald);">${state.apartments.filter(a => a.status === 'sold').length}</div>
-              <div class="stat-label"><span class="status-dot sold"></span>Продано объектов</div>
+              <div class="stat-label">✅ Продано объектов</div>
             </div>
           </div>
           
@@ -1960,7 +1956,7 @@
         a.href = URL.createObjectURL(blob);
         a.download = 'backup_khisrav.json';
         a.click();
-        toast('Данные экспортированы');
+        toast('📤 Данные экспортированы');
       });
       
       document.getElementById('importBtn').addEventListener('click', () => {
@@ -1974,7 +1970,7 @@
             state = JSON.parse(reader.result); 
             syncToFirebase();
             render(); 
-            toast('Данные импортированы'); 
+            toast('📥 Данные импортированы'); 
           }; 
           reader.readAsText(file); 
         };
