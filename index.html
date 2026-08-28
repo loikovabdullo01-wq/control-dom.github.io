@@ -614,6 +614,152 @@
       background: #f8fafc;
     }
 
+    /* ==================== REPORTS ==================== */
+    .report-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      margin: 16px 0;
+    }
+    .report-filters select {
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-primary);
+      color: var(--text-primary);
+    }
+    .report-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 18px;
+      margin-bottom: 14px;
+      box-shadow: var(--shadow);
+    }
+    .report-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+    .report-card-date {
+      font-weight: 700;
+      color: var(--gold-dark);
+    }
+    .report-card-text {
+      white-space: pre-wrap;
+      color: var(--text-primary);
+      margin: 10px 0;
+    }
+    .report-card-images {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+    .report-card-images img {
+      width: 90px;
+      height: 90px;
+      object-fit: cover;
+      border-radius: 10px;
+      cursor: pointer;
+      border: 1px solid var(--border-color);
+    }
+    .report-dropzone {
+      border: 2px dashed var(--border-color);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .report-dropzone.dragover {
+      border-color: var(--gold);
+      background: var(--gold-light, #e5c96e22);
+      color: var(--gold-dark);
+    }
+    .report-thumbs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+    .report-thumb {
+      position: relative;
+      width: 80px;
+      height: 80px;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+    }
+    .report-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .report-thumb .remove-thumb {
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      background: rgba(0,0,0,0.6);
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+      font-size: 12px;
+      line-height: 1;
+    }
+    .report-table-editor {
+      border-collapse: collapse;
+      width: 100%;
+      margin-top: 10px;
+    }
+    .report-table-editor td {
+      border: 1px solid var(--border-color);
+      padding: 8px;
+      min-width: 60px;
+      color: var(--text-primary);
+    }
+    .report-table-editor td[contenteditable] {
+      outline: none;
+    }
+    .report-table-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+      flex-wrap: wrap;
+    }
+    .report-table-actions button {
+      padding: 6px 10px;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-primary);
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-size: 0.8rem;
+    }
+    .lightbox-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+      cursor: zoom-out;
+    }
+    .lightbox-overlay img {
+      max-width: 90%;
+      max-height: 90%;
+      border-radius: 12px;
+    }
+
     /* Toast */
     .toast {
       position: fixed;
@@ -685,7 +831,8 @@
         left: 0;
         right: 0;
         background: var(--bg-secondary);
-        justify-content: space-around;
+        justify-content: flex-start;
+        overflow-x: auto;
         padding: 10px 8px;
         border-top: 1px solid var(--border-color);
         z-index: 50;
@@ -699,6 +846,8 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+        flex: 0 0 auto;
+        min-width: 64px;
         font-size: 0.7rem;
         cursor: pointer;
       }
@@ -716,9 +865,77 @@
         display: none;
       }
     }
+
+    /* ==================== AUTH OVERLAY ==================== */
+    .auth-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: linear-gradient(135deg, var(--graphite), var(--graphite-light));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .auth-box {
+      background: var(--bg-secondary);
+      border-radius: 24px;
+      padding: 36px 32px;
+      width: 100%;
+      max-width: 380px;
+      text-align: center;
+      box-shadow: 0 30px 60px rgba(0,0,0,0.35);
+      animation: slideUp 0.3s ease;
+    }
+    .auth-logo {
+      font-weight: 700;
+      font-size: 1.4rem;
+      background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .auth-sub {
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      margin: 6px 0 20px;
+    }
+    .auth-box input {
+      width: 100%;
+      padding: 14px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      font-size: 1rem;
+      text-align: center;
+      letter-spacing: 2px;
+    }
+    .auth-box input:focus {
+      outline: none;
+      border-color: var(--gold);
+    }
   </style>
 </head>
 <body>
+  <!-- AUTH GATE: hides the whole app until the correct password is entered -->
+  <div class="auth-overlay" id="authOverlay">
+    <div class="auth-box">
+      <div class="auth-logo">ХИСРАВ СОХТМОН</div>
+      <div class="auth-sub">Введите пароль для доступа</div>
+      <input type="password" id="authPasswordInput" inputmode="numeric" maxlength="10" placeholder="Пароль" autocomplete="off">
+      <button class="btn" id="authSubmitBtn" style="margin-top:14px;width:100%;">Войти</button>
+      <div id="authError" style="color:var(--red);font-size:0.85rem;margin-top:10px;min-height:18px;"></div>
+    </div>
+  </div>
+  <script>
+    // Runs immediately (before the rest of the page parses) so an already-authenticated
+    // session doesn't flash the lock screen on refresh.
+    if (sessionStorage.getItem('khisrav_auth') === '1') {
+      document.getElementById('authOverlay').style.display = 'none';
+    }
+  </script>
+
   <!-- SIDEBAR DESKTOP -->
   <aside class="sidebar" id="sidebar">
     <div class="logo-area">
@@ -741,6 +958,18 @@
       <button class="nav-item" data-page="sales">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg> Продажи
       </button>
+      <button class="nav-item" data-page="report-abdulloh">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> Отчёт Абдуллох
+      </button>
+      <button class="nav-item" data-page="report-firdavs">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> Отчёт Фирдавс
+      </button>
+      <button class="nav-item" data-page="report-faridun">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> Отчёт Фаридун
+      </button>
+      <button class="nav-item" data-page="report-hisrav">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> Отчёт Хисрав
+      </button>
     </nav>
     <div class="bottom-actions">
       <button class="btn secondary" id="exportBtn">📤 Экспорт</button>
@@ -759,10 +988,49 @@
     <button data-page="payments">💳<span>Платежи</span></button>
     <button data-page="clients">👥<span>Клиенты</span></button>
     <button data-page="sales">📊<span>Продажи</span></button>
+    <button data-page="report-abdulloh">📄<span>Абдуллох</span></button>
+    <button data-page="report-firdavs">📄<span>Фирдавс</span></button>
+    <button data-page="report-faridun">📄<span>Фаридун</span></button>
+    <button data-page="report-hisrav">📄<span>Хисрав</span></button>
   </div>
 
   <script>
     (function() {
+      // ==================== AUTH GATE ====================
+      // Hardcoded password by design (per request) — this is a basic access gate,
+      // not real security (the password is visible in page source).
+      const AUTH_PASSWORD = '9712208000';
+      const AUTH_KEY = 'khisrav_auth';
+
+      function initAuthGate() {
+        const overlay = document.getElementById('authOverlay');
+        const input = document.getElementById('authPasswordInput');
+        const errorEl = document.getElementById('authError');
+        const submitBtn = document.getElementById('authSubmitBtn');
+
+        if (sessionStorage.getItem(AUTH_KEY) === '1') {
+          overlay.style.display = 'none';
+          return;
+        }
+
+        function tryLogin() {
+          if (input.value === AUTH_PASSWORD) {
+            sessionStorage.setItem(AUTH_KEY, '1');
+            overlay.style.display = 'none';
+            errorEl.textContent = '';
+          } else {
+            errorEl.textContent = '❌ Неверный пароль';
+            input.value = '';
+            input.focus();
+          }
+        }
+
+        submitBtn.addEventListener('click', tryLogin);
+        input.addEventListener('keydown', e => { if (e.key === 'Enter') tryLogin(); });
+        input.focus();
+      }
+      initAuthGate();
+
       // ==================== FIREBASE CONFIGURATION ====================
    const firebaseConfig = {
   apiKey: "AIzaSyCO93lwu3eW46nxJJM3BhG2qkMobp89CYE",
@@ -1070,6 +1338,10 @@
             case 'payments': renderPaymentsPage(container); break;
             case 'clients': renderClientsPage(container); break;
             case 'sales': renderSalesPage(container); break;
+            case 'report-abdulloh': renderReportPage(container, 'abdulloh'); break;
+            case 'report-firdavs': renderReportPage(container, 'firdavs'); break;
+            case 'report-faridun': renderReportPage(container, 'faridun'); break;
+            case 'report-hisrav': renderReportPage(container, 'hisrav'); break;
             default: renderDashboard(container);
           }
           container.style.opacity = '1';
@@ -1451,6 +1723,34 @@
         modal.onclick = e => { if (e.target === modal) modal.remove(); };
       };
 
+      // ==================== INSTALLMENT PLAN ====================
+      // Fixed schedule rules: anchor start = August 2025, down payment = 30% of price,
+      // term length depends on the block (house).
+      const BLOCK_INSTALLMENT_YEARS = { 'block-a': 3, 'block-b': 2, 'block-v': 1 };
+      const INSTALLMENT_START_DATE = '2025-08-01';
+
+      function buildInstallmentPlan(apt) {
+        const years = BLOCK_INSTALLMENT_YEARS[apt.houseId] || 1;
+        const termMonths = years * 12;
+        const initialPayment = Math.round(apt.price * 0.3);
+        const financedAmount = apt.price - initialPayment;
+        const baseMonthly = Math.floor(financedAmount / termMonths);
+        const remainder = financedAmount - baseMonthly * termMonths;
+        const startDate = new Date(INSTALLMENT_START_DATE + 'T00:00:00');
+        const today = new Date();
+        const payments = [];
+        for (let i = 0; i < termMonths; i++) {
+          const d = new Date(startDate);
+          d.setMonth(d.getMonth() + i);
+          payments.push({
+            dateStr: d.toISOString().split('T')[0],
+            amount: baseMonthly + (i === termMonths - 1 ? remainder : 0),
+            isPast: d < today
+          });
+        }
+        return { years, termMonths, initialPayment, monthlyPayment: baseMonthly, startDate: INSTALLMENT_START_DATE, payments };
+      }
+
       window.sellApartment = function(aptId) {
         const apt = getApt(aptId);
         const modal = document.createElement('div');
@@ -1467,20 +1767,29 @@
                 <option value="full">Полная оплата</option>
                 <option value="installment">Рассрочка</option>
               </select>
-              <div id="installDetails" style="display:none;grid;gap:12px;">
-                <input id="initialPay" placeholder="Первоначальный взнос" type="number" style="width:100%;padding:12px;border-radius:12px;border:1px solid var(--border-color);background:var(--bg-primary);color:var(--text-primary);">
-                <input id="months" placeholder="Срок (мес)" type="number" style="width:100%;padding:12px;border-radius:12px;border:1px solid var(--border-color);background:var(--bg-primary);color:var(--text-primary);">
-              </div>
+              <div id="installDetails" style="display:none; background: var(--bg-primary); border-radius: 12px; padding: 14px; font-size: 0.9rem; color: var(--text-secondary);"></div>
               <button class="btn" id="confirmSale" style="margin-top:8px;">Подтвердить продажу</button>
             </div>
           </div>
         `;
         document.body.appendChild(modal);
-        
+
+        const installDetailsEl = modal.querySelector('#installDetails');
+        function renderInstallDetails() {
+          const plan = buildInstallmentPlan(apt);
+          installDetailsEl.innerHTML = `
+            <div>📅 Период: ${plan.startDate} — ${plan.payments[plan.payments.length - 1].dateStr} (${plan.years} г.)</div>
+            <div>💰 Первый взнос (30%): <strong>${formatMoney(plan.initialPayment)}</strong></div>
+            <div>📆 Ежемесячный платёж: <strong>${formatMoney(plan.monthlyPayment)}</strong></div>
+          `;
+        }
+
         document.getElementById('payType').onchange = function() {
-          document.getElementById('installDetails').style.display = this.value === 'installment' ? 'grid' : 'none';
+          const isInstallment = this.value === 'installment';
+          installDetailsEl.style.display = isInstallment ? 'block' : 'none';
+          if (isInstallment) renderInstallDetails();
         };
-        
+
         document.getElementById('confirmSale').onclick = () => {
           const name = document.getElementById('clientName').value.trim();
           const phone = document.getElementById('clientPhone').value.trim();
@@ -1499,27 +1808,25 @@
             apt.status = 'sold';
             apt.installment = null;
           } else {
-            const init = parseInt(document.getElementById('initialPay').value) || 0;
-            const months = parseInt(document.getElementById('months').value) || 12;
+            const plan = buildInstallmentPlan(apt);
             apt.status = 'installment';
-            apt.installment = { 
-              months, 
-              startDate: new Date().toISOString().split('T')[0], 
-              initialPayment: init, 
-              monthlyPayment: Math.round((apt.price - init) / months) 
+            apt.installment = {
+              months: plan.termMonths,
+              termYears: plan.years,
+              startDate: plan.startDate,
+              initialPayment: plan.initialPayment,
+              monthlyPayment: plan.monthlyPayment
             };
-            for (let i = 0; i < months; i++) {
-              const d = new Date();
-              d.setMonth(d.getMonth() + i);
-              state.payments.push({ 
-                id: 'p' + Date.now() + i, 
-                apartmentId: apt.id, 
-                clientId: client.id, 
-                date: d.toISOString().split('T')[0], 
-                amount: apt.installment.monthlyPayment, 
-                status: 'pending' 
+            plan.payments.forEach((pp, i) => {
+              state.payments.push({
+                id: 'p' + Date.now() + '_' + i,
+                apartmentId: apt.id,
+                clientId: client.id,
+                date: pp.dateStr,
+                amount: pp.amount,
+                status: pp.isPast ? 'overdue' : 'pending'
               });
-            }
+            });
           }
           syncToFirebase();
           modal.remove();
@@ -1537,28 +1844,53 @@
             <span style="float:right;cursor:pointer;font-size:1.5rem;color: var(--text-secondary);" onclick="this.closest('.modal').remove()">&times;</span>
             <h3 style="color: var(--gold-dark);">График платежей</h3>
             <table class="table-mini" style="margin-top: 20px;">
-              <tr><th>№</th><th>Дата</th><th>Сумма</th><th>Статус</th><th></th></tr>
+              <tr><th>№</th><th>Дата</th><th>Сумма</th><th>Статус</th></tr>
               ${payments.map((p, idx) => `
                 <tr>
                   <td>${idx + 1}</td>
                   <td>${formatDate(p.date)}</td>
-                  <td>${formatMoney(p.amount)}</td>
-                  <td>${
-                    p.status === 'paid' ? '<span style="color: var(--emerald);">✅ Оплачен</span>' : 
-                    p.status === 'overdue' ? '<span style="color: var(--red);">🔴 Просрочен</span>' : 
-                    '<span style="color: var(--yellow);">Ожидает</span>'
-                  }</td>
-                  <td>${
-                    p.status !== 'paid' ? 
-                    `<button class="btn" style="padding:6px 12px;font-size:0.8rem;" onclick="window.markPaid('${p.id}')">Оплатить</button>` : 
-                    ''
-                  }</td>
+                  <td>
+                    <input type="number" value="${p.amount}" onchange="window.updatePaymentAmount('${p.id}', this.value)"
+                      style="width:110px;padding:6px 8px;border-radius:8px;border:1px solid var(--border-color);background:var(--bg-primary);color:var(--text-primary);">
+                  </td>
+                  <td>
+                    <select onchange="window.updatePaymentStatus('${p.id}', this.value)"
+                      style="padding:6px 8px;border-radius:8px;border:1px solid var(--border-color);background:var(--bg-primary);color:var(--text-primary);">
+                      <option value="pending" ${(p.status === 'pending' || p.status === 'overdue') ? 'selected' : ''}>${p.status === 'overdue' ? '🔴 Не оплачено (просрочено)' : 'Не оплачено'}</option>
+                      <option value="partial" ${p.status === 'partial' ? 'selected' : ''}>🟡 Частично</option>
+                      <option value="paid" ${p.status === 'paid' ? 'selected' : ''}>✅ Оплачено</option>
+                    </select>
+                  </td>
                 </tr>
               `).join('')}
             </table>
           </div>
         `;
         document.body.appendChild(modal);
+      };
+
+      window.updatePaymentAmount = function(paymentId, value) {
+        const p = state.payments.find(p => p.id === paymentId);
+        if (!p) return;
+        const amount = parseFloat(value);
+        if (isNaN(amount) || amount < 0) return;
+        p.amount = amount;
+        syncToFirebase();
+        toast('✅ Сумма обновлена');
+      };
+
+      window.updatePaymentStatus = function(paymentId, value) {
+        const p = state.payments.find(p => p.id === paymentId);
+        if (!p) return;
+        if (value === 'pending') {
+          p.status = (new Date(p.date) < new Date()) ? 'overdue' : 'pending';
+        } else {
+          p.status = value;
+          if (value === 'paid') p.paidDate = new Date().toISOString().split('T')[0];
+        }
+        syncToFirebase();
+        render();
+        toast('✅ Статус обновлён');
       };
 
       window.markPaid = function(paymentId) {
@@ -1902,6 +2234,355 @@
           </div>
         `;
       }
+
+      // ==================== REPORTS (Отчёты) ====================
+      // Independent from apartments/houses/clients: stored in its own Firestore
+      // collection 'reports', each doc = { authorSlug, authorName, year, month, day,
+      // dateStr, text, table (2D array), images (up to 3 base64 strings), createdAt }.
+      // We only filter by authorSlug in the Firestore query (single equality filter,
+      // no composite index required) and do sorting/date-filtering/pagination on the
+      // client, since report volume per author is small.
+      const REPORT_AUTHORS = {
+        abdulloh: 'Абдуллох',
+        firdavs: 'Фирдавс',
+        faridun: 'Фаридун',
+        hisrav: 'Хисрав'
+      };
+
+      const reportsState = {}; // slug -> { all: [], filtered: [], visibleCount, loaded }
+      const PAGE_SIZE = 10;
+
+      function getReportState(slug) {
+        if (!reportsState[slug]) {
+          reportsState[slug] = { all: [], filtered: [], visibleCount: PAGE_SIZE, loaded: false };
+        }
+        return reportsState[slug];
+      }
+
+      async function loadReports(slug) {
+        const rs = getReportState(slug);
+        try {
+          const snapshot = await db.collection('reports').where('authorSlug', '==', slug).get();
+          const docs = [];
+          snapshot.forEach(doc => docs.push(doc.data()));
+          docs.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+          rs.all = docs;
+          rs.loaded = true;
+        } catch (error) {
+          console.error('loadReports error:', error);
+          toast('⚠️ Ошибка загрузки отчётов');
+        }
+      }
+
+      function applyReportFilters(slug) {
+        const rs = getReportState(slug);
+        const year = document.getElementById('filterYear')?.value || '';
+        const month = document.getElementById('filterMonth')?.value || '';
+        const day = document.getElementById('filterDay')?.value || '';
+        rs.filtered = rs.all.filter(r => {
+          if (year && String(r.year) !== year) return false;
+          if (month && String(r.month) !== month) return false;
+          if (day && String(r.day) !== day) return false;
+          return true;
+        });
+        rs.visibleCount = PAGE_SIZE;
+        renderReportsList(slug);
+      }
+      window.applyReportFilters = applyReportFilters;
+
+      window.showOlderReports = function(slug) {
+        const rs = getReportState(slug);
+        rs.visibleCount += PAGE_SIZE;
+        renderReportsList(slug);
+      };
+
+      function reportFilterOptions() {
+        const now = new Date();
+        const years = [];
+        for (let y = now.getFullYear() - 2; y <= now.getFullYear() + 1; y++) years.push(y);
+        return { now, years };
+      }
+
+      async function renderReportPage(container, slug) {
+        const authorName = REPORT_AUTHORS[slug];
+        const rs = getReportState(slug);
+        const { now, years } = reportFilterOptions();
+
+        container.innerHTML = `
+          <h2>Отчёт ${authorName}</h2>
+          <div class="report-filters">
+            <select id="filterYear" onchange="window.applyReportFilters('${slug}')">
+              <option value="">Год: все</option>
+              ${years.map(y => `<option value="${y}" ${y === now.getFullYear() ? 'selected' : ''}>${y}</option>`).join('')}
+            </select>
+            <select id="filterMonth" onchange="window.applyReportFilters('${slug}')">
+              <option value="">Месяц: все</option>
+              ${Array.from({ length: 12 }, (_, i) => i + 1).map(m => `<option value="${m}" ${m === now.getMonth() + 1 ? 'selected' : ''}>${String(m).padStart(2, '0')}</option>`).join('')}
+            </select>
+            <select id="filterDay" onchange="window.applyReportFilters('${slug}')">
+              <option value="">День: все</option>
+              ${Array.from({ length: 31 }, (_, i) => i + 1).map(d => `<option value="${d}" ${d === now.getDate() ? 'selected' : ''}>${String(d).padStart(2, '0')}</option>`).join('')}
+            </select>
+            <button class="btn" onclick="window.openReportModal('${slug}')">+ Добавить отчёт</button>
+          </div>
+          <div id="reportsList">Загрузка...</div>
+        `;
+
+        if (!rs.loaded) await loadReports(slug);
+        applyReportFilters(slug);
+      }
+      window.renderReportPage = renderReportPage;
+
+      function renderReportsList(slug) {
+        const rs = getReportState(slug);
+        const list = document.getElementById('reportsList');
+        if (!list) return;
+
+        if (rs.filtered.length === 0) {
+          list.innerHTML = `<div style="color: var(--text-muted); padding: 20px 0;">Отчётов не найдено.</div>`;
+          return;
+        }
+
+        const visible = rs.filtered.slice(0, rs.visibleCount);
+        list.innerHTML = visible.map(r => reportCardHTML(slug, r)).join('') +
+          (rs.filtered.length > rs.visibleCount
+            ? `<button class="btn secondary" onclick="window.showOlderReports('${slug}')">Показать старые</button>`
+            : '');
+      }
+
+      function reportCardHTML(slug, r) {
+        const tableHTML = (r.table && r.table.length)
+          ? `<table class="table-mini"><tbody>${r.table.map(row => `<tr>${row.map(cell => `<td>${cell || ''}</td>`).join('')}</tr>`).join('')}</tbody></table>`
+          : '';
+        const imagesHTML = (r.images && r.images.length)
+          ? `<div class="report-card-images">${r.images.map(src => `<img src="${src}" onclick="window.openLightbox('${src}')">`).join('')}</div>`
+          : '';
+
+        return `
+          <div class="report-card">
+            <div class="report-card-header">
+              <span class="report-card-date">${r.dateStr}</span>
+              <div style="display:flex; gap:8px;">
+                <button class="btn secondary" onclick="window.openReportModal('${slug}', '${r.id}')">✏️ Редактировать</button>
+                <button class="btn secondary" onclick="window.deleteReport('${slug}', '${r.id}')">🗑️ Удалить</button>
+              </div>
+            </div>
+            ${r.text ? `<div class="report-card-text">${r.text}</div>` : ''}
+            ${tableHTML}
+            ${imagesHTML}
+          </div>
+        `;
+      }
+
+      window.deleteReport = async function(slug, reportId) {
+        if (!confirm('Удалить этот отчёт?')) return;
+        try {
+          await db.collection('reports').doc(reportId).delete();
+          const rs = getReportState(slug);
+          rs.all = rs.all.filter(r => r.id !== reportId);
+          applyReportFilters(slug);
+          toast('🗑️ Отчёт удалён');
+        } catch (error) {
+          console.error('deleteReport error:', error);
+          toast('⚠️ Ошибка удаления');
+        }
+      };
+
+      // ---- Add/Edit report modal ----
+      let editingTable = [['', '', ''], ['', '', '']];
+      let editingImages = [];
+
+      function syncTableFromDOM() {
+        const rows = document.querySelectorAll('#tableEditorWrap tr');
+        if (!rows.length) return;
+        editingTable = Array.from(rows).map(tr => Array.from(tr.querySelectorAll('td')).map(td => td.textContent));
+      }
+
+      function renderTableEditor() {
+        const wrap = document.getElementById('tableEditorWrap');
+        if (!wrap) return;
+        wrap.innerHTML = `
+          <table class="report-table-editor"><tbody>
+            ${editingTable.map(row => `<tr>${row.map(cell => `<td contenteditable="true">${cell || ''}</td>`).join('')}</tr>`).join('')}
+          </tbody></table>
+        `;
+      }
+
+      window.reportTableAddRow = function() {
+        syncTableFromDOM();
+        editingTable.push(new Array(editingTable[0]?.length || 3).fill(''));
+        renderTableEditor();
+      };
+      window.reportTableAddCol = function() {
+        syncTableFromDOM();
+        editingTable.forEach(row => row.push(''));
+        renderTableEditor();
+      };
+      window.reportTableRemoveRow = function() {
+        syncTableFromDOM();
+        if (editingTable.length > 1) editingTable.pop();
+        renderTableEditor();
+      };
+      window.reportTableRemoveCol = function() {
+        syncTableFromDOM();
+        if (editingTable[0].length > 1) editingTable.forEach(row => row.pop());
+        renderTableEditor();
+      };
+
+      function resizeImageFile(file, maxWidth = 800, quality = 0.6) {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => {
+            const img = new Image();
+            img.onload = () => {
+              const scale = Math.min(1, maxWidth / img.width);
+              const canvas = document.createElement('canvas');
+              canvas.width = img.width * scale;
+              canvas.height = img.height * scale;
+              const ctx = canvas.getContext('2d');
+              ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+              resolve(canvas.toDataURL('image/jpeg', quality));
+            };
+            img.onerror = reject;
+            img.src = reader.result;
+          };
+          reader.onerror = reject;
+          reader.readAsDataURL(file);
+        });
+      }
+
+      function renderImageThumbs() {
+        const wrap = document.getElementById('reportThumbs');
+        if (!wrap) return;
+        wrap.innerHTML = editingImages.map((src, i) => `
+          <div class="report-thumb">
+            <img src="${src}" onclick="window.openLightbox('${src}')">
+            <button class="remove-thumb" onclick="window.removeReportImage(${i})">&times;</button>
+          </div>
+        `).join('');
+      }
+
+      window.removeReportImage = function(i) {
+        editingImages.splice(i, 1);
+        renderImageThumbs();
+      };
+
+      async function handleReportFiles(fileList) {
+        const files = Array.from(fileList).filter(f => f.type.startsWith('image/'));
+        const remaining = 3 - editingImages.length;
+        if (remaining <= 0) {
+          toast('⚠️ Максимум 3 изображения');
+          return;
+        }
+        for (const file of files.slice(0, remaining)) {
+          try {
+            const dataUrl = await resizeImageFile(file);
+            editingImages.push(dataUrl);
+          } catch (error) {
+            console.error('resizeImageFile error:', error);
+          }
+        }
+        renderImageThumbs();
+      }
+
+      window.openLightbox = function(src) {
+        const overlay = document.createElement('div');
+        overlay.className = 'lightbox-overlay';
+        overlay.innerHTML = `<img src="${src}">`;
+        overlay.onclick = () => overlay.remove();
+        document.body.appendChild(overlay);
+      };
+
+      window.openReportModal = function(slug, reportId = null) {
+        const rs = getReportState(slug);
+        const existing = reportId ? rs.all.find(r => r.id === reportId) : null;
+
+        editingTable = existing ? JSON.parse(JSON.stringify(existing.table || [['', '', '']])) : [['', '', ''], ['', '', '']];
+        editingImages = existing ? [...(existing.images || [])] : [];
+
+        const todayStr = new Date().toISOString().split('T')[0];
+        const dateValue = existing ? existing.dateStr : todayStr;
+
+        const modal = document.createElement('div');
+        modal.className = 'modal';
+        modal.innerHTML = `
+          <div class="modal-content">
+            <span style="float:right;cursor:pointer;font-size:1.5rem;color: var(--text-secondary);" onclick="this.closest('.modal').remove()">&times;</span>
+            <h3 style="color: var(--gold-dark);">${existing ? 'Редактировать отчёт' : 'Добавить отчёт'} — ${REPORT_AUTHORS[slug]}</h3>
+            <div style="margin-top: 20px; display: grid; gap: 12px;">
+              <input id="reportDate" type="date" value="${dateValue}" style="width:100%;padding:12px;border-radius:12px;border:1px solid var(--border-color);background:var(--bg-primary);color:var(--text-primary);">
+              <textarea id="reportText" placeholder="Комментарий / описание" rows="4" style="width:100%;padding:12px;border-radius:12px;border:1px solid var(--border-color);background:var(--bg-primary);color:var(--text-primary);">${existing?.text || ''}</textarea>
+
+              <div>
+                <div id="tableEditorWrap"></div>
+                <div class="report-table-actions">
+                  <button onclick="window.reportTableAddRow()">+ Строка</button>
+                  <button onclick="window.reportTableAddCol()">+ Столбец</button>
+                  <button onclick="window.reportTableRemoveRow()">- Строка</button>
+                  <button onclick="window.reportTableRemoveCol()">- Столбец</button>
+                </div>
+              </div>
+
+              <div>
+                <div class="report-dropzone" id="reportDropzone">📷 Перетащите до 3 изображений или нажмите, чтобы выбрать</div>
+                <input type="file" id="reportFileInput" accept="image/*" multiple style="display:none;">
+                <div class="report-thumbs" id="reportThumbs"></div>
+              </div>
+
+              <button class="btn" id="saveReport" style="margin-top:8px;">Сохранить</button>
+            </div>
+          </div>
+        `;
+        document.body.appendChild(modal);
+
+        renderTableEditor();
+        renderImageThumbs();
+
+        const dropzone = document.getElementById('reportDropzone');
+        const fileInput = document.getElementById('reportFileInput');
+        dropzone.onclick = () => fileInput.click();
+        fileInput.onchange = e => handleReportFiles(e.target.files);
+        dropzone.ondragover = e => { e.preventDefault(); dropzone.classList.add('dragover'); };
+        dropzone.ondragleave = () => dropzone.classList.remove('dragover');
+        dropzone.ondrop = e => {
+          e.preventDefault();
+          dropzone.classList.remove('dragover');
+          handleReportFiles(e.dataTransfer.files);
+        };
+
+        document.getElementById('saveReport').onclick = async () => {
+          syncTableFromDOM();
+          const dateStr = document.getElementById('reportDate').value || todayStr;
+          const [year, month, day] = dateStr.split('-').map(Number);
+          const text = document.getElementById('reportText').value;
+
+          const report = {
+            id: existing ? existing.id : `rep_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
+            authorSlug: slug,
+            authorName: REPORT_AUTHORS[slug],
+            year, month, day, dateStr,
+            text,
+            table: editingTable,
+            images: editingImages,
+            createdAt: existing ? existing.createdAt : Date.now()
+          };
+
+          try {
+            await db.collection('reports').doc(report.id).set(report);
+            if (existing) {
+              Object.assign(existing, report);
+            } else {
+              rs.all.unshift(report);
+            }
+            modal.remove();
+            applyReportFilters(slug);
+            toast('✅ Отчёт сохранён');
+          } catch (error) {
+            console.error('saveReport error:', error);
+            toast('⚠️ Ошибка сохранения отчёта');
+          }
+        };
+      };
 
       // -------------------- EXPORT/IMPORT --------------------
       document.getElementById('exportBtn').addEventListener('click', () => {
