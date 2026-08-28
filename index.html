@@ -764,14 +764,14 @@
   <script>
     (function() {
       // ==================== FIREBASE CONFIGURATION ====================
-      const firebaseConfig = {
-        apiKey: "AIzaSyC4fHjSG1gJSlw6w4Y83Ri6vaVGDt5Qkjw",
-        authDomain: "control-dom.firebaseapp.com",
-        projectId: "control-dom",
-        storageBucket: "control-dom.firebasestorage.app",
-        messagingSenderId: "866241459561",
-        appId: "1:866241459561:web:afaa9965846d6e351af9f8"
-      };
+   const firebaseConfig = {
+  apiKey: "AIzaSyCO93lwu3eW46nxJJM3BhG2qkMobp89CYE",
+  authDomain: "control-dom-509c9.firebaseapp.com",
+  projectId: "control-dom-509c9",
+  storageBucket: "control-dom-509c9.firebasestorage.app",
+  messagingSenderId: "63569681012",
+  appId: "1:63569681012:web:cfc3de1fd5efd942a28f21"
+};
 
       // Initialize Firebase
       firebase.initializeApp(firebaseConfig);
@@ -895,21 +895,19 @@
 
       // ==================== DEMO DATA (FULL STRUCTURE) ====================
       function initDemoData() {
-        state = { houses: [], apartments: [], clients: [], payments: [] };
-        
         const blocks = [
-   // name house//
+          { id: 'block-a', name: 'Блок А', address: 'ул. Камоли Хукандий', floors: 10, status: 'не начали' },
+          { id: 'block-b', name: 'Блок Б', address: 'ул. Камоли Хукандий', floors: 10, status: 'Строится' },
+          { id: 'block-v', name: 'Блок В', address: 'ул. Камоли Хукандий', floors: 10, status: 'Почти готов' }
         ];
 
         state.houses = blocks;
 
         const apts = [];
-        const clientsArr = [];
-        const paymentsArr = [];
         let aptCounter = 0;
 
         blocks.forEach(block => {
-          // Basement (подвал) - 5 помещений
+          // ===== ПОДВАЛ (5 квартир) =====
           for (let i = 1; i <= 5; i++) {
             aptCounter++;
             apts.push({
@@ -919,27 +917,27 @@
               floor: 0,
               number: `П${String(i).padStart(2, '0')}`,
               rooms: 0,
-              area: 30 + Math.floor(Math.random() * 20),
-              price: 15000 + Math.floor(Math.random() * 10000),
+              area: 35 + Math.floor(Math.random() * 15),
+              price: 18000 + Math.floor(Math.random() * 8000),
               status: 'available',
               clientId: null,
               installment: null
             });
           }
 
-          // Commercial floors (1-2 этажи) - 8 помещений на этаж
-          for (let floor = 1; floor <= 2; floor++) {
-            for (let room = 1; room <= 8; room++) {
+          // ===== ЭТАЖИ 1–9 (по 8 квартир) =====
+          for (let floor = 1; floor <= 9; floor++) {
+            for (let i = 1; i <= 8; i++) {
               aptCounter++;
               apts.push({
                 id: `apt-${aptCounter}`,
                 houseId: block.id,
-                type: 'commercial',
-                floor,
-                number: `${floor}${String(room).padStart(2, '0')}`,
-                rooms: 1,
-                area: 60 + Math.floor(Math.random() * 40),
-                price: 120000 + Math.floor(Math.random() * 50000),
+                type: floor <= 2 ? 'commercial' : 'residential',
+                floor: floor,
+                number: `${floor}${String(i).padStart(2, '0')}`,
+                rooms: floor <= 2 ? 0 : 1 + Math.floor(Math.random() * 3),
+                area: floor <= 2 ? 45 + Math.floor(Math.random() * 25) : 55 + Math.floor(Math.random() * 35),
+                price: floor <= 2 ? 28000 + Math.floor(Math.random() * 12000) : 40000 + Math.floor(Math.random() * 25000),
                 status: 'available',
                 clientId: null,
                 installment: null
@@ -947,39 +945,18 @@
             }
           }
 
-          // Residential floors (3-9 этажи) - 8 квартир на этаж
-          for (let floor = 3; floor <= 9; floor++) {
-            for (let room = 1; room <= 8; room++) {
-              aptCounter++;
-              const rooms = (room % 3) + 1;
-              apts.push({
-                id: `apt-${aptCounter}`,
-                houseId: block.id,
-                type: 'residential',
-                floor,
-                number: `${floor}${String(room).padStart(2, '0')}`,
-                rooms,
-                area: 45 + rooms * 15 + Math.floor(Math.random() * 20),
-                price: (45 + rooms * 15) * 4200,
-                status: 'available',
-                clientId: null,
-                installment: null
-              });
-            }
-          }
-
-          // Penthouse (10 этаж) - 5 квартир
-          for (let room = 1; room <= 5; room++) {
+          // ===== ПЕНТХАУС (10 этаж — 5 квартир) =====
+          for (let i = 1; i <= 5; i++) {
             aptCounter++;
             apts.push({
               id: `apt-${aptCounter}`,
               houseId: block.id,
               type: 'penthouse',
               floor: 10,
-              number: `10${String(room).padStart(2, '0')}`,
-              rooms: 3 + room % 2,
-              area: 120 + Math.floor(Math.random() * 60),
-              price: 500000 + Math.floor(Math.random() * 300000),
+              number: `10${String(i).padStart(2, '0')}`,
+              rooms: 3 + Math.floor(Math.random() * 2),
+              area: 95 + Math.floor(Math.random() * 40),
+              price: 85000 + Math.floor(Math.random() * 40000),
               status: 'available',
               clientId: null,
               installment: null
@@ -987,58 +964,40 @@
           }
         });
 
-        // Demo clients
-// name clients//
-        clientsArr.push(c1, c2, c3, c4);
-
-        // Set some demo sales
-        if (apts[0]) { apts[0].status = 'sold'; apts[0].clientId = c1.id; }
-        if (apts[10]) { apts[10].status = 'sold'; apts[10].clientId = c4.id; }
-        
-        if (apts[15]) {
-          apts[15].status = 'installment';
-          apts[15].clientId = c2.id;
-          apts[15].installment = { months: 12, startDate: '2024-01-15', initialPayment: 80000, monthlyPayment: 15000 };
-          for (let i = 0; i < 12; i++) {
-            const payDate = new Date('2024-01-15');
-            payDate.setMonth(payDate.getMonth() + i);
-            const isPaid = i < 8;
-            paymentsArr.push({
-              id: `p1_${i}`,
-              apartmentId: apts[15].id,
-              clientId: c2.id,
-              date: payDate.toISOString().split('T')[0],
-              amount: 15000,
-              status: isPaid ? 'paid' : (payDate < new Date() ? 'overdue' : 'pending'),
-              paidDate: isPaid ? payDate.toISOString().split('T')[0] : null
-            });
-          }
-        }
-
-        if (apts[20]) {
-          apts[20].status = 'installment';
-          apts[20].clientId = c3.id;
-          apts[20].installment = { months: 24, startDate: '2024-03-01', initialPayment: 100000, monthlyPayment: 20000 };
-          for (let i = 0; i < 24; i++) {
-            const payDate = new Date('2024-03-01');
-            payDate.setMonth(payDate.getMonth() + i);
-            const isPaid = i < 5;
-            paymentsArr.push({
-              id: `p2_${i}`,
-              apartmentId: apts[20].id,
-              clientId: c3.id,
-              date: payDate.toISOString().split('T')[0],
-              amount: 20000,
-              status: isPaid ? 'paid' : (payDate < new Date() ? 'overdue' : 'pending'),
-              paidDate: isPaid ? payDate.toISOString().split('T')[0] : null
-            });
-          }
-        }
-
         state.apartments = apts;
-        state.clients = clientsArr;
-        state.payments = paymentsArr;
+        state.clients = [];
+        state.payments = [];
+
+        console.log(`Сгенерировано: ${blocks.length} блоков, ${apts.length} квартир`);
+        return { houses: blocks, apartments: apts };
       }
+
+      // ==================== RESTORE TO FIREBASE ====================
+      async function restoreAllData() {
+        const { houses, apartments } = initDemoData();
+
+        let batch = db.batch();
+        houses.forEach(house => {
+          const ref = db.collection('houses').doc(house.id);
+          batch.set(ref, house);
+        });
+        await batch.commit();
+        console.log('Дома записаны');
+
+        for (let i = 0; i < apartments.length; i += 400) {
+          batch = db.batch();
+          const chunk = apartments.slice(i, i + 400);
+          chunk.forEach(apt => {
+            const ref = db.collection('apartments').doc(apt.id);
+            batch.set(ref, apt);
+          });
+          await batch.commit();
+          console.log(`Записано квартир: ${Math.min(i + 400, apartments.length)} / ${apartments.length}`);
+        }
+
+        console.log(`=== ГОТОВО: ${houses.length} блока + ${apartments.length} квартир записаны в Firebase ===`);
+      }
+      window.restoreAllData = restoreAllData;
 
       // ==================== HELPERS ====================
       const getHouse = id => state.houses.find(h => h.id === id);
