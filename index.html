@@ -614,6 +614,40 @@
       background: #f8fafc;
     }
 
+    /* Status dots for payment table */
+    .status-dot-gray {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #6b7280;
+      display: inline-block;
+      margin-right: 5px;
+    }
+    .status-dot-red {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #ef4444;
+      display: inline-block;
+      margin-right: 5px;
+    }
+    .status-dot-orange {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #f59e0b;
+      display: inline-block;
+      margin-right: 5px;
+    }
+    .status-dot-green {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #10b981;
+      display: inline-block;
+      margin-right: 5px;
+    }
+
     /* ==================== REPORTS ==================== */
     .report-filters {
       display: flex;
@@ -918,7 +952,7 @@
   </style>
 </head>
 <body>
-  <!-- AUTH GATE: hides the whole app until the correct password is entered -->
+  <!-- AUTH GATE -->
   <div class="auth-overlay" id="authOverlay">
     <div class="auth-box">
       <div class="auth-logo">ХИСРАВ СОХТМОН</div>
@@ -929,8 +963,6 @@
     </div>
   </div>
   <script>
-    // Runs immediately (before the rest of the page parses) so an already-authenticated
-    // session doesn't flash the lock screen on refresh.
     if (sessionStorage.getItem('khisrav_auth') === '1') {
       document.getElementById('authOverlay').style.display = 'none';
     }
@@ -997,8 +1029,6 @@
   <script>
     (function() {
       // ==================== AUTH GATE ====================
-      // Hardcoded password by design (per request) — this is a basic access gate,
-      // not real security (the password is visible in page source).
       const AUTH_PASSWORD = '9712208000';
       const AUTH_KEY = 'khisrav_auth';
 
@@ -1032,14 +1062,14 @@
       initAuthGate();
 
       // ==================== FIREBASE CONFIGURATION ====================
-   const firebaseConfig = {
-  apiKey: "AIzaSyCO93lwu3eW46nxJJM3BhG2qkMobp89CYE",
-  authDomain: "control-dom-509c9.firebaseapp.com",
-  projectId: "control-dom-509c9",
-  storageBucket: "control-dom-509c9.firebasestorage.app",
-  messagingSenderId: "63569681012",
-  appId: "1:63569681012:web:cfc3de1fd5efd942a28f21"
-};
+      const firebaseConfig = {
+        apiKey: "AIzaSyCO93lwu3eW46nxJJM3BhG2qkMobp89CYE",
+        authDomain: "control-dom-509c9.firebaseapp.com",
+        projectId: "control-dom-509c9",
+        storageBucket: "control-dom-509c9.firebasestorage.app",
+        messagingSenderId: "63569681012",
+        appId: "1:63569681012:web:cfc3de1fd5efd942a28f21"
+      };
 
       // Initialize Firebase
       firebase.initializeApp(firebaseConfig);
@@ -1175,7 +1205,7 @@
         let aptCounter = 0;
 
         blocks.forEach(block => {
-          // ===== ПОДВАЛ (5 квартир) =====
+          // ПОДВАЛ (5 квартир)
           for (let i = 1; i <= 5; i++) {
             aptCounter++;
             apts.push({
@@ -1193,7 +1223,7 @@
             });
           }
 
-          // ===== ЭТАЖИ 1–9 (по 8 квартир) =====
+          // ЭТАЖИ 1–9 (по 8 квартир)
           for (let floor = 1; floor <= 9; floor++) {
             for (let i = 1; i <= 8; i++) {
               aptCounter++;
@@ -1213,7 +1243,7 @@
             }
           }
 
-          // ===== ПЕНТХАУС (10 этаж — 5 квартир) =====
+          // ПЕНТХАУС (10 этаж — 5 квартир)
           for (let i = 1; i <= 5; i++) {
             aptCounter++;
             apts.push({
@@ -1724,9 +1754,9 @@
       };
 
       // ==================== INSTALLMENT PLAN ====================
-      // Fixed schedule rules: anchor start = August 2025, down payment = 30% of price,
-      // term length depends on the block (house).
-      const BLOCK_INSTALLMENT_YEARS = { 'block-a': 3, 'block-b': 2, 'block-v': 1 };
+      // Block A = 3 years (36 months), Block B = 3 years (36 months), Block V = 1 year (12 months)
+      // Start date: August 2025
+      const BLOCK_INSTALLMENT_YEARS = { 'block-a': 3, 'block-b': 3, 'block-v': 1 };
       const INSTALLMENT_START_DATE = '2025-08-01';
 
       function buildInstallmentPlan(apt) {
@@ -1739,16 +1769,35 @@
         const startDate = new Date(INSTALLMENT_START_DATE + 'T00:00:00');
         const today = new Date();
         const payments = [];
+        
+        // Generate payment dates with last day of each month
         for (let i = 0; i < termMonths; i++) {
-          const d = new Date(startDate);
-          d.setMonth(d.getMonth() + i);
+          const d = new Date(startDate.getFullYear(), startDate.getMonth() + i + 1, 0);
+          const dateStr = d.toISOString().split('T')[0];
+          
+          // Determine initial status based on date
+          let status;
+          if (d < today) {
+            status = 'overdue';
+          } else {
+            status = 'pending';
+          }
+          
           payments.push({
-            dateStr: d.toISOString().split('T')[0],
+            dateStr: dateStr,
             amount: baseMonthly + (i === termMonths - 1 ? remainder : 0),
-            isPast: d < today
+            status: status
           });
         }
-        return { years, termMonths, initialPayment, monthlyPayment: baseMonthly, startDate: INSTALLMENT_START_DATE, payments };
+        
+        return { 
+          years, 
+          termMonths, 
+          initialPayment, 
+          monthlyPayment: baseMonthly, 
+          startDate: INSTALLMENT_START_DATE, 
+          payments 
+        };
       }
 
       window.sellApartment = function(aptId) {
@@ -1778,9 +1827,10 @@
         function renderInstallDetails() {
           const plan = buildInstallmentPlan(apt);
           installDetailsEl.innerHTML = `
-            <div>📅 Период: ${plan.startDate} — ${plan.payments[plan.payments.length - 1].dateStr} (${plan.years} г.)</div>
+            <div>📅 Период: ${formatDate(plan.payments[0].dateStr)} — ${formatDate(plan.payments[plan.payments.length - 1].dateStr)} (${plan.years} г.)</div>
             <div>💰 Первый взнос (30%): <strong>${formatMoney(plan.initialPayment)}</strong></div>
             <div>📆 Ежемесячный платёж: <strong>${formatMoney(plan.monthlyPayment)}</strong></div>
+            <div>📊 Всего платежей: <strong>${plan.termMonths}</strong></div>
           `;
         }
 
@@ -1824,7 +1874,7 @@
                 clientId: client.id,
                 date: pp.dateStr,
                 amount: pp.amount,
-                status: pp.isPast ? 'overdue' : 'pending'
+                status: pp.status
               });
             });
           }
@@ -1835,28 +1885,42 @@
         };
       };
 
+      // ==================== INSTALLMENT PAYMENTS MODAL ====================
       window.openInstallmentPayments = function(aptId) {
         const payments = getPaymentsByApt(aptId);
+        const apt = getApt(aptId);
         const modal = document.createElement('div');
         modal.className = 'modal';
         modal.innerHTML = `
           <div class="modal-content">
             <span style="float:right;cursor:pointer;font-size:1.5rem;color: var(--text-secondary);" onclick="this.closest('.modal').remove()">&times;</span>
-            <h3 style="color: var(--gold-dark);">График платежей</h3>
+            <h3 style="color: var(--gold-dark);">График платежей - ${apt?.number || ''}</h3>
+            <div style="margin-top: 16px; display: flex; gap: 16px; flex-wrap: wrap;">
+              <div style="background: var(--bg-primary); padding: 12px; border-radius: 8px; flex: 1; min-width: 150px;">
+                <div style="font-size: 0.85rem; color: var(--text-secondary);">Всего оплачено:</div>
+                <div style="font-weight: 700; color: var(--emerald);" id="totalPaidDisplay">${formatMoney(payments.filter(p => p.status === 'paid').reduce((s, p) => s + p.amount, 0))}</div>
+              </div>
+              <div style="background: var(--bg-primary); padding: 12px; border-radius: 8px; flex: 1; min-width: 150px;">
+                <div style="font-size: 0.85rem; color: var(--text-secondary);">Осталось:</div>
+                <div style="font-weight: 700; color: var(--red);" id="remainingDisplay">${formatMoney(payments.filter(p => p.status !== 'paid' && p.amount > 0).reduce((s, p) => s + p.amount, 0))}</div>
+              </div>
+            </div>
             <table class="table-mini" style="margin-top: 20px;">
               <tr><th>№</th><th>Дата</th><th>Сумма</th><th>Статус</th></tr>
               ${payments.map((p, idx) => `
-                <tr>
+                <tr id="payment-row-${p.id}">
                   <td>${idx + 1}</td>
                   <td>${formatDate(p.date)}</td>
                   <td>
-                    <input type="number" value="${p.amount}" onchange="window.updatePaymentAmount('${p.id}', this.value)"
-                      style="width:110px;padding:6px 8px;border-radius:8px;border:1px solid var(--border-color);background:var(--bg-primary);color:var(--text-primary);">
+                    <input type="number" value="${p.amount}" 
+                      onchange="window.updatePaymentAmount('${p.id}', this.value)"
+                      style="width:110px;padding:6px 8px;border-radius:8px;border:1px solid var(--border-color);background:${p.status === 'unpaid' ? '#f3f4f6' : 'var(--bg-primary)'};color:${p.status === 'unpaid' ? '#9ca3af' : 'var(--text-primary)'};">
                   </td>
                   <td>
                     <select onchange="window.updatePaymentStatus('${p.id}', this.value)"
                       style="padding:6px 8px;border-radius:8px;border:1px solid var(--border-color);background:var(--bg-primary);color:var(--text-primary);">
-                      <option value="pending" ${(p.status === 'pending' || p.status === 'overdue') ? 'selected' : ''}>${p.status === 'overdue' ? '🔴 Не оплачено (просрочено)' : 'Не оплачено'}</option>
+                      <option value="unpaid" ${p.status === 'unpaid' ? 'selected' : ''}>⚪ Не оплачено</option>
+                      <option value="overdue" ${p.status === 'overdue' ? 'selected' : ''}>🔴 Не оплачено (просрочено)</option>
                       <option value="partial" ${p.status === 'partial' ? 'selected' : ''}>🟡 Частично</option>
                       <option value="paid" ${p.status === 'paid' ? 'selected' : ''}>✅ Оплачено</option>
                     </select>
@@ -1876,22 +1940,60 @@
         if (isNaN(amount) || amount < 0) return;
         p.amount = amount;
         syncToFirebase();
+        
+        // Update display totals
+        updatePaymentTotals(p.apartmentId);
         toast('✅ Сумма обновлена');
       };
 
       window.updatePaymentStatus = function(paymentId, value) {
         const p = state.payments.find(p => p.id === paymentId);
         if (!p) return;
-        if (value === 'pending') {
-          p.status = (new Date(p.date) < new Date()) ? 'overdue' : 'pending';
-        } else {
-          p.status = value;
-          if (value === 'paid') p.paidDate = new Date().toISOString().split('T')[0];
+        
+        p.status = value;
+        
+        // If status is "unpaid" - automatically set amount to 0
+        if (value === 'unpaid') {
+          p.amount = 0;
         }
+        
+        if (value === 'paid') {
+          p.paidDate = new Date().toISOString().split('T')[0];
+        } else {
+          delete p.paidDate;
+        }
+        
         syncToFirebase();
-        render();
+        
+        // Update the row and totals
+        const row = document.getElementById(`payment-row-${paymentId}`);
+        if (row) {
+          const input = row.querySelector('input[type="number"]');
+          const select = row.querySelector('select');
+          if (input) {
+            input.value = p.amount;
+            input.style.background = value === 'unpaid' ? '#f3f4f6' : 'var(--bg-primary)';
+            input.style.color = value === 'unpaid' ? '#9ca3af' : 'var(--text-primary)';
+          }
+          if (select) {
+            select.value = value;
+          }
+        }
+        
+        updatePaymentTotals(p.apartmentId);
         toast('✅ Статус обновлён');
       };
+
+      function updatePaymentTotals(aptId) {
+        const payments = getPaymentsByApt(aptId);
+        const totalPaid = payments.filter(p => p.status === 'paid').reduce((s, p) => s + p.amount, 0);
+        const remaining = payments.filter(p => p.status !== 'paid' && p.amount > 0).reduce((s, p) => s + p.amount, 0);
+        
+        const totalPaidDisplay = document.getElementById('totalPaidDisplay');
+        const remainingDisplay = document.getElementById('remainingDisplay');
+        if (totalPaidDisplay) totalPaidDisplay.textContent = formatMoney(totalPaid);
+        if (remainingDisplay) remainingDisplay.textContent = formatMoney(remaining);
+      }
 
       window.markPaid = function(paymentId) {
         const p = state.payments.find(p => p.id === paymentId);
@@ -2118,7 +2220,7 @@
       function renderPaymentsPage(container) {
         const all = [...state.payments].sort((a, b) => b.date.localeCompare(a.date));
         const paidTotal = state.payments.filter(p => p.status === 'paid').reduce((s, p) => s + p.amount, 0);
-        const pendingTotal = state.payments.filter(p => p.status === 'pending').reduce((s, p) => s + p.amount, 0);
+        const pendingTotal = state.payments.filter(p => p.status === 'pending' || p.status === 'unpaid').reduce((s, p) => s + p.amount, 0);
         const overdueTotal = state.payments.filter(p => p.status === 'overdue').reduce((s, p) => s + p.amount, 0);
         
         container.innerHTML = `
@@ -2161,6 +2263,7 @@
                     <td>${
                       p.status === 'paid' ? '<span style="color: var(--emerald);">✅ Оплачен</span>' : 
                       p.status === 'overdue' ? '<span style="color: var(--red);">🔴 Просрочен</span>' : 
+                      p.status === 'unpaid' ? '<span style="color: #6b7280;">⚪ Не оплачен</span>' :
                       '<span style="color: var(--yellow);">Ожидает</span>'
                     }</td>
                     <td>${
@@ -2236,12 +2339,6 @@
       }
 
       // ==================== REPORTS (Отчёты) ====================
-      // Independent from apartments/houses/clients: stored in its own Firestore
-      // collection 'reports', each doc = { authorSlug, authorName, year, month, day,
-      // dateStr, text, table (2D array), images (up to 3 base64 strings), createdAt }.
-      // We only filter by authorSlug in the Firestore query (single equality filter,
-      // no composite index required) and do sorting/date-filtering/pagination on the
-      // client, since report volume per author is small.
       const REPORT_AUTHORS = {
         abdulloh: 'Абдуллох',
         firdavs: 'Фирдавс',
@@ -2249,7 +2346,7 @@
         hisrav: 'Хисрав'
       };
 
-      const reportsState = {}; // slug -> { all: [], filtered: [], visibleCount, loaded }
+      const reportsState = {};
       const PAGE_SIZE = 10;
 
       function getReportState(slug) {
