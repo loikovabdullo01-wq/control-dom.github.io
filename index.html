@@ -1027,7 +1027,7 @@
   </div>
 
   <script>
-    (function() {
+(function() {
       // ==================== AUTH GATE ====================
       const AUTH_PASSWORD = '9712208000';
       const AUTH_KEY = 'khisrav_auth';
@@ -1071,7 +1071,6 @@
         appId: "1:63569681012:web:cfc3de1fd5efd942a28f21"
       };
 
-      // Initialize Firebase
       firebase.initializeApp(firebaseConfig);
       const db = firebase.firestore();
       
@@ -1085,74 +1084,112 @@
       let currentFilter = 'all';
       let isSyncing = false;
       let lastSyncTime = null;
+      let pendingChanges = new Set();
+      let lastLoadTime = 0;
+      const LOAD_COOLDOWN = 60000;
+      const SYNC_DEBOUNCE = 3000;
+      let syncTimeout = null;
 
-      // ==================== FIREBASE SYNC ====================
+      // ==================== SMART SYNC ====================
       async function syncToFirebase() {
-        if (isSyncing) return;
+        if (isSyncing || pendingChanges.size === 0) return;
+        
+        if (syncTimeout) {
+          clearTimeout(syncTimeout);
+          syncTimeout = null;
+        }
+        
         isSyncing = true;
         updateSyncStatus('syncing');
         
         try {
           const batch = db.batch();
+          let hasChanges = false;
           
-          const housesRef = db.collection('houses');
-          state.houses.forEach(house => {
-            const docRef = housesRef.doc(house.id);
-            batch.set(docRef, house, { merge: true });
+          pendingChanges.forEach(changeKey => {
+            const [collection, id] = changeKey.split(':');
+            const collectionData = state[collection];
+            
+            if (collectionData) {
+              const item = collectionData.find(i => i.id === id);
+              if (item) {
+                const docRef = db.collection(collection).doc(id);
+                batch.set(docRef, item, { merge: true });
+                hasChanges = true;
+              }
+            }
           });
           
-          const apartmentsRef = db.collection('apartments');
-          state.apartments.forEach(apt => {
-            const docRef = apartmentsRef.doc(apt.id);
-            batch.set(docRef, apt, { merge: true });
-          });
-          
-          const clientsRef = db.collection('clients');
-          state.clients.forEach(client => {
-            const docRef = clientsRef.doc(client.id);
-            batch.set(docRef, client, { merge: true });
-          });
-          
-          const paymentsRef = db.collection('payments');
-          state.payments.forEach(payment => {
-            const docRef = paymentsRef.doc(payment.id);
-            batch.set(docRef, payment, { merge: true });
-          });
-          
-          await batch.commit();
-          lastSyncTime = new Date();
-          updateSyncStatus('synced');
+          if (hasChanges) {
+            await batch.commit();
+            lastSyncTime = new Date();
+            pendingChanges.clear();
+            updateSyncStatus('synced');
+          } else {
+            updateSyncStatus('synced');
+          }
         } catch (error) {
           console.error('Sync error:', error);
-          updateSyncStatus('error');
+          
+          if (error.code === 'resource-exhausted' || error.message?.includes('resource-exhausted')) {
+            updateSyncStatus('error', 'Превышена квота. Изменения сохранены локально.');
+            toast('⚠️ Превышена квота Firestore. Данные сохранены локально.');
+          } else {
+            updateSyncStatus('error');
+          }
         } finally {
           isSyncing = false;
         }
       }
 
-      async function loadFromFirebase() {
+      function scheduleSync(collection, id) {
+        if (collection && id) {
+          pendingChanges.add(`${collection}:${id}`);
+        }
+        
+        if (syncTimeout) {
+          clearTimeout(syncTimeout);
+        }
+        
+        syncTimeout = setTimeout(() => {
+          syncToFirebase();
+        }, SYNC_DEBOUNCE);
+      }
+
+      async function loadFromFirebase(force = false) {
+        const now = Date.now();
+        
+        if (!force && now - lastLoadTime < LOAD_COOLDOWN) {
+          return state.houses.length > 0 || state.apartments.length > 0;
+        }
+        
         updateSyncStatus('syncing');
         
         try {
-          const housesSnapshot = await db.collection('houses').get();
+          const [housesSnapshot, apartmentsSnapshot, clientsSnapshot, paymentsSnapshot] = 
+            await Promise.all([
+              db.collection('houses').get(),
+              db.collection('apartments').get(),
+              db.collection('clients').get(),
+              db.collection('payments').get()
+            ]);
+          
           const houses = [];
-          housesSnapshot.forEach(doc => houses.push(doc.data()));
+          housesSnapshot.forEach(doc => houses.push({ id: doc.id, ...doc.data() }));
           
-          const apartmentsSnapshot = await db.collection('apartments').get();
           const apartments = [];
-          apartmentsSnapshot.forEach(doc => apartments.push(doc.data()));
+          apartmentsSnapshot.forEach(doc => apartments.push({ id: doc.id, ...doc.data() }));
           
-          const clientsSnapshot = await db.collection('clients').get();
           const clients = [];
-          clientsSnapshot.forEach(doc => clients.push(doc.data()));
+          clientsSnapshot.forEach(doc => clients.push({ id: doc.id, ...doc.data() }));
           
-          const paymentsSnapshot = await db.collection('payments').get();
           const payments = [];
-          paymentsSnapshot.forEach(doc => payments.push(doc.data()));
+          paymentsSnapshot.forEach(doc => payments.push({ id: doc.id, ...doc.data() }));
           
-          if (houses.length > 0) {
+          if (houses.length > 0 || apartments.length > 0) {
             state = { houses, apartments, clients, payments };
             lastSyncTime = new Date();
+            lastLoadTime = now;
             updateSyncStatus('synced');
             return true;
           }
@@ -1161,12 +1198,19 @@
           return false;
         } catch (error) {
           console.error('Load error:', error);
+          
+          if (error.code === 'resource-exhausted' || error.message?.includes('resource-exhausted')) {
+            updateSyncStatus('error', 'Превышена квота. Используются кэшированные данные.');
+            toast('⚠️ Превышена квота Firestore.');
+            return state.houses.length > 0 || state.apartments.length > 0;
+          }
+          
           updateSyncStatus('error');
-          return false;
+          return state.houses.length > 0 || state.apartments.length > 0;
         }
       }
 
-      function updateSyncStatus(status) {
+      function updateSyncStatus(status, customMessage = '') {
         const statusElement = document.getElementById('syncStatus');
         if (!statusElement) return;
         
@@ -1176,12 +1220,22 @@
             statusElement.style.color = 'var(--text-muted)';
             break;
           case 'synced':
-            const time = lastSyncTime ? lastSyncTime.toLocaleTimeString('ru-RU') : '';
-            statusElement.innerHTML = `✅ Синхронизировано ${time}`;
+            let timeText = 'только что';
+            if (lastSyncTime) {
+              try {
+                const date = lastSyncTime instanceof Date ? lastSyncTime : new Date(lastSyncTime);
+                if (!isNaN(date.getTime())) {
+                  timeText = date.toLocaleTimeString('ru-RU');
+                }
+              } catch (e) {
+                timeText = 'только что';
+              }
+            }
+            statusElement.innerHTML = `✅ Синхронизировано ${timeText}`;
             statusElement.style.color = 'var(--emerald)';
             break;
           case 'error':
-            statusElement.innerHTML = '⚠️ Ошибка синхронизации';
+            statusElement.innerHTML = customMessage || '⚠️ Ошибка синхронизации';
             statusElement.style.color = 'var(--red)';
             break;
           case 'empty':
@@ -1191,7 +1245,7 @@
         }
       }
 
-      // ==================== DEMO DATA (FULL STRUCTURE) ====================
+      // ==================== DEMO DATA ====================
       function initDemoData() {
         const blocks = [
           { id: 'block-a', name: 'Блок А', address: 'ул. Камоли Хукандий', floors: 10, status: 'не начали' },
@@ -1200,15 +1254,16 @@
         ];
 
         state.houses = blocks;
+        state.apartments = [];
+        state.clients = [];
+        state.payments = [];
 
-        const apts = [];
         let aptCounter = 0;
 
         blocks.forEach(block => {
-          // ПОДВАЛ (5 квартир)
           for (let i = 1; i <= 5; i++) {
             aptCounter++;
-            apts.push({
+            state.apartments.push({
               id: `apt-${aptCounter}`,
               houseId: block.id,
               type: 'basement',
@@ -1223,11 +1278,10 @@
             });
           }
 
-          // ЭТАЖИ 1–9 (по 8 квартир)
           for (let floor = 1; floor <= 9; floor++) {
             for (let i = 1; i <= 8; i++) {
               aptCounter++;
-              apts.push({
+              state.apartments.push({
                 id: `apt-${aptCounter}`,
                 houseId: block.id,
                 type: floor <= 2 ? 'commercial' : 'residential',
@@ -1243,10 +1297,9 @@
             }
           }
 
-          // ПЕНТХАУС (10 этаж — 5 квартир)
           for (let i = 1; i <= 5; i++) {
             aptCounter++;
-            apts.push({
+            state.apartments.push({
               id: `apt-${aptCounter}`,
               houseId: block.id,
               type: 'penthouse',
@@ -1262,12 +1315,8 @@
           }
         });
 
-        state.apartments = apts;
-        state.clients = [];
-        state.payments = [];
-
-        console.log(`Сгенерировано: ${blocks.length} блоков, ${apts.length} квартир`);
-        return { houses: blocks, apartments: apts };
+        console.log(`Сгенерировано: ${blocks.length} блоков, ${state.apartments.length} квартир`);
+        return { houses: blocks, apartments: state.apartments };
       }
 
       // ==================== RESTORE TO FIREBASE ====================
@@ -1294,6 +1343,7 @@
         }
 
         console.log(`=== ГОТОВО: ${houses.length} блока + ${apartments.length} квартир записаны в Firebase ===`);
+        toast('✅ Данные восстановлены');
       }
       window.restoreAllData = restoreAllData;
 
@@ -1754,8 +1804,6 @@
       };
 
       // ==================== INSTALLMENT PLAN ====================
-      // Block A = 3 years (36 months), Block B = 3 years (36 months), Block V = 1 year (12 months)
-      // Start date: August 2025
       const BLOCK_INSTALLMENT_YEARS = { 'block-a': 3, 'block-b': 3, 'block-v': 1 };
       const INSTALLMENT_START_DATE = '2025-08-01';
 
@@ -1770,12 +1818,10 @@
         const today = new Date();
         const payments = [];
         
-        // Generate payment dates with last day of each month
         for (let i = 0; i < termMonths; i++) {
           const d = new Date(startDate.getFullYear(), startDate.getMonth() + i + 1, 0);
           const dateStr = d.toISOString().split('T')[0];
           
-          // Determine initial status based on date
           let status;
           if (d < today) {
             status = 'overdue';
@@ -1878,7 +1924,12 @@
               });
             });
           }
-          syncToFirebase();
+          
+          // Синхронизируем только изменённые данные
+          scheduleSync('clients', client.id);
+          scheduleSync('apartments', apt.id);
+          state.payments.forEach(p => scheduleSync('payments', p.id));
+          
           modal.remove();
           render();
           toast('✅ Продажа завершена');
@@ -1939,9 +1990,8 @@
         const amount = parseFloat(value);
         if (isNaN(amount) || amount < 0) return;
         p.amount = amount;
-        syncToFirebase();
+        scheduleSync('payments', paymentId);
         
-        // Update display totals
         updatePaymentTotals(p.apartmentId);
         toast('✅ Сумма обновлена');
       };
@@ -1952,7 +2002,6 @@
         
         p.status = value;
         
-        // If status is "unpaid" - automatically set amount to 0
         if (value === 'unpaid') {
           p.amount = 0;
         }
@@ -1963,9 +2012,8 @@
           delete p.paidDate;
         }
         
-        syncToFirebase();
+        scheduleSync('payments', paymentId);
         
-        // Update the row and totals
         const row = document.getElementById(`payment-row-${paymentId}`);
         if (row) {
           const input = row.querySelector('input[type="number"]');
@@ -2000,7 +2048,7 @@
         if (p) { 
           p.status = 'paid'; 
           p.paidDate = new Date().toISOString().split('T')[0]; 
-          syncToFirebase();
+          scheduleSync('payments', paymentId);
           render(); 
           document.querySelector('.modal')?.remove(); 
           toast('✅ Платеж отмечен'); 
@@ -2044,7 +2092,7 @@
           apt.rooms = parseInt(document.getElementById('aRooms').value);
           apt.price = parseInt(document.getElementById('aPrice').value);
           apt.status = document.getElementById('aStatus').value;
-          syncToFirebase();
+          scheduleSync('apartments', apt.id);
           modal.remove();
           render();
           toast('✅ Изменения сохранены');
@@ -2153,7 +2201,9 @@
             });
           }
           
-          syncToFirebase();
+          scheduleSync('houses', newHouse.id);
+          state.apartments.forEach(a => scheduleSync('apartments', a.id));
+          
           modal.remove();
           render();
           toast('✅ Блок создан');
@@ -2179,7 +2229,7 @@
         document.body.appendChild(modal);
         
         document.getElementById('saveApt').onclick = () => {
-          state.apartments.push({ 
+          const newApt = { 
             id: 'apt' + Date.now(), 
             houseId, 
             floor, 
@@ -2191,8 +2241,9 @@
             clientId: null, 
             installment: null,
             type: floor === 0 ? 'basement' : floor === 10 ? 'penthouse' : floor <= 2 ? 'commercial' : 'residential'
-          });
-          syncToFirebase();
+          };
+          state.apartments.push(newApt);
+          scheduleSync('apartments', newApt.id);
           modal.remove();
           render();
           toast('✅ Объект добавлен');
@@ -2338,7 +2389,7 @@
         `;
       }
 
-      // ==================== REPORTS (Отчёты) ====================
+      // ==================== REPORTS ====================
       const REPORT_AUTHORS = {
         abdulloh: 'Абдуллох',
         firdavs: 'Фирдавс',
@@ -2361,7 +2412,7 @@
         try {
           const snapshot = await db.collection('reports').where('authorSlug', '==', slug).get();
           const docs = [];
-          snapshot.forEach(doc => docs.push(doc.data()));
+          snapshot.forEach(doc => docs.push({ id: doc.id, ...doc.data() }));
           docs.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
           rs.all = docs;
           rs.loaded = true;
@@ -2485,7 +2536,6 @@
         }
       };
 
-      // ---- Add/Edit report modal ----
       let editingTable = [['', '', ''], ['', '', '']];
       let editingImages = [];
 
@@ -2700,7 +2750,10 @@
           const reader = new FileReader(); 
           reader.onload = () => { 
             state = JSON.parse(reader.result); 
-            syncToFirebase();
+            state.houses.forEach(h => scheduleSync('houses', h.id));
+            state.apartments.forEach(a => scheduleSync('apartments', a.id));
+            state.clients.forEach(c => scheduleSync('clients', c.id));
+            state.payments.forEach(p => scheduleSync('payments', p.id));
             render(); 
             toast('📥 Данные импортированы'); 
           }; 
@@ -2713,14 +2766,27 @@
       window.navigate = navigate;
       
       async function initApp() {
-        const loaded = await loadFromFirebase();
+        const loaded = await loadFromFirebase(true);
         
         if (!loaded) {
           initDemoData();
-          await syncToFirebase();
+          state.houses.forEach(h => scheduleSync('houses', h.id));
+          state.apartments.forEach(a => scheduleSync('apartments', a.id));
+          state.clients.forEach(c => scheduleSync('clients', c.id));
+          state.payments.forEach(p => scheduleSync('payments', p.id));
         }
         
         render();
+        
+        window.addEventListener('beforeunload', () => {
+          if (pendingChanges.size > 0) {
+            syncToFirebase();
+          }
+        });
+        
+        setInterval(() => {
+          loadFromFirebase(true);
+        }, 15 * 60 * 1000);
       }
       
       initApp();
