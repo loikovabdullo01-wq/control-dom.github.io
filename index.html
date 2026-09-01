@@ -1347,6 +1347,48 @@
       }
       window.restoreAllData = restoreAllData;
 
+      async function resetDb() {
+        const [clientsSnapshot, paymentsSnapshot, apartmentsSnapshot] = await Promise.all([
+          db.collection('clients').get(),
+          db.collection('payments').get(),
+          db.collection('apartments').get()
+        ]);
+        const operations = [
+          ...clientsSnapshot.docs.map(doc => ({ type: 'delete', ref: doc.ref })),
+          ...paymentsSnapshot.docs.map(doc => ({ type: 'delete', ref: doc.ref })),
+          ...apartmentsSnapshot.docs.map(doc => ({
+            type: 'update',
+            ref: doc.ref,
+            data: { status: 'available', clientId: null, installment: null }
+          }))
+        ];
+
+        for (let index = 0; index < operations.length; index += 450) {
+          const batch = db.batch();
+          operations.slice(index, index + 450).forEach(operation => {
+            if (operation.type === 'delete') {
+              batch.delete(operation.ref);
+            } else {
+              batch.update(operation.ref, operation.data);
+            }
+          });
+          await batch.commit();
+        }
+
+        state.clients = [];
+        state.payments = [];
+        state.apartments = state.apartments.map(apartment => apartment ? {
+          ...apartment,
+          status: 'available',
+          clientId: null,
+          installment: null
+        } : apartment);
+        pendingChanges.clear();
+        render();
+        console.log(`Database reset complete: ${clientsSnapshot.size} clients deleted, ${paymentsSnapshot.size} payments deleted, ${apartmentsSnapshot.size} apartments reset.`);
+      }
+      window.resetDb = resetDb;
+
       // ==================== HELPERS ====================
       const getHouse = id => state.houses.find(h => h.id === id);
       const getApt = id => state.apartments.find(a => a.id === id);
@@ -1354,13 +1396,25 @@
       const getPaymentsByApt = aptId => state.payments.filter(p => p.apartmentId === aptId).sort((a, b) => a.date.localeCompare(b.date));
 
       function calcDashboardStats() {
-        const totalApts = state.apartments.length;
-        const free = state.apartments.filter(a => a.status === 'available').length;
-        const sold = state.apartments.filter(a => a.status === 'sold').length;
-        const installment = state.apartments.filter(a => a.status === 'installment').length;
-        const paidTotal = state.payments.filter(p => p.status === 'paid').reduce((s, p) => s + p.amount, 0);
-        const pendingTotal = state.payments.filter(p => p.status === 'pending' || p.status === 'overdue').reduce((s, p) => s + p.amount, 0);
-        const overdueCount = state.payments.filter(p => p.status === 'overdue').length;
+        const apartments = Array.isArray(state.apartments) ? state.apartments : [];
+        const payments = Array.isArray(state.payments) ? state.payments : [];
+        const validAmount = value => typeof value === 'number' && Number.isFinite(value) ? value : 0;
+        const apartmentStatus = apartment => apartment ? String(apartment.status ?? '').trim() : '';
+        const totalApts = apartments.length;
+        const free = apartments.filter(apt => apartmentStatus(apt) === 'available').length;
+        const sold = apartments.filter(apt => apartmentStatus(apt) === 'sold').length;
+        const installment = apartments.filter(apt => apartmentStatus(apt) === 'installment').length;
+        const totalSalesSum = apartments
+          .filter(apt => ['sold', 'installment'].includes(apartmentStatus(apt)))
+          .reduce((sum, apt) => sum + validAmount(apt.price), 0);
+        const paidTotal = payments
+          .filter(payment => payment?.status === 'paid')
+          .reduce((sum, payment) => sum + validAmount(payment.amount), 0);
+        let pendingTotal = totalSalesSum === 0 || (sold === 0 && installment === 0)
+          ? 0
+          : totalSalesSum - paidTotal;
+        if (pendingTotal < 0 || Number.isNaN(pendingTotal)) pendingTotal = 0;
+        const overdueCount = payments.filter(payment => payment?.status === 'overdue').length;
         return { totalApts, free, sold, installment, paidTotal, pendingTotal, overdueCount };
       }
 
