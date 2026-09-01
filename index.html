@@ -1006,7 +1006,8 @@
     </nav>
     <div class="bottom-actions">
       <button class="btn secondary" id="exportBtn">📤 Экспорт</button>
-      <button class="btn secondary" id="importBtn">📥 Импорт</button>
+      <button class="btn secondary" id="importBtn" type="button">📥 Импорт</button>
+      <input id="importCsvInput" type="file" accept=".csv,text/csv" hidden>
       <div id="syncStatus" style="text-align: center; font-size: 0.75rem; color: var(--text-muted); margin-top: 8px;">
         Синхронизация...
       </div>
@@ -1143,9 +1144,16 @@
         }
       }
 
-      function scheduleSync(collection, id) {
-        if (collection && id) {
-          pendingChanges.add(`${collection}:${id}`);
+      async function scheduleSync(collection, itemOrId, customId = null) {
+        if (customId && itemOrId && typeof itemOrId === 'object') {
+          await db.collection(collection).doc(customId).set(itemOrId, { merge: true });
+          lastSyncTime = new Date();
+          updateSyncStatus('synced');
+          return;
+        }
+
+        if (collection && itemOrId) {
+          pendingChanges.add(`${collection}:${itemOrId}`);
         }
         
         if (syncTimeout) {
@@ -2799,26 +2807,62 @@
         a.click();
         toast('📤 Данные экспортированы');
       });
-      
-      document.getElementById('importBtn').addEventListener('click', () => {
-        const input = document.createElement('input');
-        input.type = 'file';
-        input.accept = '.json';
-        input.onchange = e => { 
-          const file = e.target.files[0]; 
-          const reader = new FileReader(); 
-          reader.onload = () => { 
-            state = JSON.parse(reader.result); 
-            state.houses.forEach(h => scheduleSync('houses', h.id));
-            state.apartments.forEach(a => scheduleSync('apartments', a.id));
-            state.clients.forEach(c => scheduleSync('clients', c.id));
-            state.payments.forEach(p => scheduleSync('payments', p.id));
-            render(); 
-            toast('📥 Данные импортированы'); 
-          }; 
-          reader.readAsText(file); 
+
+      const importBtn = document.getElementById('importBtn');
+      const importCsvInput = document.getElementById('importCsvInput');
+
+      importBtn.addEventListener('click', () => importCsvInput.click());
+      importCsvInput.addEventListener('change', () => {
+        if (!importCsvInput.files || importCsvInput.files.length === 0) return;
+
+        const reader = new FileReader();
+        reader.onload = async event => {
+          const lines = event.target.result.split(/\r?\n/);
+          let successCount = 0;
+
+          for (let index = 8; index < lines.length; index++) {
+            const row = lines[index].trim();
+            if (!row) continue;
+
+            const cols = row.split(';');
+            const objectNo = cols[1]?.trim();
+            const clientName = cols[2]?.trim();
+            if (!objectNo || !clientName || clientName.includes('Ному насаб')) continue;
+
+            const area = parseFloat((cols[3] || '0').replace(',', '.')) || 0;
+            const pricePerMeter = parseInt((cols[4] || '0').replace(/\s/g, ''), 10) || 0;
+            const totalPrice = parseInt((cols[5] || '0').replace(/\s/g, ''), 10) || 0;
+            const paid = parseInt((cols[cols.length - 2] || '0').replace(/\s/g, ''), 10) || 0;
+            const debt = parseInt((cols[cols.length - 1] || '0').replace(/\s/g, ''), 10) || 0;
+            const floorNum = objectNo.includes('/') ? objectNo.split('/')[0] : '1';
+            const customId = `Block_A_${objectNo.replace('/', '-')}`;
+            const apartmentData = {
+              objectNumber: objectNo,
+              name: clientName,
+              area,
+              pricePerMeter,
+              totalPrice,
+              paid,
+              debt,
+              status: debt > 0 ? 'Рассрочка' : 'Продано',
+              block: 'Блок А',
+              floor: `${floorNum} этаж`
+            };
+
+            try {
+              await scheduleSync('apartments', apartmentData, customId);
+              successCount++;
+            } catch (error) {
+              console.error(`CSV import error for ${objectNo}:`, error);
+            }
+          }
+
+          render();
+          toast(`Импортировано клиентов: ${successCount}`);
+          importCsvInput.value = '';
         };
-        input.click();
+
+        reader.readAsText(importCsvInput.files[0], 'windows-1251');
       });
 
       // -------------------- INIT --------------------
