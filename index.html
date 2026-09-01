@@ -1398,24 +1398,28 @@
 
       function calcDashboardStats() {
         const apartments = Array.isArray(state.apartments) ? state.apartments : [];
+        const clients = Array.isArray(state.clients) ? state.clients : [];
         const payments = Array.isArray(state.payments) ? state.payments : [];
         const validAmount = value => typeof value === 'number' && Number.isFinite(value) ? value : 0;
         const apartmentStatus = apartment => apartment ? String(apartment.status ?? '').trim() : '';
+        const paymentStatus = payment => payment ? String(payment.status ?? '').trim() : '';
+        const activeClientIds = new Set(clients.filter(client => client?.id).map(client => client.id));
         const totalApts = apartments.length;
         const free = apartments.filter(apt => apartmentStatus(apt) === 'available').length;
         const sold = apartments.filter(apt => apartmentStatus(apt) === 'sold').length;
         const installment = apartments.filter(apt => apartmentStatus(apt) === 'installment').length;
-        const totalSalesSum = apartments
-          .filter(apt => ['sold', 'installment'].includes(apartmentStatus(apt)))
-          .reduce((sum, apt) => sum + validAmount(apt.price), 0);
         const paidTotal = payments
-          .filter(payment => payment?.status === 'paid')
+          .filter(payment => paymentStatus(payment) === 'paid')
           .reduce((sum, payment) => sum + validAmount(payment.amount), 0);
-        let pendingTotal = totalSalesSum === 0 || (sold === 0 && installment === 0)
-          ? 0
-          : totalSalesSum - paidTotal;
-        if (pendingTotal < 0 || Number.isNaN(pendingTotal)) pendingTotal = 0;
-        const overdueCount = payments.filter(payment => payment?.status === 'overdue').length;
+        let totalInstallmentRemainder = payments
+          .filter(payment => activeClientIds.has(payment?.clientId))
+          .filter(payment => ['pending', 'unpaid', 'overdue', 'partial'].includes(paymentStatus(payment)))
+          .reduce((sum, payment) => sum + (Number(payment?.amount) || 0), 0);
+        if (totalInstallmentRemainder < 0 || Number.isNaN(totalInstallmentRemainder)) {
+          totalInstallmentRemainder = 0;
+        }
+        const pendingTotal = totalInstallmentRemainder;
+        const overdueCount = payments.filter(payment => paymentStatus(payment) === 'overdue').length;
         return { totalApts, free, sold, installment, paidTotal, pendingTotal, overdueCount };
       }
 
