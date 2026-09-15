@@ -1092,6 +1092,11 @@
       const SYNC_DEBOUNCE = 3000;
       let syncTimeout = null;
 
+      // ==================== FIX: guards against runaway reads ====================
+      let isLoading = false;          // prevents parallel loadFromFirebase calls
+      let appActive = true;           // analog of "unsubscribe" — stops background work on unload
+      let refreshIntervalId = null;   // id of the background refresh interval
+
       // ==================== SMART SYNC ====================
       async function syncToFirebase() {
         if (isSyncing || pendingChanges.size === 0) return;
@@ -1165,13 +1170,24 @@
         }, SYNC_DEBOUNCE);
       }
 
+      // ==================== FIXED loadFromFirebase ====================
+      // - called exactly once at startup (force = true)
+      // - background refresh uses force = false and respects cooldown
+      // - protected by isLoading flag (no parallel requests)
+      // - lastLoadTime is updated on every successful fetch (even empty)
       async function loadFromFirebase(force = false) {
         const now = Date.now();
+
+        // FIX: never run two loads at the same time
+        if (isLoading) {
+          return state.houses.length > 0 || state.apartments.length > 0;
+        }
         
         if (!force && now - lastLoadTime < LOAD_COOLDOWN) {
           return state.houses.length > 0 || state.apartments.length > 0;
         }
         
+        isLoading = true;
         updateSyncStatus('syncing');
         
         try {
@@ -1195,10 +1211,12 @@
           const payments = [];
           paymentsSnapshot.forEach(doc => payments.push({ id: doc.id, ...doc.data() }));
           
+          // FIX: update lastLoadTime on EVERY successful fetch, not only when data is non-empty
+          lastLoadTime = Date.now();
+          
           if (houses.length > 0 || apartments.length > 0) {
             state = { houses, apartments, clients, payments };
             lastSyncTime = new Date();
-            lastLoadTime = now;
             updateSyncStatus('synced');
             return true;
           }
@@ -1216,6 +1234,8 @@
           
           updateSyncStatus('error');
           return state.houses.length > 0 || state.apartments.length > 0;
+        } finally {
+          isLoading = false;
         }
       }
 
@@ -2197,7 +2217,11 @@
           
           state.houses.push(newHouse);
           
-          let aptCounter = state.apartments.length;
+          // FIX: derive counter from max existing numeric ID to avoid duplicate apt IDs
+          let aptCounter = state.apartments.reduce((max, a) => {
+            const m = /^apt-(\d+)$/.exec(a.id || '');
+            return m ? Math.max(max, parseInt(m[1], 10)) : max;
+          }, 0);
           
           for (let i = 1; i <= 5; i++) {
             state.apartments.push({
@@ -2476,6 +2500,9 @@
 
       async function loadReports(slug) {
         const rs = getReportState(slug);
+        // FIX: guard against parallel/concurrent loads of the same report page
+        if (rs.loading) return;
+        rs.loading = true;
         try {
           const snapshot = await db.collection('reports').where('authorSlug', '==', slug).get();
           const docs = [];
@@ -2486,6 +2513,8 @@
         } catch (error) {
           console.error('loadReports error:', error);
           toast('⚠️ Ошибка загрузки отчётов');
+        } finally {
+          rs.loading = false;
         }
       }
 
@@ -2543,6 +2572,7 @@
           <div id="reportsList">Загрузка...</div>
         `;
 
+        // FIX: only load once per author; guard inside loadReports prevents duplicate requests
         if (!rs.loaded) await loadReports(slug);
         applyReportFilters(slug);
       }
@@ -2869,6 +2899,7 @@
       window.navigate = navigate;
       
       async function initApp() {
+        // Data is requested exactly ONCE at startup
         const loaded = await loadFromFirebase(true);
         
         if (!loaded) {
@@ -2881,14 +2912,29 @@
         
         render();
         
+        // FIX: proper "unsubscribe" — stop all background work when the tab closes
         window.addEventListener('beforeunload', () => {
+          appActive = false;
+          if (refreshIntervalId) {
+            clearInterval(refreshIntervalId);
+            refreshIntervalId = null;
+          }
+          if (syncTimeout) {
+            clearTimeout(syncTimeout);
+            syncTimeout = null;
+          }
           if (pendingChanges.size > 0) {
             syncToFirebase();
           }
         });
         
-        setInterval(() => {
-          loadFromFirebase(true);
+        // FIX: background refresh no longer forces a full re-download every 15 minutes.
+        // It respects the cooldown, skips hidden tabs, and never runs during writes.
+        refreshIntervalId = setInterval(() => {
+          if (!appActive) return;
+          if (document.hidden) return;
+          if (isSyncing || pendingChanges.size > 0) return;
+          loadFromFirebase(false); // NOT forced — cooldown protects the quota
         }, 15 * 60 * 1000);
       }
       
