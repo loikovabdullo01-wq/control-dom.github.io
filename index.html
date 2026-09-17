@@ -5,13 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes, viewport-fit=cover">
   <title>ХИСРАВ СОХТМОН • Система управления недвижимостью</title>
   <link rel="icon" type="image/png" href="logo.jpg">
-
-  <!-- Firebase SDK теперь подключается как ES-модуль в конце <body>.
-       Все compat-скрипты удалены. -->
-
   <style>
     :root {
-      /* Light Theme Colors */
       --gold: #c9a84c;
       --gold-light: #e5c96e;
       --gold-dark: #a8892e;
@@ -38,9 +33,7 @@
       --shadow-lg: 0 10px 25px rgba(0,0,0,0.08);
       --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
-
     * { margin: 0; padding: 0; box-sizing: border-box; }
-
     body {
       font-family: 'Inter', -apple-system, system-ui, sans-serif;
       background: var(--bg-primary);
@@ -50,13 +43,11 @@
       display: flex;
       overflow-x: hidden;
     }
-
     ::-webkit-scrollbar { width: 8px; height: 8px; }
     ::-webkit-scrollbar-track { background: var(--bg-primary); }
     ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
     ::-webkit-scrollbar-thumb:hover { background: var(--gold); }
 
-    /* ----- SIDEBAR ----- */
     .sidebar {
       width: 280px;
       background: var(--bg-secondary);
@@ -71,9 +62,7 @@
       transition: var(--transition);
       box-shadow: 2px 0 10px rgba(0,0,0,0.03);
     }
-
     .logo-area { padding: 0 8px; text-align: center; }
-
     .company-name {
       font-weight: 700;
       font-size: 1.5rem;
@@ -82,381 +71,204 @@
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
-
     .system-sub {
-      font-size: 0.75rem;
-      color: var(--text-secondary);
-      margin-top: 4px;
-      font-weight: 500;
-      letter-spacing: 1px;
-      text-transform: uppercase;
+      font-size: 0.75rem; color: var(--text-secondary); margin-top: 4px;
+      font-weight: 500; letter-spacing: 1px; text-transform: uppercase;
     }
-
     .nav-menu { display: flex; flex-direction: column; gap: 6px; flex: 1; }
-
     .nav-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 12px 14px;
-      border-radius: 12px;
-      font-weight: 500;
-      color: var(--text-secondary);
-      cursor: pointer;
-      transition: var(--transition);
-      font-size: 0.95rem;
-      border: none;
-      background: transparent;
-      width: 100%;
-      text-align: left;
-      position: relative;
-      overflow: hidden;
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 14px; border-radius: 12px;
+      font-weight: 500; color: var(--text-secondary);
+      cursor: pointer; transition: var(--transition);
+      font-size: 0.95rem; border: none; background: transparent;
+      width: 100%; text-align: left; position: relative; overflow: hidden;
     }
-
     .nav-item::before {
-      content: '';
-      position: absolute;
-      left: 0; top: 0; bottom: 0;
-      width: 3px;
-      background: var(--gold);
-      transform: scaleY(0);
-      transition: var(--transition);
+      content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+      width: 3px; background: var(--gold);
+      transform: scaleY(0); transition: var(--transition);
     }
-
     .nav-item:hover { background: #f1f5f9; color: var(--text-primary); }
     .nav-item:hover::before { transform: scaleY(1); }
-
     .nav-item.active {
       background: linear-gradient(135deg, rgba(201,168,76,0.1), rgba(201,168,76,0.05));
-      color: var(--gold-dark);
-      font-weight: 600;
+      color: var(--gold-dark); font-weight: 600;
     }
     .nav-item.active::before { transform: scaleY(1); }
 
     .bottom-actions { margin-top: auto; display: flex; flex-direction: column; gap: 8px; }
-
     .btn {
       background: linear-gradient(135deg, var(--gold), var(--gold-dark));
-      color: white;
-      border: none;
-      padding: 12px 20px;
-      border-radius: 12px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: var(--transition);
-      font-size: 0.9rem;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      position: relative;
-      overflow: hidden;
+      color: white; border: none; padding: 12px 20px;
+      border-radius: 12px; font-weight: 600; cursor: pointer;
+      transition: var(--transition); font-size: 0.9rem;
+      display: inline-flex; align-items: center; justify-content: center;
+      gap: 8px; position: relative; overflow: hidden;
       box-shadow: 0 4px 6px rgba(201,168,76,0.2);
     }
-
     .btn::before {
-      content: '';
-      position: absolute;
-      top: 50%; left: 50%;
-      width: 0; height: 0;
-      border-radius: 50%;
+      content: ''; position: absolute; top: 50%; left: 50%;
+      width: 0; height: 0; border-radius: 50%;
       background: rgba(255,255,255,0.3);
       transform: translate(-50%, -50%);
       transition: width 0.6s, height 0.6s;
     }
-
     .btn:hover::before { width: 300px; height: 300px; }
     .btn:hover { box-shadow: 0 6px 12px rgba(201,168,76,0.3); transform: translateY(-2px); }
-
     .btn.secondary {
-      background: #f1f5f9;
-      color: var(--text-primary);
-      border: 1px solid var(--border-color);
-      box-shadow: none;
+      background: #f1f5f9; color: var(--text-primary);
+      border: 1px solid var(--border-color); box-shadow: none;
     }
     .btn.secondary:hover { background: #e2e8f0; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-
     .btn.danger {
       background: linear-gradient(135deg, var(--red), #dc2626);
-      color: white;
-      box-shadow: 0 4px 6px rgba(239,68,68,0.2);
+      color: white; box-shadow: 0 4px 6px rgba(239,68,68,0.2);
     }
 
-    /* ----- MAIN CONTENT ----- */
     .main-content {
-      margin-left: 280px;
-      flex: 1;
+      margin-left: 280px; flex: 1;
       padding: 24px 28px 32px;
-      min-height: 100vh;
-      width: 100%;
+      min-height: 100vh; width: 100%;
       transition: var(--transition);
     }
-
     .top-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 16px;
-      margin-bottom: 28px;
+      display: flex; justify-content: space-between;
+      align-items: center; flex-wrap: wrap;
+      gap: 16px; margin-bottom: 28px;
     }
-
     .date-profile {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-      color: var(--text-secondary);
-      font-weight: 500;
-      background: var(--bg-card);
-      padding: 10px 20px;
-      border-radius: 40px;
-      border: 1px solid var(--border-color);
+      display: flex; align-items: center; gap: 20px;
+      color: var(--text-secondary); font-weight: 500;
+      background: var(--bg-card); padding: 10px 20px;
+      border-radius: 40px; border: 1px solid var(--border-color);
       box-shadow: var(--shadow);
     }
-
     .search-wrapper {
-      background: var(--bg-card);
-      border-radius: 40px;
-      padding: 4px 4px 4px 20px;
-      display: flex;
-      align-items: center;
-      width: 320px;
+      background: var(--bg-card); border-radius: 40px;
+      padding: 4px 4px 4px 20px; display: flex;
+      align-items: center; width: 320px;
       border: 1px solid var(--border-color);
-      transition: var(--transition);
-      box-shadow: var(--shadow);
+      transition: var(--transition); box-shadow: var(--shadow);
     }
-
     .search-wrapper:focus-within { border-color: var(--gold); box-shadow: 0 0 20px rgba(201,168,76,0.2); }
-
     .search-wrapper input {
-      border: none;
-      outline: none;
-      font-family: inherit;
-      font-size: 0.95rem;
-      width: 100%;
-      background: transparent;
-      color: var(--text-primary);
+      border: none; outline: none; font-family: inherit;
+      font-size: 0.95rem; width: 100%; background: transparent; color: var(--text-primary);
     }
     .search-wrapper input::placeholder { color: var(--text-muted); }
 
     .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 16px;
-      margin-bottom: 32px;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px; margin-bottom: 32px;
     }
-
     .stat-card {
-      background: var(--bg-card);
-      padding: 20px;
-      border-radius: 16px;
-      border: 1px solid var(--border-color);
-      transition: var(--transition);
-      position: relative;
-      overflow: hidden;
-      box-shadow: var(--shadow);
+      background: var(--bg-card); padding: 20px;
+      border-radius: 16px; border: 1px solid var(--border-color);
+      transition: var(--transition); position: relative;
+      overflow: hidden; box-shadow: var(--shadow);
     }
-
     .stat-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, var(--gold), var(--gold-light));
-      transform: scaleX(0);
-      transition: var(--transition);
+      content: ''; position: absolute; top: 0; left: 0; right: 0;
+      height: 3px; background: linear-gradient(90deg, var(--gold), var(--gold-light));
+      transform: scaleX(0); transition: var(--transition);
     }
     .stat-card:hover::before { transform: scaleX(1); }
     .stat-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); border-color: var(--gold); }
-
     .stat-value { font-weight: 700; font-size: 2rem; color: var(--gold-dark); }
     .stat-label {
-      color: var(--text-secondary);
-      font-weight: 500;
-      font-size: 0.85rem;
-      margin-top: 4px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
+      color: var(--text-secondary); font-weight: 500; font-size: 0.85rem;
+      margin-top: 4px; display: flex; align-items: center; gap: 6px;
     }
-
     .section-title {
-      font-weight: 600;
-      font-size: 1.3rem;
-      margin: 24px 0 16px;
-      color: var(--text-primary);
-      display: flex;
-      align-items: center;
-      gap: 10px;
+      font-weight: 600; font-size: 1.3rem; margin: 24px 0 16px;
+      color: var(--text-primary); display: flex; align-items: center; gap: 10px;
     }
 
     .houses-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 20px;
-      margin-bottom: 24px;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px; margin-bottom: 24px;
     }
-
     .house-card {
-      background: var(--bg-card);
-      border-radius: 20px;
-      padding: 24px;
-      border: 1px solid var(--border-color);
-      cursor: pointer;
-      transition: var(--transition);
-      position: relative;
-      overflow: hidden;
+      background: var(--bg-card); border-radius: 20px; padding: 24px;
+      border: 1px solid var(--border-color); cursor: pointer;
+      transition: var(--transition); position: relative; overflow: hidden;
       box-shadow: var(--shadow);
     }
-
     .house-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 4px;
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
       background: linear-gradient(90deg, var(--gold), var(--gold-light));
-      transform: scaleX(0);
-      transition: var(--transition);
+      transform: scaleX(0); transition: var(--transition);
     }
     .house-card:hover::before { transform: scaleX(1); }
     .house-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-lg); border-color: var(--gold); }
-
     .house-card.status-free { border-left: 6px solid #adb5bd; background: #ffffff; }
     .house-card.status-sold { border-left: 6px solid #20b26b; background: #f0fdf4; }
     .house-card.status-installment { border-left: 6px solid #e5ad19; background: #fffbeb; }
     .house-card.status-debtor { border-left: 6px solid #e04455; background: #fef2f2; }
 
-    .status-dot {
-      width: 12px;
-      height: 12px;
-      min-width: 12px;
-      border-radius: 50%;
-      display: inline-block;
-      margin-right: 8px;
-      vertical-align: middle;
-    }
-    .status-dot.free { background: #adb5bd; }
-    .status-dot.sold { background: #20b26b; }
-    .status-dot.installment { background: #e5ad19; }
-    .status-dot.debtor { background: #e04455; }
-
-    .status-container {
-      display: flex;
-      align-items: center;
-      font-weight: 600;
-      font-size: 0.9rem;
-      margin-bottom: 8px;
-      color: var(--text-primary);
-    }
-
     .badge {
-      display: inline-block;
-      padding: 4px 12px;
-      border-radius: 30px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      background: #f1f5f9;
-      color: var(--text-primary);
-      margin-left: 8px;
+      display: inline-block; padding: 4px 12px; border-radius: 30px;
+      font-size: 0.75rem; font-weight: 600;
+      background: #f1f5f9; color: var(--text-primary); margin-left: 8px;
     }
 
     .progress-bg {
-      background: #e2e8f0;
-      height: 8px;
-      border-radius: 10px;
-      width: 100%;
-      margin-top: 12px;
-      overflow: hidden;
+      background: #e2e8f0; height: 8px; border-radius: 10px;
+      width: 100%; margin-top: 12px; overflow: hidden;
     }
-
     .progress-fill {
       background: linear-gradient(90deg, var(--gold), var(--gold-light));
-      height: 8px;
-      border-radius: 10px;
-      width: 0%;
+      height: 8px; border-radius: 10px; width: 0%;
       transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .apartment-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-      gap: 12px;
-      margin: 16px 0;
-      animation: fadeIn 0.5s ease;
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 12px; margin: 16px 0; animation: fadeIn 0.5s ease;
     }
-
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
     }
-
     .apt-cell {
-      background: var(--bg-card);
-      border-radius: 16px;
-      padding: 16px 10px;
-      text-align: center;
-      font-weight: 600;
-      border: 2px solid var(--border-color);
-      cursor: pointer;
-      transition: var(--transition);
-      position: relative;
-      overflow: hidden;
+      background: var(--bg-card); border-radius: 16px; padding: 16px 10px;
+      text-align: center; font-weight: 600; border: 2px solid var(--border-color);
+      cursor: pointer; transition: var(--transition); position: relative; overflow: hidden;
     }
-
     .apt-cell::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
+      content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
       background: linear-gradient(135deg, transparent, rgba(0,0,0,0.02));
-      opacity: 0;
-      transition: var(--transition);
+      opacity: 0; transition: var(--transition);
     }
     .apt-cell:hover::before { opacity: 1; }
     .apt-cell:hover { transform: scale(1.05); box-shadow: var(--shadow-lg); border-color: var(--gold); }
-
     .apt-free { background: #ffffff; border-color: #adb5bd; color: #495057; }
     .apt-sold { background: #f0fdf4; border-color: #20b26b; color: #065f46; }
     .apt-installment { background: #fffbeb; border-color: #e5ad19; color: #92400e; }
     .apt-overdue {
-      background: #fef2f2;
-      border-color: #e04455;
-      color: #991b1b;
+      background: #fef2f2; border-color: #e04455; color: #991b1b;
       animation: pulse 1.5s infinite;
     }
-
     @keyframes pulse {
       0%, 100% { transform: scale(1); }
       50% { transform: scale(1.05); box-shadow: 0 0 20px rgba(239,68,68,0.2); }
     }
 
     .modal {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.5);
-      backdrop-filter: blur(4px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 100;
-      animation: modalFade 0.3s ease;
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 100; animation: modalFade 0.3s ease;
     }
-
     @keyframes modalFade { from { opacity: 0; } to { opacity: 1; } }
-
     .modal-content {
-      background: var(--bg-secondary);
-      border-radius: 24px;
-      padding: 32px;
-      max-width: 650px;
-      width: 90%;
-      max-height: 85vh;
-      overflow-y: auto;
+      background: var(--bg-secondary); border-radius: 24px; padding: 32px;
+      max-width: 650px; width: 90%; max-height: 85vh; overflow-y: auto;
       border: 1px solid var(--border-color);
       box-shadow: 0 30px 60px rgba(0,0,0,0.15);
       animation: slideUp 0.3s ease;
     }
-
     @keyframes slideUp {
       from { transform: translateY(30px); opacity: 0; }
       to { transform: translateY(0); opacity: 1; }
@@ -464,38 +276,20 @@
 
     .table-mini { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
     .table-mini td, .table-mini th {
-      padding: 12px;
-      border-bottom: 1px solid var(--border-color);
-      text-align: left;
-      color: var(--text-primary);
+      padding: 12px; border-bottom: 1px solid var(--border-color);
+      text-align: left; color: var(--text-primary);
     }
     .table-mini th { color: var(--gold-dark); font-weight: 600; background: #f8fafc; }
 
-    .status-dot-gray, .status-dot-red, .status-dot-orange, .status-dot-green {
-      width: 10px; height: 10px; border-radius: 50%; display: inline-block; margin-right: 5px;
-    }
-    .status-dot-gray { background: #6b7280; }
-    .status-dot-red { background: #ef4444; }
-    .status-dot-orange { background: #f59e0b; }
-    .status-dot-green { background: #10b981; }
-
-    /* ==================== REPORTS ==================== */
-    .report-filters {
-      display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin: 16px 0;
-    }
+    .report-filters { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin: 16px 0; }
     .report-filters select {
-      padding: 10px 12px;
-      border-radius: 10px;
+      padding: 10px 12px; border-radius: 10px;
       border: 1px solid var(--border-color);
-      background: var(--bg-primary);
-      color: var(--text-primary);
+      background: var(--bg-primary); color: var(--text-primary);
     }
     .report-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 16px;
-      padding: 18px;
-      margin-bottom: 14px;
+      background: var(--bg-card); border: 1px solid var(--border-color);
+      border-radius: 16px; padding: 18px; margin-bottom: 14px;
       box-shadow: var(--shadow);
     }
     .report-card-header {
@@ -510,13 +304,9 @@
       border-radius: 10px; cursor: pointer; border: 1px solid var(--border-color);
     }
     .report-dropzone {
-      border: 2px dashed var(--border-color);
-      border-radius: 12px;
-      padding: 20px;
-      text-align: center;
-      color: var(--text-muted);
-      cursor: pointer;
-      transition: var(--transition);
+      border: 2px dashed var(--border-color); border-radius: 12px;
+      padding: 20px; text-align: center; color: var(--text-muted);
+      cursor: pointer; transition: var(--transition);
     }
     .report-dropzone.dragover {
       border-color: var(--gold);
@@ -545,13 +335,11 @@
     .report-table-actions button {
       padding: 6px 10px; border-radius: 8px;
       border: 1px solid var(--border-color);
-      background: var(--bg-primary);
-      color: var(--text-secondary);
+      background: var(--bg-primary); color: var(--text-secondary);
       cursor: pointer; font-size: 0.8rem;
     }
     .lightbox-overlay {
-      position: fixed; inset: 0;
-      background: rgba(0,0,0,0.85);
+      position: fixed; inset: 0; background: rgba(0,0,0,0.85);
       display: flex; align-items: center; justify-content: center;
       z-index: 200; cursor: zoom-out;
     }
@@ -559,8 +347,7 @@
 
     .toast {
       position: fixed; bottom: 30px; right: 30px;
-      background: var(--bg-card);
-      color: var(--text-primary);
+      background: var(--bg-card); color: var(--text-primary);
       padding: 16px 24px; border-radius: 12px;
       font-weight: 500; z-index: 200;
       border: 1px solid var(--gold);
@@ -572,8 +359,7 @@
       padding: 8px 16px; border-radius: 20px; font-size: 0.85rem;
       cursor: pointer; transition: var(--transition);
       border: 1px solid var(--border-color);
-      background: var(--bg-card);
-      color: var(--text-secondary);
+      background: var(--bg-card); color: var(--text-secondary);
     }
     .filter-btn:hover { border-color: var(--gold); color: var(--gold-dark); }
     .filter-btn.active {
@@ -595,29 +381,21 @@
       .sidebar { transform: translateX(-100%); }
       .main-content { margin-left: 0; padding: 16px; padding-bottom: 80px; }
       .mobile-nav {
-        display: flex;
-        position: fixed; bottom: 0; left: 0; right: 0;
-        background: var(--bg-secondary);
-        justify-content: flex-start; overflow-x: auto;
-        padding: 10px 8px;
-        border-top: 1px solid var(--border-color);
-        z-index: 50;
-        box-shadow: 0 -5px 15px rgba(0,0,0,0.05);
+        display: flex; position: fixed; bottom: 0; left: 0; right: 0;
+        background: var(--bg-secondary); justify-content: flex-start; overflow-x: auto;
+        padding: 10px 8px; border-top: 1px solid var(--border-color);
+        z-index: 50; box-shadow: 0 -5px 15px rgba(0,0,0,0.05);
       }
       .mobile-nav button {
-        background: none; border: none;
-        font-weight: 500; color: var(--text-secondary);
-        display: flex; flex-direction: column; align-items: center;
-        flex: 0 0 auto; min-width: 64px;
+        background: none; border: none; font-weight: 500;
+        color: var(--text-secondary); display: flex; flex-direction: column;
+        align-items: center; flex: 0 0 auto; min-width: 64px;
         font-size: 0.7rem; cursor: pointer;
       }
       .mobile-nav button.active { color: var(--gold-dark); font-weight: 700; }
       .search-wrapper { width: 100%; }
     }
-
-    @media (min-width: 769px) {
-      .mobile-nav { display: none; }
-    }
+    @media (min-width: 769px) { .mobile-nav { display: none; } }
 
     .auth-overlay {
       position: fixed; inset: 0; z-index: 9999;
@@ -625,12 +403,9 @@
       display: flex; align-items: center; justify-content: center; padding: 20px;
     }
     .auth-box {
-      background: var(--bg-secondary);
-      border-radius: 24px;
-      padding: 36px 32px;
-      width: 100%; max-width: 380px;
-      text-align: center;
-      box-shadow: 0 30px 60px rgba(0,0,0,0.35);
+      background: var(--bg-secondary); border-radius: 24px;
+      padding: 36px 32px; width: 100%; max-width: 380px;
+      text-align: center; box-shadow: 0 30px 60px rgba(0,0,0,0.35);
       animation: slideUp 0.3s ease;
     }
     .auth-logo {
@@ -642,14 +417,10 @@
     }
     .auth-sub { color: var(--text-secondary); font-size: 0.85rem; margin: 6px 0 20px; }
     .auth-box input {
-      width: 100%; padding: 14px;
-      border-radius: 12px;
+      width: 100%; padding: 14px; border-radius: 12px;
       border: 1px solid var(--border-color);
-      background: var(--bg-primary);
-      color: var(--text-primary);
-      font-size: 1rem;
-      text-align: center;
-      letter-spacing: 2px;
+      background: var(--bg-primary); color: var(--text-primary);
+      font-size: 1rem; text-align: center; letter-spacing: 2px;
     }
     .auth-box input:focus { outline: none; border-color: var(--gold); }
   </style>
@@ -709,9 +480,10 @@
     <div class="bottom-actions">
       <button class="btn secondary" id="exportBtn">📤 Экспорт</button>
       <button class="btn secondary" id="importBtn" type="button">📥 Импорт</button>
-      <input id="importCsvInput" type="file" accept=".csv,text/csv" hidden>
-      <div id="syncStatus" title="Нажмите, чтобы обновить с сервера" style="text-align: center; font-size: 0.75rem; color: var(--text-muted); margin-top: 8px; cursor: pointer;">
-        Синхронизация...
+      <input id="importCsvInput" type="file" accept=".csv,.json,text/csv,application/json" hidden>
+      <div id="syncStatus" title="Кликните, чтобы сбросить данные к data.js"
+           style="text-align: center; font-size: 0.75rem; color: var(--text-muted); margin-top: 8px; cursor: pointer;">
+        💾 Локальные данные
       </div>
     </div>
   </aside>
@@ -732,49 +504,16 @@
 
 <script type="module">
 // ============================================================================
-// FIREBASE v10 MODULAR SDK + PERSISTENT LOCAL CACHE
+// ИМПОРТ ЛОКАЛЬНОЙ БАЗЫ ДАННЫХ (никакого Firebase)
 // ============================================================================
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import {
-  initializeFirestore,
-  getFirestore,
-  persistentLocalCache,
-  persistentMultipleTabManager,
-  collection,
-  doc,
-  getDoc,
-  getDocs,
-  setDoc,
-  deleteDoc,
-  writeBatch,
-  query,
-  where
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyCO93lwu3eW46nxJJM3BhG2qkMobp89CYE",
-  authDomain: "control-dom-509c9.firebaseapp.com",
-  projectId: "control-dom-509c9",
-  storageBucket: "control-dom-509c9.firebasestorage.app",
-  messagingSenderId: "63569681012",
-  appId: "1:63569681012:web:cfc3de1fd5efd942a28f21"
-};
-
-const app = initializeApp(firebaseConfig);
-
-// ----- Firestore с persistent local cache (IndexedDB) -----
-let db;
-try {
-  db = initializeFirestore(app, {
-    localCache: persistentLocalCache({
-      tabManager: persistentMultipleTabManager()
-    })
-  });
-  console.log('[Firestore] ✅ Persistent cache enabled (IndexedDB)');
-} catch (err) {
-  console.warn('[Firestore] ⚠️ Persistent cache unavailable, fallback to memory:', err);
-  db = getFirestore(app);
-}
+  DATA_VERSION,
+  houses as initialHouses,
+  apartments as initialApartments,
+  clients as initialClients,
+  payments as initialPayments,
+  reports as initialReports
+} from './data.js';
 
 // ============================================================================
 // AUTH GATE
@@ -811,319 +550,111 @@ const AUTH_KEY = 'khisrav_auth';
 })();
 
 // ============================================================================
-// STATE
+// STATE + LOCALSTORAGE PERSISTENCE
 // ============================================================================
-let state = { houses: [], apartments: [], clients: [], payments: [] };
+const LS_KEY = 'khisrav_state';
+const LS_VERSION_KEY = 'khisrav_state_version';
+
+function deepClone(o) { return JSON.parse(JSON.stringify(o)); }
+
+function buildInitialState() {
+  const savedVersion = localStorage.getItem(LS_VERSION_KEY);
+  const savedData    = localStorage.getItem(LS_KEY);
+
+  if (savedData && savedVersion === String(DATA_VERSION)) {
+    try {
+      const parsed = JSON.parse(savedData);
+      if (parsed && typeof parsed === 'object') {
+        console.log('[Init] Данные загружены из localStorage');
+        return {
+          houses:     Array.isArray(parsed.houses)     ? parsed.houses     : [],
+          apartments: Array.isArray(parsed.apartments) ? parsed.apartments : [],
+          clients:    Array.isArray(parsed.clients)    ? parsed.clients    : [],
+          payments:   Array.isArray(parsed.payments)   ? parsed.payments   : [],
+          reports:    Array.isArray(parsed.reports)    ? parsed.reports    : []
+        };
+      }
+    } catch (e) {
+      console.warn('[Init] localStorage parse error, используем data.js:', e);
+    }
+  }
+
+  console.log('[Init] Данные загружены из data.js');
+  return {
+    houses:     deepClone(initialHouses),
+    apartments: deepClone(initialApartments),
+    clients:    deepClone(initialClients),
+    payments:   deepClone(initialPayments),
+    reports:    deepClone(initialReports)
+  };
+}
+
+let state = buildInitialState();
 let currentFilter = 'all';
 let currentPage = 'dashboard';
 let currentHouseId = null;
 let currentFloor = null;
 
-let isSyncing = false;
-let lastSyncTime = null;
-let pendingChanges = new Set();
-let syncTimeout = null;
-const SYNC_DEBOUNCE = 3000;
-
-// ---- Защита от параллельных загрузок ----
-let isLoading = false;
-
-// ---- Метка последней синхронизации с сервером ----
-const SERVER_SYNC_KEY = 'khisrav_server_sync_ts';
-const SERVER_SYNC_MIN_INTERVAL = 60 * 60 * 1000; // 1 час
-
-function shouldRefreshFromServer() {
-  const last = parseInt(localStorage.getItem(SERVER_SYNC_KEY) || '0', 10);
-  return Date.now() - last > SERVER_SYNC_MIN_INTERVAL;
-}
-function markServerSynced() {
-  localStorage.setItem(SERVER_SYNC_KEY, String(Date.now()));
-}
-function hasAnyData() {
-  return state.houses.length > 0 || state.apartments.length > 0;
-}
-
-// ============================================================================
-// SYNC (запись в Firebase) — writeBatch
-// ============================================================================
-async function syncToFirebase() {
-  if (isSyncing || pendingChanges.size === 0) return;
-  if (syncTimeout) { clearTimeout(syncTimeout); syncTimeout = null; }
-
-  isSyncing = true;
-  updateSyncStatus('syncing');
-
-  try {
-    const batch = writeBatch(db);
-    let hasChanges = false;
-
-    pendingChanges.forEach(changeKey => {
-      const [collectionName, id] = changeKey.split(':');
-      const collectionData = state[collectionName];
-      if (collectionData) {
-        const item = collectionData.find(i => i.id === id);
-        if (item) {
-          batch.set(doc(db, collectionName, id), item, { merge: true });
-          hasChanges = true;
-        }
-      }
-    });
-
-    if (hasChanges) {
-      await batch.commit();
-      lastSyncTime = new Date();
-      updateSyncStatus('synced');
-    } else {
-      updateSyncStatus('synced');
-    }
-    pendingChanges.clear();
-  } catch (error) {
-    console.error('Sync error:', error);
-    if (error.code === 'resource-exhausted' || error.message?.includes('resource-exhausted')) {
-      updateSyncStatus('error', 'Превышена квота. Изменения сохранены локально.');
-      toast('⚠️ Превышена квота Firestore.');
-    } else {
-      updateSyncStatus('error');
-    }
-  } finally {
-    isSyncing = false;
-  }
-}
-
-async function scheduleSync(collectionName, itemOrId, customId = null) {
-  // Немедленная запись с явным id (для CSV-импорта)
-  if (customId && itemOrId && typeof itemOrId === 'object') {
+let saveTimeout = null;
+function saveState() {
+  if (saveTimeout) clearTimeout(saveTimeout);
+  saveTimeout = setTimeout(() => {
     try {
-      await setDoc(doc(db, collectionName, customId), itemOrId, { merge: true });
-      lastSyncTime = new Date();
+      localStorage.setItem(LS_KEY, JSON.stringify(state));
+      localStorage.setItem(LS_VERSION_KEY, String(DATA_VERSION));
       updateSyncStatus('synced');
     } catch (e) {
-      console.error('Direct setDoc error:', e);
-    }
-    return;
-  }
-
-  if (collectionName && itemOrId) {
-    pendingChanges.add(`${collectionName}:${itemOrId}`);
-  }
-
-  if (syncTimeout) clearTimeout(syncTimeout);
-  syncTimeout = setTimeout(() => { syncToFirebase(); }, SYNC_DEBOUNCE);
-}
-
-// ============================================================================
-// LOAD (чтение из Firebase) — cache-first
-// ============================================================================
-/**
- * @param {Object} opts
- * @param {boolean} opts.force           — игнорировать cooldown-защиту
- * @param {'default'|'cache'|'server'} opts.source
- */
-async function loadFromFirebase({ force = false, source = 'default' } = {}) {
-  if (isLoading) return hasAnyData();
-
-  isLoading = true;
-  if (source !== 'cache') updateSyncStatus('syncing');
-
-  try {
-    const opts = source === 'cache'  ? { source: 'cache' }
-               : source === 'server' ? { source: 'server' }
-               : {};
-
-    const [housesSnap, apartmentsSnap, clientsSnap, paymentsSnap] = await Promise.all([
-      getDocs(collection(db, 'houses'), opts),
-      getDocs(collection(db, 'apartments'), opts),
-      getDocs(collection(db, 'clients'), opts),
-      getDocs(collection(db, 'payments'), opts)
-    ]);
-
-    const houses     = housesSnap.docs.map(d => ({ id: d.id, ...d.data() }));
-    const apartments = apartmentsSnap.docs.map(d => ({ id: d.id, ...d.data() }));
-    const clients    = clientsSnap.docs.map(d => ({ id: d.id, ...d.data() }));
-    const payments   = paymentsSnap.docs.map(d => ({ id: d.id, ...d.data() }));
-
-    if (houses.length > 0 || apartments.length > 0) {
-      state = { houses, apartments, clients, payments };
-      lastSyncTime = new Date();
-      updateSyncStatus('synced');
-      return true;
-    }
-
-    if (source !== 'cache') updateSyncStatus('empty');
-    return false;
-  } catch (error) {
-    if (source === 'cache') {
-      console.info('[Firestore] Cache miss — загрузим с сервера');
-      return false;
-    }
-    console.error('Load error:', error);
-    if (error.code === 'resource-exhausted' || error.message?.includes('resource-exhausted')) {
-      updateSyncStatus('error', 'Превышена квота Firestore.');
-      toast('⚠️ Превышена квота Firestore.');
-    } else {
+      console.error('[saveState] Ошибка сохранения в localStorage:', e);
       updateSyncStatus('error');
     }
-    return hasAnyData();
-  } finally {
-    isLoading = false;
-  }
+  }, 150);
 }
 
-// Ручное обновление с сервера (клик по #syncStatus или из консоли)
-window.refreshFromServer = async function () {
-  if (isLoading) { toast('⏳ Уже идёт загрузка...'); return; }
-  toast('🔄 Обновление с сервера...');
-  const ok = await loadFromFirebase({ force: true, source: 'server' });
-  if (ok) {
-    markServerSynced();
-    render();
-    toast('✅ Данные обновлены с сервера');
-  } else {
-    toast('⚠️ Не удалось обновить');
-  }
-};
+// Замена вызовам scheduleSync(...) по всему коду — просто сохраняем state
+function scheduleSync() { saveState(); }
 
-function updateSyncStatus(status, customMessage = '') {
+function updateSyncStatus(status) {
   const el = document.getElementById('syncStatus');
   if (!el) return;
-  switch (status) {
-    case 'syncing':
-      el.innerHTML = '<span class="loading"></span> Синхронизация...';
-      el.style.color = 'var(--text-muted)';
-      break;
-    case 'synced': {
-      let timeText = 'только что';
-      if (lastSyncTime) {
-        try {
-          const d = lastSyncTime instanceof Date ? lastSyncTime : new Date(lastSyncTime);
-          if (!isNaN(d.getTime())) timeText = d.toLocaleTimeString('ru-RU');
-        } catch (_) {}
-      }
-      el.innerHTML = `✅ Синхронизировано ${timeText} <span style="opacity:.6">↻</span>`;
-      el.style.color = 'var(--emerald)';
-      break;
-    }
-    case 'error':
-      el.innerHTML = customMessage || '⚠️ Ошибка синхронизации';
-      el.style.color = 'var(--red)';
-      break;
-    case 'empty':
-      el.innerHTML = 'База данных пуста';
-      el.style.color = 'var(--yellow)';
-      break;
+  if (status === 'syncing') {
+    el.innerHTML = '<span class="loading"></span> Сохранение...';
+    el.style.color = 'var(--text-muted)';
+  } else if (status === 'error') {
+    el.innerHTML = '⚠️ Ошибка localStorage';
+    el.style.color = 'var(--red)';
+  } else {
+    el.innerHTML = '💾 Локальные данные <span style="opacity:.6">↻</span>';
+    el.style.color = 'var(--emerald)';
   }
 }
 
 // ============================================================================
-// DEMO DATA
+// ВОССТАНОВЛЕНИЕ / СБРОС (из консоли или по клику на syncStatus)
 // ============================================================================
-function initDemoData() {
-  const blocks = [
-    { id: 'block-a', name: 'Блок А', address: 'ул. Камоли Хукандий', floors: 10, status: 'не начали' },
-    { id: 'block-b', name: 'Блок Б', address: 'ул. Камоли Хукандий', floors: 10, status: 'Строится' },
-    { id: 'block-v', name: 'Блок В', address: 'ул. Камоли Хукандий', floors: 10, status: 'Почти готов' }
-  ];
-
-  state.houses = blocks;
-  state.apartments = [];
-  state.clients = [];
-  state.payments = [];
-
-  let aptCounter = 0;
-  blocks.forEach(block => {
-    for (let i = 1; i <= 5; i++) {
-      aptCounter++;
-      state.apartments.push({
-        id: `apt-${aptCounter}`, houseId: block.id, type: 'basement', floor: 0,
-        number: `П${String(i).padStart(2, '0')}`, rooms: 0,
-        area: 35 + Math.floor(Math.random() * 15),
-        price: 18000 + Math.floor(Math.random() * 8000),
-        status: 'available', clientId: null, installment: null
-      });
-    }
-    for (let floor = 1; floor <= 9; floor++) {
-      for (let i = 1; i <= 8; i++) {
-        aptCounter++;
-        state.apartments.push({
-          id: `apt-${aptCounter}`, houseId: block.id,
-          type: floor <= 2 ? 'commercial' : 'residential', floor,
-          number: `${floor}${String(i).padStart(2, '0')}`,
-          rooms: floor <= 2 ? 0 : 1 + Math.floor(Math.random() * 3),
-          area: floor <= 2 ? 45 + Math.floor(Math.random() * 25) : 55 + Math.floor(Math.random() * 35),
-          price: floor <= 2 ? 28000 + Math.floor(Math.random() * 12000) : 40000 + Math.floor(Math.random() * 25000),
-          status: 'available', clientId: null, installment: null
-        });
-      }
-    }
-    for (let i = 1; i <= 5; i++) {
-      aptCounter++;
-      state.apartments.push({
-        id: `apt-${aptCounter}`, houseId: block.id, type: 'penthouse', floor: 10,
-        number: `10${String(i).padStart(2, '0')}`,
-        rooms: 3 + Math.floor(Math.random() * 2),
-        area: 95 + Math.floor(Math.random() * 40),
-        price: 85000 + Math.floor(Math.random() * 40000),
-        status: 'available', clientId: null, installment: null
-      });
-    }
-  });
-
-  console.log(`[Demo] ${blocks.length} блоков, ${state.apartments.length} квартир`);
-  return { houses: blocks, apartments: state.apartments };
-}
-
-// ============================================================================
-// RESTORE / RESET (из консоли)
-// ============================================================================
-window.restoreAllData = async function () {
-  const { houses, apartments } = initDemoData();
-
-  let batch = writeBatch(db);
-  houses.forEach(h => batch.set(doc(db, 'houses', h.id), h));
-  await batch.commit();
-
-  for (let i = 0; i < apartments.length; i += 400) {
-    batch = writeBatch(db);
-    apartments.slice(i, i + 400).forEach(apt => batch.set(doc(db, 'apartments', apt.id), apt));
-    await batch.commit();
-  }
-  console.log(`✅ Восстановлено: ${houses.length} блоков + ${apartments.length} квартир`);
-  toast('✅ Данные восстановлены');
+window.restoreAllData = function () {
+  if (!confirm('Сбросить все данные к содержимому data.js? Текущие изменения будут потеряны.')) return;
+  state = {
+    houses:     deepClone(initialHouses),
+    apartments: deepClone(initialApartments),
+    clients:    deepClone(initialClients),
+    payments:   deepClone(initialPayments),
+    reports:    deepClone(initialReports)
+  };
+  saveState();
+  render();
+  toast('✅ Данные восстановлены из data.js');
 };
 
-window.resetDb = async function () {
-  const [clientsSnap, paymentsSnap, apartmentsSnap] = await Promise.all([
-    getDocs(collection(db, 'clients')),
-    getDocs(collection(db, 'payments')),
-    getDocs(collection(db, 'apartments'))
-  ]);
-
-  const ops = [
-    ...clientsSnap.docs.map(d => ({ type: 'delete', ref: d.ref })),
-    ...paymentsSnap.docs.map(d => ({ type: 'delete', ref: d.ref })),
-    ...apartmentsSnap.docs.map(d => ({
-      type: 'update', ref: d.ref,
-      data: { status: 'available', clientId: null, installment: null }
-    }))
-  ];
-
-  for (let i = 0; i < ops.length; i += 450) {
-    const batch = writeBatch(db);
-    ops.slice(i, i + 450).forEach(op => {
-      if (op.type === 'delete') batch.delete(op.ref);
-      else batch.update(op.ref, op.data);
-    });
-    await batch.commit();
-  }
-
+window.resetDb = function () {
+  if (!confirm('Очистить клиентов и платежи, сбросить все квартиры в «Свободно»?')) return;
   state.clients = [];
   state.payments = [];
-  state.apartments = state.apartments.map(a => a ? {
+  state.apartments = state.apartments.map(a => ({
     ...a, status: 'available', clientId: null, installment: null
-  } : a);
-  pendingChanges.clear();
+  }));
+  saveState();
   render();
-  console.log('DB reset complete');
+  toast('✅ База сброшена');
 };
 
 // ============================================================================
@@ -1535,11 +1066,9 @@ function buildInstallmentPlan(apt) {
   return { years, termMonths, initialPayment, monthlyPayment: baseMonthly, startDate: INSTALLMENT_START_DATE, payments };
 }
 
-// --------------------------------------------------------------------------
-// sellApartment — ФИКС: синхронизирует ТОЛЬКО новые платежи
-// --------------------------------------------------------------------------
 window.sellApartment = function (aptId) {
   const apt = getApt(aptId);
+  if (!apt) return;
   const modal = document.createElement('div');
   modal.className = 'modal';
   modal.innerHTML = `
@@ -1589,9 +1118,6 @@ window.sellApartment = function (aptId) {
     state.clients.push(client);
     apt.clientId = client.id;
 
-    // ✅ ФИКС: собираем ТОЛЬКО ID новых платежей, не перебираем все state.payments
-    const newPaymentIds = [];
-
     if (document.getElementById('payType').value === 'full') {
       apt.status = 'sold';
       apt.installment = null;
@@ -1606,10 +1132,8 @@ window.sellApartment = function (aptId) {
         monthlyPayment: plan.monthlyPayment
       };
       plan.payments.forEach((pp, i) => {
-        const pid = 'p' + Date.now() + '_' + i;
-        newPaymentIds.push(pid);
         state.payments.push({
-          id: pid,
+          id: 'p' + Date.now() + '_' + i,
           apartmentId: apt.id,
           clientId: client.id,
           date: pp.dateStr,
@@ -1619,11 +1143,7 @@ window.sellApartment = function (aptId) {
       });
     }
 
-    // Синхронизируем строго новые/изменённые документы
-    scheduleSync('clients', client.id);
-    scheduleSync('apartments', apt.id);
-    newPaymentIds.forEach(id => scheduleSync('payments', id));
-
+    saveState();
     modal.remove();
     render();
     toast('✅ Продажа завершена');
@@ -1684,7 +1204,7 @@ window.updatePaymentAmount = function (paymentId, value) {
   const amount = parseFloat(value);
   if (isNaN(amount) || amount < 0) return;
   p.amount = amount;
-  scheduleSync('payments', paymentId);
+  saveState();
   updatePaymentTotals(p.apartmentId);
   toast('✅ Сумма обновлена');
 };
@@ -1697,7 +1217,7 @@ window.updatePaymentStatus = function (paymentId, value) {
   if (value === 'paid') p.paidDate = new Date().toISOString().split('T')[0];
   else delete p.paidDate;
 
-  scheduleSync('payments', paymentId);
+  saveState();
 
   const row = document.getElementById(`payment-row-${paymentId}`);
   if (row) {
@@ -1729,7 +1249,7 @@ window.markPaid = function (paymentId) {
   if (p) {
     p.status = 'paid';
     p.paidDate = new Date().toISOString().split('T')[0];
-    scheduleSync('payments', paymentId);
+    saveState();
     render();
     document.querySelector('.modal')?.remove();
     toast('✅ Платеж отмечен');
@@ -1774,16 +1294,13 @@ window.editApartment = function (aptId) {
     apt.rooms = parseInt(document.getElementById('aRooms').value);
     apt.price = parseInt(document.getElementById('aPrice').value);
     apt.status = document.getElementById('aStatus').value;
-    scheduleSync('apartments', apt.id);
+    saveState();
     modal.remove();
     render();
     toast('✅ Изменения сохранены');
   };
 };
 
-// --------------------------------------------------------------------------
-// openAddHouseModal — ФИКС: синхронизирует ТОЛЬКО новые апартаменты
-// --------------------------------------------------------------------------
 window.openAddHouseModal = function () {
   const modal = document.createElement('div');
   modal.className = 'modal';
@@ -1813,8 +1330,6 @@ window.openAddHouseModal = function () {
     };
     state.houses.push(newHouse);
 
-    // ✅ ФИКС: собираем ТОЛЬКО новые апартаменты этого блока
-    const newApartments = [];
     let aptCounter = state.apartments.reduce((max, a) => {
       const m = /^apt-(\d+)$/.exec(a.id || '');
       return m ? Math.max(max, parseInt(m[1], 10)) : max;
@@ -1829,7 +1344,6 @@ window.openAddHouseModal = function () {
         status: 'available',
         ...data
       };
-      newApartments.push(apt);
       state.apartments.push(apt);
     };
 
@@ -1855,10 +1369,7 @@ window.openAddHouseModal = function () {
       pushApt({ type: 'penthouse', floor: 10, number: `10${String(room).padStart(2, '0')}`, rooms: 4, area: 150, price: 600000 });
     }
 
-    // Синхронизируем ТОЛЬКО новый блок + его апартаменты
-    scheduleSync('houses', newHouse.id);
-    newApartments.forEach(a => scheduleSync('apartments', a.id));
-
+    saveState();
     modal.remove();
     render();
     toast('✅ Блок создан');
@@ -1894,7 +1405,7 @@ window.openAddApartmentModal = function (houseId, floor) {
       type: floor === 0 ? 'basement' : floor === 10 ? 'penthouse' : floor <= 2 ? 'commercial' : 'residential'
     };
     state.apartments.push(newApt);
-    scheduleSync('apartments', newApt.id);
+    saveState();
     modal.remove();
     render();
     toast('✅ Объект добавлен');
@@ -2003,7 +1514,7 @@ function renderSalesPage(container) {
 }
 
 // ============================================================================
-// REPORTS — cache-first
+// REPORTS (локальные данные)
 // ============================================================================
 const REPORT_AUTHORS = {
   abdulloh: 'Абдуллох',
@@ -2016,50 +1527,15 @@ const PAGE_SIZE = 10;
 
 function getReportState(slug) {
   if (!reportsState[slug]) {
-    reportsState[slug] = { all: [], filtered: [], visibleCount: PAGE_SIZE, loaded: false, loading: false };
+    reportsState[slug] = { filtered: [], visibleCount: PAGE_SIZE };
   }
   return reportsState[slug];
 }
 
-// --------------------------------------------------------------------------
-// loadReports: сначала cache (0 reads), потом — server только если пусто
-// --------------------------------------------------------------------------
-async function loadReports(slug) {
-  const rs = getReportState(slug);
-  if (rs.loading || rs.loaded) return;
-
-  rs.loading = true;
-  try {
-    const q = query(collection(db, 'reports'), where('authorSlug', '==', slug));
-    let docs = [];
-
-    // 1) Persistent cache — 0 операций чтения
-    try {
-      const cacheSnap = await getDocs(q, { source: 'cache' });
-      cacheSnap.forEach(d => docs.push({ id: d.id, ...d.data() }));
-      if (docs.length > 0) {
-        console.log(`[Reports:${slug}] Загружено из кэша: ${docs.length} (0 reads)`);
-      }
-    } catch (e) {
-      // cache miss — норм
-    }
-
-    // 2) Если кэш пуст — идём на сервер
-    if (docs.length === 0) {
-      console.log(`[Reports:${slug}] Cache пуст, запрос на сервер`);
-      const serverSnap = await getDocs(q);
-      serverSnap.forEach(d => docs.push({ id: d.id, ...d.data() }));
-    }
-
-    docs.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
-    rs.all = docs;
-    rs.loaded = true;
-  } catch (error) {
-    console.error('loadReports error:', error);
-    toast('⚠️ Ошибка загрузки отчётов');
-  } finally {
-    rs.loading = false;
-  }
+function getReportsByAuthor(slug) {
+  return state.reports
+    .filter(r => r.authorSlug === slug)
+    .sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
 }
 
 function applyReportFilters(slug) {
@@ -2067,7 +1543,8 @@ function applyReportFilters(slug) {
   const year  = document.getElementById('filterYear')?.value  || '';
   const month = document.getElementById('filterMonth')?.value || '';
   const day   = document.getElementById('filterDay')?.value   || '';
-  rs.filtered = rs.all.filter(r => {
+  const all = getReportsByAuthor(slug);
+  rs.filtered = all.filter(r => {
     if (year  && String(r.year)  !== year)  return false;
     if (month && String(r.month) !== month) return false;
     if (day   && String(r.day)   !== day)   return false;
@@ -2084,9 +1561,8 @@ window.showOlderReports = function (slug) {
   renderReportsList(slug);
 };
 
-async function renderReportPage(container, slug) {
+function renderReportPage(container, slug) {
   const authorName = REPORT_AUTHORS[slug];
-  const rs = getReportState(slug);
   const now = new Date();
   const years = [];
   for (let y = now.getFullYear() - 2; y <= now.getFullYear() + 1; y++) years.push(y);
@@ -2108,9 +1584,8 @@ async function renderReportPage(container, slug) {
       </select>
       <button class="btn" onclick="window.openReportModal('${slug}')">+ Добавить отчёт</button>
     </div>
-    <div id="reportsList">Загрузка...</div>`;
+    <div id="reportsList"></div>`;
 
-  if (!rs.loaded) await loadReports(slug);
   applyReportFilters(slug);
 }
 window.renderReportPage = renderReportPage;
@@ -2155,18 +1630,12 @@ function reportCardHTML(slug, r) {
     </div>`;
 }
 
-window.deleteReport = async function (slug, reportId) {
+window.deleteReport = function (slug, reportId) {
   if (!confirm('Удалить этот отчёт?')) return;
-  try {
-    await deleteDoc(doc(db, 'reports', reportId));
-    const rs = getReportState(slug);
-    rs.all = rs.all.filter(r => r.id !== reportId);
-    applyReportFilters(slug);
-    toast('🗑️ Отчёт удалён');
-  } catch (error) {
-    console.error('deleteReport error:', error);
-    toast('⚠️ Ошибка удаления');
-  }
+  state.reports = state.reports.filter(r => r.id !== reportId);
+  saveState();
+  applyReportFilters(slug);
+  toast('🗑️ Отчёт удалён');
 };
 
 // ============================================================================
@@ -2195,30 +1664,6 @@ window.reportTableAddCol = function () { syncTableFromDOM(); editingTable.forEac
 window.reportTableRemoveRow = function () { syncTableFromDOM(); if (editingTable.length > 1) editingTable.pop(); renderTableEditor(); };
 window.reportTableRemoveCol = function () { syncTableFromDOM(); if (editingTable[0].length > 1) editingTable.forEach(row => row.pop()); renderTableEditor(); };
 
-// --------------------------------------------------------------------------
-// ⚠️⚠️⚠️ ВНИМАНИЕ: Base64! ⚠️⚠️⚠️
-// --------------------------------------------------------------------------
-// Функция ниже конвертирует изображение в Base64 (dataURL) и сохраняет его
-// напрямую в документ Firestore в поле `report.images`. Это:
-//   1. Раздувает документ, приближая его к жёсткому лимиту в 1 МБ.
-//   2. Увеличивает трафик и стоимость (каждая загрузка тянет всю Base64-строку).
-//   3. Firebase настоятельно не рекомендует так делать.
-//
-// РЕКОМЕНДАЦИЯ: перейти на Firebase Storage (или ImgBB / Cloudflare R2):
-//   1. Загрузить файл -> получить публичный URL.
-//   2. Хранить в report.images только URL-строки (короткие, ~100 байт).
-// Пример (Firebase Storage v10):
-//    import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from ".../firebase-storage.js";
-//    const storage = getStorage(app);
-//    const fileRef = storageRef(storage, `reports/${Date.now()}_${file.name}`);
-//    await uploadBytes(fileRef, file);
-//    const url = await getDownloadURL(fileRef);
-//    editingImages.push(url);
-//
-// На время пока Storage не подключён — держим жёсткое сжатие:
-//   maxWidth: 640, quality: 0.5 -> ~40-80 КБ на картинку -> 3 картинки ~ 200 КБ.
-//   Это безопасно укладывается в лимит 1 МБ даже с учётом текста и таблицы.
-// --------------------------------------------------------------------------
 function resizeImageFile(file, maxWidth = 640, quality = 0.5) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -2273,8 +1718,7 @@ window.openLightbox = function (src) {
 };
 
 window.openReportModal = function (slug, reportId = null) {
-  const rs = getReportState(slug);
-  const existing = reportId ? rs.all.find(r => r.id === reportId) : null;
+  const existing = reportId ? state.reports.find(r => r.id === reportId) : null;
 
   editingTable = existing ? JSON.parse(JSON.stringify(existing.table || [['', '', '']])) : [['', '', ''], ['', '', '']];
   editingImages = existing ? [...(existing.images || [])] : [];
@@ -2301,7 +1745,7 @@ window.openReportModal = function (slug, reportId = null) {
           </div>
         </div>
         <div>
-          <div class="report-dropzone" id="reportDropzone">📷 Перетащите до 3 изображений или нажмите, чтобы выбрать<br><small style="color:var(--text-muted)">⚠️ Изображения сохраняются в Firestore как Base64 — рекомендуется перейти на Firebase Storage</small></div>
+          <div class="report-dropzone" id="reportDropzone">📷 Перетащите до 3 изображений или нажмите, чтобы выбрать</div>
           <input type="file" id="reportFileInput" accept="image/*" multiple style="display:none;">
           <div class="report-thumbs" id="reportThumbs"></div>
         </div>
@@ -2325,7 +1769,7 @@ window.openReportModal = function (slug, reportId = null) {
     handleReportFiles(e.dataTransfer.files);
   };
 
-  document.getElementById('saveReport').onclick = async () => {
+  document.getElementById('saveReport').onclick = () => {
     syncTableFromDOM();
     const dateStr = document.getElementById('reportDate').value || todayStr;
     const [year, month, day] = dateStr.split('-').map(Number);
@@ -2342,17 +1786,18 @@ window.openReportModal = function (slug, reportId = null) {
       createdAt: existing ? existing.createdAt : Date.now()
     };
 
-    try {
-      await setDoc(doc(db, 'reports', report.id), report);
-      if (existing) Object.assign(existing, report);
-      else rs.all.unshift(report);
-      modal.remove();
-      applyReportFilters(slug);
-      toast('✅ Отчёт сохранён');
-    } catch (error) {
-      console.error('saveReport error:', error);
-      toast('⚠️ Ошибка сохранения отчёта');
+    if (existing) {
+      const idx = state.reports.findIndex(r => r.id === existing.id);
+      if (idx >= 0) state.reports[idx] = report;
+      else state.reports.push(report);
+    } else {
+      state.reports.push(report);
     }
+
+    saveState();
+    modal.remove();
+    applyReportFilters(slug);
+    toast('✅ Отчёт сохранён');
   };
 };
 
@@ -2360,10 +1805,10 @@ window.openReportModal = function (slug, reportId = null) {
 // EXPORT / IMPORT
 // ============================================================================
 document.getElementById('exportBtn').addEventListener('click', () => {
-  const blob = new Blob([JSON.stringify(state)], { type: 'application/json' });
+  const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = 'backup_khisrav.json';
+  a.download = `backup_khisrav_${new Date().toISOString().split('T')[0]}.json`;
   a.click();
   toast('📤 Данные экспортированы');
 });
@@ -2372,10 +1817,39 @@ const importBtn = document.getElementById('importBtn');
 const importCsvInput = document.getElementById('importCsvInput');
 
 importBtn.addEventListener('click', () => importCsvInput.click());
+
 importCsvInput.addEventListener('change', () => {
-  if (!importCsvInput.files || importCsvInput.files.length === 0) return;
+  const file = importCsvInput.files && importCsvInput.files[0];
+  if (!file) return;
+
+  const isJson = file.name.toLowerCase().endsWith('.json') || file.type === 'application/json';
   const reader = new FileReader();
-  reader.onload = async event => {
+
+  if (isJson) {
+    // ---------- JSON (полный backup) ----------
+    reader.onload = event => {
+      try {
+        const data = JSON.parse(event.target.result);
+        if (data.houses && Array.isArray(data.houses))       state.houses     = data.houses;
+        if (data.apartments && Array.isArray(data.apartments)) state.apartments = data.apartments;
+        if (data.clients && Array.isArray(data.clients))     state.clients    = data.clients;
+        if (data.payments && Array.isArray(data.payments))   state.payments   = data.payments;
+        if (data.reports && Array.isArray(data.reports))     state.reports    = data.reports;
+        saveState();
+        render();
+        toast('📥 Данные импортированы из JSON');
+      } catch (err) {
+        alert('Ошибка чтения JSON: ' + err.message);
+      } finally {
+        importCsvInput.value = '';
+      }
+    };
+    reader.readAsText(file, 'utf-8');
+    return;
+  }
+
+  // ---------- CSV ----------
+  reader.onload = event => {
     const lines = event.target.result.split(/\r?\n/);
     let successCount = 0;
 
@@ -2394,88 +1868,54 @@ importCsvInput.addEventListener('change', () => {
       const paid = parseInt((cols[cols.length - 2] || '0').replace(/\s/g, ''), 10) || 0;
       const debt = parseInt((cols[cols.length - 1] || '0').replace(/\s/g, ''), 10) || 0;
       const floorNum = objectNo.includes('/') ? objectNo.split('/')[0] : '1';
-      const customId = `Block_A_${objectNo.replace('/', '-')}`;
+
+      const aptId = `Block_A_${objectNo.replace('/', '-')}`;
       const apartmentData = {
+        id: aptId,
         objectNumber: objectNo,
         name: clientName,
         area, pricePerMeter, totalPrice, paid, debt,
-        status: debt > 0 ? 'Рассрочка' : 'Продано',
+        status: debt > 0 ? 'installment' : 'sold',
         block: 'Блок А',
-        floor: `${floorNum} этаж`
+        floor: parseInt(floorNum) || 1,
+        houseId: 'block-a',
+        type: 'residential',
+        number: objectNo,
+        rooms: 0,
+        price: totalPrice || area * pricePerMeter,
+        clientId: null,
+        installment: null
       };
 
-      try {
-        await scheduleSync('apartments', apartmentData, customId);
-        successCount++;
-      } catch (error) {
-        console.error(`CSV import error for ${objectNo}:`, error);
-      }
+      const idx = state.apartments.findIndex(a => a.id === aptId);
+      if (idx >= 0) state.apartments[idx] = apartmentData;
+      else state.apartments.push(apartmentData);
+      successCount++;
     }
 
+    saveState();
     render();
-    toast(`Импортировано клиентов: ${successCount}`);
+    toast(`Импортировано записей: ${successCount}`);
     importCsvInput.value = '';
   };
-  reader.readAsText(importCsvInput.files[0], 'windows-1251');
+  reader.readAsText(file, 'windows-1251');
 });
 
 // ============================================================================
-// INIT — двухэтапная загрузка (cache -> server при необходимости)
+// INIT
 // ============================================================================
 window.navigate = navigate;
 
-async function initApp() {
-  // ---------- ШАГ 1: загрузка из IndexedDB-кэша (0 reads из Firestore) ----------
-  let hasCache = false;
-  try {
-    hasCache = await loadFromFirebase({ force: true, source: 'cache' });
-    if (hasCache) {
-      console.log('[Init] ✅ Данные из persistent cache (0 reads)');
-      render();
-    }
-  } catch (e) {
-    console.info('[Init] Cache пуст или недоступен');
-  }
+function initApp() {
+  // Первый рендер
+  updateSyncStatus('synced');
+  render();
 
-  // ---------- ШАГ 2: сервер — только если кэша нет ИЛИ прошло > 1 часа ----------
-  const needsServer = !hasCache || shouldRefreshFromServer();
-
-  if (needsServer) {
-    console.log('[Init] 🌐 Запрос с сервера (cache пуст или устарел)');
-    const loaded = await loadFromFirebase({ force: true, source: 'server' });
-
-    if (loaded) {
-      markServerSynced();
-      render();
-    } else if (!hasCache) {
-      // Совсем пустая база — засеваем демо-данными
-      console.log('[Init] База пуста — инициализация демо-данных');
-      initDemoData();
-      state.houses.forEach(h => scheduleSync('houses', h.id));
-      state.apartments.forEach(a => scheduleSync('apartments', a.id));
-      render();
-    }
-  } else {
-    console.log('[Init] ✅ Свежий кэш — обращения к серверу нет');
-    updateSyncStatus('synced');
-  }
-
-  // ---------- Автоматический polling УДАЛЁН ----------
-  // Обновление с сервера — вручную: клик по #syncStatus или window.refreshFromServer()
+  // Клик по индикатору — сброс к data.js
   const statusEl = document.getElementById('syncStatus');
   if (statusEl) {
-    statusEl.style.cursor = 'pointer';
-    statusEl.title = 'Нажмите, чтобы обновить с сервера';
-    statusEl.addEventListener('click', window.refreshFromServer);
+    statusEl.addEventListener('click', window.restoreAllData);
   }
-
-  // Сохранение накопленных изменений при закрытии вкладки
-  window.addEventListener('beforeunload', () => {
-    if (syncTimeout) { clearTimeout(syncTimeout); syncTimeout = null; }
-    if (pendingChanges.size > 0) {
-      syncToFirebase();
-    }
-  });
 }
 
 initApp();
