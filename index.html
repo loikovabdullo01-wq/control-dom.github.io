@@ -1,1932 +1,649 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" class="dark">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes, viewport-fit=cover">
-  <title>ХИСРАВ СОХТМОН • Система управления недвижимостью</title>
-  <link rel="icon" type="image/png" href="logo.jpg">
-  <style>
-    :root {
-      --gold: #c9a84c;
-      --gold-light: #e5c96e;
-      --gold-dark: #a8892e;
-      --graphite: #1a1f2e;
-      --graphite-light: #2a3142;
-      --graphite-lighter: #3a4256;
-      --emerald: #10b981;
-      --emerald-light: #34d399;
-      --emerald-bg: #ecfdf5;
-      --red: #ef4444;
-      --red-bg: #fef2f2;
-      --yellow: #f59e0b;
-      --yellow-bg: #fffbeb;
-      --gray: #adb5bd;
-      --gray-bg: #f8f9fa;
-      --text-primary: #1a2236;
-      --text-secondary: #5b6e8c;
-      --text-muted: #94a3b8;
-      --bg-primary: #f8fafc;
-      --bg-secondary: #ffffff;
-      --bg-card: #ffffff;
-      --border-color: #e2e8f0;
-      --shadow: 0 4px 6px rgba(0,0,0,0.05);
-      --shadow-lg: 0 10px 25px rgba(0,0,0,0.08);
-      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: 'Inter', -apple-system, system-ui, sans-serif;
-      background: var(--bg-primary);
-      color: var(--text-primary);
-      line-height: 1.5;
-      min-height: 100vh;
-      display: flex;
-      overflow-x: hidden;
-    }
-    ::-webkit-scrollbar { width: 8px; height: 8px; }
-    ::-webkit-scrollbar-track { background: var(--bg-primary); }
-    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-    ::-webkit-scrollbar-thumb:hover { background: var(--gold); }
-
-    .sidebar {
-      width: 280px;
-      background: var(--bg-secondary);
-      border-right: 1px solid var(--border-color);
-      padding: 24px 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
-      position: fixed;
-      top: 0; left: 0; bottom: 0;
-      z-index: 40;
-      transition: var(--transition);
-      box-shadow: 2px 0 10px rgba(0,0,0,0.03);
-    }
-    .logo-area { padding: 0 8px; text-align: center; }
-    .company-name {
-      font-weight: 700;
-      font-size: 1.5rem;
-      background: linear-gradient(135deg, var(--gold-dark), var(--gold));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    .system-sub {
-      font-size: 0.75rem; color: var(--text-secondary); margin-top: 4px;
-      font-weight: 500; letter-spacing: 1px; text-transform: uppercase;
-    }
-    .nav-menu { display: flex; flex-direction: column; gap: 6px; flex: 1; }
-    .nav-item {
-      display: flex; align-items: center; gap: 12px;
-      padding: 12px 14px; border-radius: 12px;
-      font-weight: 500; color: var(--text-secondary);
-      cursor: pointer; transition: var(--transition);
-      font-size: 0.95rem; border: none; background: transparent;
-      width: 100%; text-align: left; position: relative; overflow: hidden;
-    }
-    .nav-item::before {
-      content: ''; position: absolute; left: 0; top: 0; bottom: 0;
-      width: 3px; background: var(--gold);
-      transform: scaleY(0); transition: var(--transition);
-    }
-    .nav-item:hover { background: #f1f5f9; color: var(--text-primary); }
-    .nav-item:hover::before { transform: scaleY(1); }
-    .nav-item.active {
-      background: linear-gradient(135deg, rgba(201,168,76,0.1), rgba(201,168,76,0.05));
-      color: var(--gold-dark); font-weight: 600;
-    }
-    .nav-item.active::before { transform: scaleY(1); }
-
-    .bottom-actions { margin-top: auto; display: flex; flex-direction: column; gap: 8px; }
-    .btn {
-      background: linear-gradient(135deg, var(--gold), var(--gold-dark));
-      color: white; border: none; padding: 12px 20px;
-      border-radius: 12px; font-weight: 600; cursor: pointer;
-      transition: var(--transition); font-size: 0.9rem;
-      display: inline-flex; align-items: center; justify-content: center;
-      gap: 8px; position: relative; overflow: hidden;
-      box-shadow: 0 4px 6px rgba(201,168,76,0.2);
-    }
-    .btn::before {
-      content: ''; position: absolute; top: 50%; left: 50%;
-      width: 0; height: 0; border-radius: 50%;
-      background: rgba(255,255,255,0.3);
-      transform: translate(-50%, -50%);
-      transition: width 0.6s, height 0.6s;
-    }
-    .btn:hover::before { width: 300px; height: 300px; }
-    .btn:hover { box-shadow: 0 6px 12px rgba(201,168,76,0.3); transform: translateY(-2px); }
-    .btn.secondary {
-      background: #f1f5f9; color: var(--text-primary);
-      border: 1px solid var(--border-color); box-shadow: none;
-    }
-    .btn.secondary:hover { background: #e2e8f0; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-    .btn.danger {
-      background: linear-gradient(135deg, var(--red), #dc2626);
-      color: white; box-shadow: 0 4px 6px rgba(239,68,68,0.2);
-    }
-
-    .main-content {
-      margin-left: 280px; flex: 1;
-      padding: 24px 28px 32px;
-      min-height: 100vh; width: 100%;
-      transition: var(--transition);
-    }
-    .top-bar {
-      display: flex; justify-content: space-between;
-      align-items: center; flex-wrap: wrap;
-      gap: 16px; margin-bottom: 28px;
-    }
-    .date-profile {
-      display: flex; align-items: center; gap: 20px;
-      color: var(--text-secondary); font-weight: 500;
-      background: var(--bg-card); padding: 10px 20px;
-      border-radius: 40px; border: 1px solid var(--border-color);
-      box-shadow: var(--shadow);
-    }
-    .search-wrapper {
-      background: var(--bg-card); border-radius: 40px;
-      padding: 4px 4px 4px 20px; display: flex;
-      align-items: center; width: 320px;
-      border: 1px solid var(--border-color);
-      transition: var(--transition); box-shadow: var(--shadow);
-    }
-    .search-wrapper:focus-within { border-color: var(--gold); box-shadow: 0 0 20px rgba(201,168,76,0.2); }
-    .search-wrapper input {
-      border: none; outline: none; font-family: inherit;
-      font-size: 0.95rem; width: 100%; background: transparent; color: var(--text-primary);
-    }
-    .search-wrapper input::placeholder { color: var(--text-muted); }
-
-    .stats-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 16px; margin-bottom: 32px;
-    }
-    .stat-card {
-      background: var(--bg-card); padding: 20px;
-      border-radius: 16px; border: 1px solid var(--border-color);
-      transition: var(--transition); position: relative;
-      overflow: hidden; box-shadow: var(--shadow);
-    }
-    .stat-card::before {
-      content: ''; position: absolute; top: 0; left: 0; right: 0;
-      height: 3px; background: linear-gradient(90deg, var(--gold), var(--gold-light));
-      transform: scaleX(0); transition: var(--transition);
-    }
-    .stat-card:hover::before { transform: scaleX(1); }
-    .stat-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); border-color: var(--gold); }
-    .stat-value { font-weight: 700; font-size: 2rem; color: var(--gold-dark); }
-    .stat-label {
-      color: var(--text-secondary); font-weight: 500; font-size: 0.85rem;
-      margin-top: 4px; display: flex; align-items: center; gap: 6px;
-    }
-    .section-title {
-      font-weight: 600; font-size: 1.3rem; margin: 24px 0 16px;
-      color: var(--text-primary); display: flex; align-items: center; gap: 10px;
-    }
-
-    .houses-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 20px; margin-bottom: 24px;
-    }
-    .house-card {
-      background: var(--bg-card); border-radius: 20px; padding: 24px;
-      border: 1px solid var(--border-color); cursor: pointer;
-      transition: var(--transition); position: relative; overflow: hidden;
-      box-shadow: var(--shadow);
-    }
-    .house-card::before {
-      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
-      background: linear-gradient(90deg, var(--gold), var(--gold-light));
-      transform: scaleX(0); transition: var(--transition);
-    }
-    .house-card:hover::before { transform: scaleX(1); }
-    .house-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-lg); border-color: var(--gold); }
-    .house-card.status-free { border-left: 6px solid #adb5bd; background: #ffffff; }
-    .house-card.status-sold { border-left: 6px solid #20b26b; background: #f0fdf4; }
-    .house-card.status-installment { border-left: 6px solid #e5ad19; background: #fffbeb; }
-    .house-card.status-debtor { border-left: 6px solid #e04455; background: #fef2f2; }
-
-    .badge {
-      display: inline-block; padding: 4px 12px; border-radius: 30px;
-      font-size: 0.75rem; font-weight: 600;
-      background: #f1f5f9; color: var(--text-primary); margin-left: 8px;
-    }
-
-    .progress-bg {
-      background: #e2e8f0; height: 8px; border-radius: 10px;
-      width: 100%; margin-top: 12px; overflow: hidden;
-    }
-    .progress-fill {
-      background: linear-gradient(90deg, var(--gold), var(--gold-light));
-      height: 8px; border-radius: 10px; width: 0%;
-      transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .apartment-grid {
-      display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-      gap: 12px; margin: 16px 0; animation: fadeIn 0.5s ease;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .apt-cell {
-      background: var(--bg-card); border-radius: 16px; padding: 16px 10px;
-      text-align: center; font-weight: 600; border: 2px solid var(--border-color);
-      cursor: pointer; transition: var(--transition); position: relative; overflow: hidden;
-    }
-    .apt-cell::before {
-      content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-      background: linear-gradient(135deg, transparent, rgba(0,0,0,0.02));
-      opacity: 0; transition: var(--transition);
-    }
-    .apt-cell:hover::before { opacity: 1; }
-    .apt-cell:hover { transform: scale(1.05); box-shadow: var(--shadow-lg); border-color: var(--gold); }
-    .apt-free { background: #ffffff; border-color: #adb5bd; color: #495057; }
-    .apt-sold { background: #f0fdf4; border-color: #20b26b; color: #065f46; }
-    .apt-installment { background: #fffbeb; border-color: #e5ad19; color: #92400e; }
-    .apt-overdue {
-      background: #fef2f2; border-color: #e04455; color: #991b1b;
-      animation: pulse 1.5s infinite;
-    }
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.05); box-shadow: 0 0 20px rgba(239,68,68,0.2); }
-    }
-
-    .modal {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);
-      display: flex; align-items: center; justify-content: center;
-      z-index: 100; animation: modalFade 0.3s ease;
-    }
-    @keyframes modalFade { from { opacity: 0; } to { opacity: 1; } }
-    .modal-content {
-      background: var(--bg-secondary); border-radius: 24px; padding: 32px;
-      max-width: 650px; width: 90%; max-height: 85vh; overflow-y: auto;
-      border: 1px solid var(--border-color);
-      box-shadow: 0 30px 60px rgba(0,0,0,0.15);
-      animation: slideUp 0.3s ease;
-    }
-    @keyframes slideUp {
-      from { transform: translateY(30px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
-
-    .table-mini { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
-    .table-mini td, .table-mini th {
-      padding: 12px; border-bottom: 1px solid var(--border-color);
-      text-align: left; color: var(--text-primary);
-    }
-    .table-mini th { color: var(--gold-dark); font-weight: 600; background: #f8fafc; }
-
-    .report-filters { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin: 16px 0; }
-    .report-filters select {
-      padding: 10px 12px; border-radius: 10px;
-      border: 1px solid var(--border-color);
-      background: var(--bg-primary); color: var(--text-primary);
-    }
-    .report-card {
-      background: var(--bg-card); border: 1px solid var(--border-color);
-      border-radius: 16px; padding: 18px; margin-bottom: 14px;
-      box-shadow: var(--shadow);
-    }
-    .report-card-header {
-      display: flex; justify-content: space-between; align-items: center;
-      flex-wrap: wrap; gap: 8px; margin-bottom: 10px;
-    }
-    .report-card-date { font-weight: 700; color: var(--gold-dark); }
-    .report-card-text { white-space: pre-wrap; color: var(--text-primary); margin: 10px 0; }
-    .report-card-images { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
-    .report-card-images img {
-      width: 90px; height: 90px; object-fit: cover;
-      border-radius: 10px; cursor: pointer; border: 1px solid var(--border-color);
-    }
-    .report-dropzone {
-      border: 2px dashed var(--border-color); border-radius: 12px;
-      padding: 20px; text-align: center; color: var(--text-muted);
-      cursor: pointer; transition: var(--transition);
-    }
-    .report-dropzone.dragover {
-      border-color: var(--gold);
-      background: var(--gold-light, #e5c96e22);
-      color: var(--gold-dark);
-    }
-    .report-thumbs { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
-    .report-thumb {
-      position: relative; width: 80px; height: 80px;
-      border-radius: 8px; overflow: hidden; border: 1px solid var(--border-color);
-    }
-    .report-thumb img { width: 100%; height: 100%; object-fit: cover; }
-    .report-thumb .remove-thumb {
-      position: absolute; top: 2px; right: 2px;
-      background: rgba(0,0,0,0.6); color: #fff; border: none;
-      border-radius: 50%; width: 20px; height: 20px;
-      cursor: pointer; font-size: 12px; line-height: 1;
-    }
-    .report-table-editor { border-collapse: collapse; width: 100%; margin-top: 10px; }
-    .report-table-editor td {
-      border: 1px solid var(--border-color); padding: 8px;
-      min-width: 60px; color: var(--text-primary);
-    }
-    .report-table-editor td[contenteditable] { outline: none; }
-    .report-table-actions { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
-    .report-table-actions button {
-      padding: 6px 10px; border-radius: 8px;
-      border: 1px solid var(--border-color);
-      background: var(--bg-primary); color: var(--text-secondary);
-      cursor: pointer; font-size: 0.8rem;
-    }
-    .lightbox-overlay {
-      position: fixed; inset: 0; background: rgba(0,0,0,0.85);
-      display: flex; align-items: center; justify-content: center;
-      z-index: 200; cursor: zoom-out;
-    }
-    .lightbox-overlay img { max-width: 90%; max-height: 90%; border-radius: 12px; }
-
-    .toast {
-      position: fixed; bottom: 30px; right: 30px;
-      background: var(--bg-card); color: var(--text-primary);
-      padding: 16px 24px; border-radius: 12px;
-      font-weight: 500; z-index: 200;
-      border: 1px solid var(--gold);
-      box-shadow: var(--shadow-lg);
-      animation: slideUp 0.3s ease;
-    }
-
-    .filter-btn {
-      padding: 8px 16px; border-radius: 20px; font-size: 0.85rem;
-      cursor: pointer; transition: var(--transition);
-      border: 1px solid var(--border-color);
-      background: var(--bg-card); color: var(--text-secondary);
-    }
-    .filter-btn:hover { border-color: var(--gold); color: var(--gold-dark); }
-    .filter-btn.active {
-      background: linear-gradient(135deg, var(--gold), var(--gold-dark));
-      color: white; border-color: var(--gold);
-      box-shadow: 0 4px 6px rgba(201,168,76,0.2);
-    }
-
-    .loading {
-      display: inline-block; width: 20px; height: 20px;
-      border: 3px solid var(--border-color);
-      border-top-color: var(--gold);
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    @media (max-width: 768px) {
-      .sidebar { transform: translateX(-100%); }
-      .main-content { margin-left: 0; padding: 16px; padding-bottom: 80px; }
-      .mobile-nav {
-        display: flex; position: fixed; bottom: 0; left: 0; right: 0;
-        background: var(--bg-secondary); justify-content: flex-start; overflow-x: auto;
-        padding: 10px 8px; border-top: 1px solid var(--border-color);
-        z-index: 50; box-shadow: 0 -5px 15px rgba(0,0,0,0.05);
-      }
-      .mobile-nav button {
-        background: none; border: none; font-weight: 500;
-        color: var(--text-secondary); display: flex; flex-direction: column;
-        align-items: center; flex: 0 0 auto; min-width: 64px;
-        font-size: 0.7rem; cursor: pointer;
-      }
-      .mobile-nav button.active { color: var(--gold-dark); font-weight: 700; }
-      .search-wrapper { width: 100%; }
-    }
-    @media (min-width: 769px) { .mobile-nav { display: none; } }
-
-    .auth-overlay {
-      position: fixed; inset: 0; z-index: 9999;
-      background: linear-gradient(135deg, var(--graphite), var(--graphite-light));
-      display: flex; align-items: center; justify-content: center; padding: 20px;
-    }
-    .auth-box {
-      background: var(--bg-secondary); border-radius: 24px;
-      padding: 36px 32px; width: 100%; max-width: 380px;
-      text-align: center; box-shadow: 0 30px 60px rgba(0,0,0,0.35);
-      animation: slideUp 0.3s ease;
-    }
-    .auth-logo {
-      font-weight: 700; font-size: 1.4rem;
-      background: linear-gradient(135deg, var(--gold-dark), var(--gold));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    .auth-sub { color: var(--text-secondary); font-size: 0.85rem; margin: 6px 0 20px; }
-    .auth-box input {
-      width: 100%; padding: 14px; border-radius: 12px;
-      border: 1px solid var(--border-color);
-      background: var(--bg-primary); color: var(--text-primary);
-      font-size: 1rem; text-align: center; letter-spacing: 2px;
-    }
-    .auth-box input:focus { outline: none; border-color: var(--gold); }
-  </style>
-</head>
-<body>
-  <!-- AUTH GATE -->
-  <div class="auth-overlay" id="authOverlay">
-    <div class="auth-box">
-      <div class="auth-logo">ХИСРАВ СОХТМОН</div>
-      <div class="auth-sub">Введите пароль для доступа</div>
-      <input type="password" id="authPasswordInput" inputmode="numeric" maxlength="10" placeholder="Пароль" autocomplete="off">
-      <button class="btn" id="authSubmitBtn" style="margin-top:14px;width:100%;">Войти</button>
-      <div id="authError" style="color:var(--red);font-size:0.85rem;margin-top:10px;min-height:18px;"></div>
-    </div>
-  </div>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Дашборд управляющего — ЖК К. Худжанди</title>
+  <script src="https://cdn.tailwindcss.com"></script>
   <script>
-    if (sessionStorage.getItem('khisrav_auth') === '1') {
-      document.getElementById('authOverlay').style.display = 'none';
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: { 500: '#38bdf8', 600: '#0ea5e9' }
+          }
+        }
+      }
     }
   </script>
+  <style>
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: #0f172a; }
+    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 8px; }
+    .cell-sold { background: rgba(16,185,129,.18); border-color: rgba(16,185,129,.45); color: #6ee7b7; }
+    .cell-inst { background: rgba(56,189,248,.18); border-color: rgba(56,189,248,.45); color: #7dd3fc; }
+    .cell-free { background: rgba(51,65,85,.35); border-color: rgba(71,85,105,.6); color: #94a3b8; }
+    .cell-sold:hover { background: rgba(16,185,129,.3); }
+    .cell-inst:hover { background: rgba(56,189,248,.3); }
+    .cell-free:hover { background: rgba(51,65,85,.6); }
+    @media (max-width: 640px) {
+      .modal-content {
+        position: fixed; left: 0; right: 0; bottom: 0; top: auto;
+        border-radius: 1.5rem 1.5rem 0 0; max-height: 85vh;
+        transform: translateY(100%); transition: transform .25s ease;
+      }
+      .modal-content.open { transform: translateY(0); }
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-200 min-h-screen">
 
-  <!-- SIDEBAR DESKTOP -->
-  <aside class="sidebar" id="sidebar">
-    <div class="logo-area">
-      <div class="company-name">ХИСРАВ СОХТМОН</div>
-      <div class="system-sub">Premium Real Estate</div>
-    </div>
-    <nav class="nav-menu">
-      <button class="nav-item active" data-page="dashboard">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg> Главная
-      </button>
-      <button class="nav-item" data-page="houses">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg> Дома
-      </button>
-      <button class="nav-item" data-page="payments">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg> Платежи
-      </button>
-      <button class="nav-item" data-page="clients">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> Клиенты
-      </button>
-      <button class="nav-item" data-page="sales">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg> Продажи
-      </button>
-      <button class="nav-item" data-page="report-abdulloh">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> Отчёт Абдуллох
-      </button>
-      <button class="nav-item" data-page="report-firdavs">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> Отчёт Фирдавс
-      </button>
-      <button class="nav-item" data-page="report-faridun">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> Отчёт Фаридун
-      </button>
-      <button class="nav-item" data-page="report-hisrav">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> Отчёт Хисрав
-      </button>
-    </nav>
-    <div class="bottom-actions">
-      <button class="btn secondary" id="exportBtn">📤 Экспорт</button>
-      <button class="btn secondary" id="importBtn" type="button">📥 Импорт</button>
-      <input id="importCsvInput" type="file" accept=".csv,.json,text/csv,application/json" hidden>
-      <div id="syncStatus" title="Кликните, чтобы сбросить данные к data.js"
-           style="text-align: center; font-size: 0.75rem; color: var(--text-muted); margin-top: 8px; cursor: pointer;">
-        💾 Локальные данные
+  <!-- ================= HEADER ================= -->
+  <header class="sticky top-0 z-40 bg-slate-950/90 backdrop-blur border-b border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex flex-col sm:flex-row sm:items-center gap-3">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-xl bg-brand-500/20 border border-brand-500/40 flex items-center justify-center text-brand-500 font-bold">ЖК</div>
+        <div>
+          <h1 class="text-lg font-semibold tracking-tight">Дашборд управляющего</h1>
+          <p class="text-xs text-slate-400">ул. К. Худжанди · Блоки А, Б, В · 228 объектов</p>
+        </div>
+      </div>
+      <div class="sm:ml-auto w-full sm:w-80">
+        <input id="search" type="text" placeholder="Поиск: ФИО или № квартиры…"
+          class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-sm outline-none focus:border-brand-500 placeholder:text-slate-500" />
       </div>
     </div>
-  </aside>
+  </header>
 
-  <main class="main-content" id="mainContent"></main>
+  <!-- ================= KPI ================= -->
+  <section class="sticky top-[57px] z-30 bg-slate-950/95 backdrop-blur border-b border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 py-3">
+      <div id="kpi" class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-3"></div>
+    </div>
+  </section>
 
-  <div class="mobile-nav" id="mobileNav">
-    <button data-page="dashboard">🏠<span>Главная</span></button>
-    <button data-page="houses">🏢<span>Дома</span></button>
-    <button data-page="payments">💳<span>Платежи</span></button>
-    <button data-page="clients">👥<span>Клиенты</span></button>
-    <button data-page="sales">📊<span>Продажи</span></button>
-    <button data-page="report-abdulloh">📄<span>Абдуллох</span></button>
-    <button data-page="report-firdavs">📄<span>Фирдавс</span></button>
-    <button data-page="report-faridun">📄<span>Фаридун</span></button>
-    <button data-page="report-hisrav">📄<span>Хисрав</span></button>
+  <!-- ================= CONTROLS ================= -->
+  <main class="max-w-7xl mx-auto px-4 py-5 space-y-5">
+    <div class="flex flex-col lg:flex-row lg:items-center gap-3">
+      <div id="tabs" class="flex gap-2 overflow-x-auto pb-1"></div>
+      <div id="statusFilter" class="flex gap-2 overflow-x-auto pb-1 lg:ml-auto"></div>
+    </div>
+
+    <div class="grid lg:grid-cols-3 gap-6">
+      <!-- CHESSBOARD -->
+      <div class="lg:col-span-2 space-y-6">
+        <div id="chessboards" class="space-y-6"></div>
+      </div>
+
+      <!-- TABLE / LIST -->
+      <aside class="bg-slate-900/60 border border-slate-800 rounded-2xl overflow-hidden">
+        <div class="px-4 py-3 border-b border-slate-800 flex items-center justify-between">
+          <h2 class="font-semibold text-sm">Объекты</h2>
+          <span id="filteredCount" class="text-xs text-slate-400"></span>
+        </div>
+        <div id="tableWrap" class="overflow-auto max-h-[70vh]"></div>
+      </aside>
+    </div>
+  </main>
+
+  <!-- ================= MODAL / BOTTOM SHEET ================= -->
+  <div id="modal" class="fixed inset-0 z-50 hidden">
+    <div id="modalBackdrop" class="absolute inset-0 bg-black/70 backdrop-blur-sm"></div>
+    <div id="modalContent" class="modal-content sm:relative sm:mx-auto sm:my-10 sm:max-w-lg sm:rounded-2xl bg-slate-900 border border-slate-700 shadow-2xl overflow-hidden">
+      <div class="flex items-center justify-between px-4 py-3 border-b border-slate-800">
+        <h3 id="modalTitle" class="font-semibold"></h3>
+        <button id="modalClose" class="w-8 h-8 rounded-lg hover:bg-slate-800 text-slate-400">✕</button>
+      </div>
+      <div id="modalBody" class="p-4 overflow-auto max-h-[70vh]"></div>
+    </div>
   </div>
 
-<script type="module">
-// ============================================================================
-// ИМПОРТ ЛОКАЛЬНОЙ БАЗЫ ДАННЫХ (никакого Firebase)
-// ============================================================================
-import {
-  DATA_VERSION,
-  houses as initialHouses,
-  apartments as initialApartments,
-  clients as initialClients,
-  payments as initialPayments,
-  reports as initialReports
-} from './data.js';
-
-// ============================================================================
-// AUTH GATE
-// ============================================================================
-const AUTH_PASSWORD = '18121979';
-const AUTH_KEY = 'khisrav_auth';
-
-(function initAuthGate() {
-  const overlay = document.getElementById('authOverlay');
-  const input = document.getElementById('authPasswordInput');
-  const errorEl = document.getElementById('authError');
-  const submitBtn = document.getElementById('authSubmitBtn');
-  if (!overlay) return;
-
-  if (sessionStorage.getItem(AUTH_KEY) === '1') {
-    overlay.style.display = 'none';
-    return;
-  }
-
-  function tryLogin() {
-    if (input.value === AUTH_PASSWORD) {
-      sessionStorage.setItem(AUTH_KEY, '1');
-      overlay.style.display = 'none';
-      errorEl.textContent = '';
-    } else {
-      errorEl.textContent = '❌ Неверный пароль';
-      input.value = '';
-      input.focus();
-    }
-  }
-  submitBtn.addEventListener('click', tryLogin);
-  input.addEventListener('keydown', e => { if (e.key === 'Enter') tryLogin(); });
-  input.focus();
-})();
-
-// ============================================================================
-// STATE + LOCALSTORAGE PERSISTENCE
-// ============================================================================
-const LS_KEY = 'khisrav_state';
-const LS_VERSION_KEY = 'khisrav_state_version';
-
-function deepClone(o) { return JSON.parse(JSON.stringify(o)); }
-
-function buildInitialState() {
-  const savedVersion = localStorage.getItem(LS_VERSION_KEY);
-  const savedData    = localStorage.getItem(LS_KEY);
-
-  if (savedData && savedVersion === String(DATA_VERSION)) {
-    try {
-      const parsed = JSON.parse(savedData);
-      if (parsed && typeof parsed === 'object') {
-        console.log('[Init] Данные загружены из localStorage');
-        return {
-          houses:     Array.isArray(parsed.houses)     ? parsed.houses     : [],
-          apartments: Array.isArray(parsed.apartments) ? parsed.apartments : [],
-          clients:    Array.isArray(parsed.clients)    ? parsed.clients    : [],
-          payments:   Array.isArray(parsed.payments)   ? parsed.payments   : [],
-          reports:    Array.isArray(parsed.reports)    ? parsed.reports    : []
-        };
-      }
-    } catch (e) {
-      console.warn('[Init] localStorage parse error, используем data.js:', e);
-    }
-  }
-
-  console.log('[Init] Данные загружены из data.js');
-  return {
-    houses:     deepClone(initialHouses),
-    apartments: deepClone(initialApartments),
-    clients:    deepClone(initialClients),
-    payments:   deepClone(initialPayments),
-    reports:    deepClone(initialReports)
-  };
-}
-
-let state = buildInitialState();
-let currentFilter = 'all';
-let currentPage = 'dashboard';
-let currentHouseId = null;
-let currentFloor = null;
-
-let saveTimeout = null;
-function saveState() {
-  if (saveTimeout) clearTimeout(saveTimeout);
-  saveTimeout = setTimeout(() => {
-    try {
-      localStorage.setItem(LS_KEY, JSON.stringify(state));
-      localStorage.setItem(LS_VERSION_KEY, String(DATA_VERSION));
-      updateSyncStatus('synced');
-    } catch (e) {
-      console.error('[saveState] Ошибка сохранения в localStorage:', e);
-      updateSyncStatus('error');
-    }
-  }, 150);
-}
-
-// Замена вызовам scheduleSync(...) по всему коду — просто сохраняем state
-function scheduleSync() { saveState(); }
-
-function updateSyncStatus(status) {
-  const el = document.getElementById('syncStatus');
-  if (!el) return;
-  if (status === 'syncing') {
-    el.innerHTML = '<span class="loading"></span> Сохранение...';
-    el.style.color = 'var(--text-muted)';
-  } else if (status === 'error') {
-    el.innerHTML = '⚠️ Ошибка localStorage';
-    el.style.color = 'var(--red)';
-  } else {
-    el.innerHTML = '💾 Локальные данные <span style="opacity:.6">↻</span>';
-    el.style.color = 'var(--emerald)';
-  }
-}
-
-// ============================================================================
-// ВОССТАНОВЛЕНИЕ / СБРОС (из консоли или по клику на syncStatus)
-// ============================================================================
-window.restoreAllData = function () {
-  if (!confirm('Сбросить все данные к содержимому data.js? Текущие изменения будут потеряны.')) return;
-  state = {
-    houses:     deepClone(initialHouses),
-    apartments: deepClone(initialApartments),
-    clients:    deepClone(initialClients),
-    payments:   deepClone(initialPayments),
-    reports:    deepClone(initialReports)
-  };
-  saveState();
-  render();
-  toast('✅ Данные восстановлены из data.js');
-};
-
-window.resetDb = function () {
-  if (!confirm('Очистить клиентов и платежи, сбросить все квартиры в «Свободно»?')) return;
-  state.clients = [];
-  state.payments = [];
-  state.apartments = state.apartments.map(a => ({
-    ...a, status: 'available', clientId: null, installment: null
-  }));
-  saveState();
-  render();
-  toast('✅ База сброшена');
-};
-
-// ============================================================================
-// HELPERS
-// ============================================================================
-const getHouse  = id => state.houses.find(h => h.id === id);
-const getApt    = id => state.apartments.find(a => a.id === id);
-const getClient = id => state.clients.find(c => c.id === id);
-const getPaymentsByApt = aptId =>
-  state.payments.filter(p => p.apartmentId === aptId).sort((a, b) => a.date.localeCompare(b.date));
-
-function calcDashboardStats() {
-  const apartments = Array.isArray(state.apartments) ? state.apartments : [];
-  const clients    = Array.isArray(state.clients) ? state.clients : [];
-  const payments   = Array.isArray(state.payments) ? state.payments : [];
-  const validAmount = v => (typeof v === 'number' && Number.isFinite(v) ? v : 0);
-
-  const aptStatus = a => a ? String(a.status ?? '').trim() : '';
-  const payStatus = p => p ? String(p.status ?? '').trim() : '';
-  const activeClientIds = new Set(clients.filter(c => c?.id).map(c => c.id));
-
-  const totalApts   = apartments.length;
-  const free        = apartments.filter(a => aptStatus(a) === 'available').length;
-  const sold        = apartments.filter(a => aptStatus(a) === 'sold').length;
-  const installment = apartments.filter(a => aptStatus(a) === 'installment').length;
-
-  const paidTotal = payments
-    .filter(p => payStatus(p) === 'paid')
-    .reduce((s, p) => s + validAmount(p.amount), 0);
-
-  let pendingTotal = payments
-    .filter(p => activeClientIds.has(p?.clientId))
-    .filter(p => ['pending', 'unpaid', 'overdue', 'partial'].includes(payStatus(p)))
-    .reduce((s, p) => s + (Number(p?.amount) || 0), 0);
-  if (pendingTotal < 0 || Number.isNaN(pendingTotal)) pendingTotal = 0;
-
-  const overdueCount = payments.filter(p => payStatus(p) === 'overdue').length;
-  return { totalApts, free, sold, installment, paidTotal, pendingTotal, overdueCount };
-}
-
-function formatMoney(val) {
-  return new Intl.NumberFormat('ru-RU').format(val) + ' с.';
-}
-function formatDate(dateStr) {
-  if (!dateStr) return '';
-  const d = new Date(dateStr);
-  return d.toLocaleDateString('ru-RU', { day: 'numeric', month: 'short', year: 'numeric' });
-}
-function toast(msg) {
-  const existing = document.querySelector('.toast');
-  if (existing) existing.remove();
-  const t = document.createElement('div');
-  t.className = 'toast';
-  t.textContent = msg;
-  document.body.appendChild(t);
-  setTimeout(() => {
-    t.style.opacity = '0';
-    t.style.transition = 'opacity 0.3s';
-    setTimeout(() => t.remove(), 300);
-  }, 2500);
-}
-
-// ============================================================================
-// RENDER ENGINE
-// ============================================================================
-function navigate(page, houseId = null, floor = null) {
-  currentPage = page;
-  currentHouseId = houseId;
-  currentFloor = floor;
-  document.querySelectorAll('.nav-item, .mobile-nav button').forEach(b => b.classList.remove('active'));
-  document.querySelectorAll(`[data-page="${page}"]`).forEach(b => b.classList.add('active'));
-  render();
-}
-
-function render() {
-  const container = document.getElementById('mainContent');
-  if (!container) return;
-  container.style.opacity = '0';
-  container.style.transition = 'opacity 0.3s';
-
-  setTimeout(() => {
-    switch (currentPage) {
-      case 'dashboard':       renderDashboard(container); break;
-      case 'houses':          renderHousesList(container); break;
-      case 'house-detail':    renderHouseDetail(container); break;
-      case 'floor-detail':    renderFloorDetail(container); break;
-      case 'payments':        renderPaymentsPage(container); break;
-      case 'clients':         renderClientsPage(container); break;
-      case 'sales':           renderSalesPage(container); break;
-      case 'report-abdulloh': renderReportPage(container, 'abdulloh'); break;
-      case 'report-firdavs':  renderReportPage(container, 'firdavs'); break;
-      case 'report-faridun':  renderReportPage(container, 'faridun'); break;
-      case 'report-hisrav':   renderReportPage(container, 'hisrav'); break;
-      default:                renderDashboard(container);
-    }
-    container.style.opacity = '1';
-  }, 150);
-}
-
-// -------------------- DASHBOARD --------------------
-function renderDashboard(container) {
-  const stats = calcDashboardStats();
-  const upcoming = state.payments
-    .filter(p => p.status === 'pending' && new Date(p.date) >= new Date())
-    .sort((a, b) => a.date.localeCompare(b.date))
-    .slice(0, 5);
-  const overdue = state.payments.filter(p => p.status === 'overdue');
-
-  container.innerHTML = `
-    <div class="top-bar">
-      <h2 style="font-weight:600;">Главная панель</h2>
-      <div class="date-profile">
-        <span>${new Date().toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
-        <span>👤 Директор</span>
-      </div>
-    </div>
-
-    <div style="margin-bottom: 24px;">
-      <div class="search-wrapper" style="width: 100%;">
-        <input placeholder="🔍 Поиск квартиры, клиента, телефона..." id="globalSearch" oninput="window.handleGlobalSearch(this.value)">
-      </div>
-    </div>
-
-    <div class="stats-grid">
-      <div class="stat-card"><div class="stat-value">${state.houses.length}</div><div class="stat-label">🏢 Блоков</div></div>
-      <div class="stat-card"><div class="stat-value">${stats.totalApts}</div><div class="stat-label">🏢 Объектов</div></div>
-      <div class="stat-card"><div class="stat-value" style="color: var(--emerald);">${stats.free}</div><div class="stat-label">⚪ Свободно</div></div>
-      <div class="stat-card"><div class="stat-value" style="color: var(--emerald);">${stats.sold}</div><div class="stat-label">✅ Продано</div></div>
-      <div class="stat-card"><div class="stat-value" style="color: var(--yellow);">${stats.installment}</div><div class="stat-label">🟡 Рассрочка</div></div>
-      <div class="stat-card"><div class="stat-value" style="color: var(--gold-dark);">${formatMoney(stats.paidTotal)}</div><div class="stat-label">💰 Получено</div></div>
-      <div class="stat-card"><div class="stat-value" style="color: var(--red);">${formatMoney(stats.pendingTotal)}</div><div class="stat-label">⚠️ Остаток</div></div>
-    </div>
-
-    <div class="section-title">🏢 Наши объекты</div>
-    <div class="houses-grid">${state.houses.map(h => houseCardHTML(h)).join('')}</div>
-
-    <div class="section-title">📅 Ближайшие платежи</div>
-    ${upcoming.length ? upcoming.map(p => `
-      <div style="background: var(--bg-card); padding: 16px; border-radius: 12px; margin-bottom: 8px; border: 1px solid var(--border-color);">
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-          <div>
-            <strong>Кв.${getApt(p.apartmentId)?.number || '?'}</strong>
-            <div style="color: var(--text-secondary); font-size: 0.9rem;">${getHouse(getApt(p.apartmentId)?.houseId)?.name || ''}</div>
-          </div>
-          <div style="text-align: right;">
-            <div style="color: var(--gold-dark); font-weight: 600;">${formatMoney(p.amount)}</div>
-            <div style="color: var(--text-muted); font-size: 0.85rem;">до ${formatDate(p.date)}</div>
-          </div>
-        </div>
-      </div>`).join('') : '<p style="color: var(--text-muted);">Нет предстоящих платежей</p>'}
-
-    <div class="section-title" style="color: var(--red);">🔴 Требуют внимания</div>
-    ${overdue.length ? overdue.slice(0, 5).map(p => `
-      <div style="background: var(--red-bg); padding: 16px; border-radius: 12px; margin-bottom: 8px; border: 1px solid #fecaca;">
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-          <div>
-            <strong>Кв.${getApt(p.apartmentId)?.number || '?'}</strong>
-            <div style="color: var(--text-secondary); font-size: 0.9rem;">${getHouse(getApt(p.apartmentId)?.houseId)?.name || ''}</div>
-          </div>
-          <div style="text-align: right;">
-            <div style="color: var(--red); font-weight: 600;">${formatMoney(p.amount)}</div>
-            <div style="color: var(--text-muted); font-size: 0.85rem;">просрочка с ${formatDate(p.date)}</div>
-          </div>
-        </div>
-      </div>`).join('') : '<p style="color: var(--emerald);">✅ Все платежи выполняются вовремя</p>'}
-  `;
-}
-
-function houseCardHTML(h) {
-  const apts = state.apartments.filter(a => a.houseId === h.id);
-  const sold = apts.filter(a => a.status === 'sold').length;
-  const free = apts.filter(a => a.status === 'available').length;
-  const inst = apts.filter(a => a.status === 'installment').length;
-  const total = apts.length;
-  const percent = total ? Math.round((sold + inst) / total * 100) : 0;
-
-  return `
-    <div class="house-card" onclick="window.navigate('house-detail', '${h.id}')">
-      <div style="display: flex; justify-content: space-between; align-items: start;">
-        <strong style="font-size: 1.1rem;">${h.name}</strong>
-        <span class="badge">${h.status}</span>
-      </div>
-      <div style="margin-top: 12px; color: var(--text-secondary); font-size: 0.9rem;">
-        <div>📍 ${h.address}</div>
-        <div>🏗️ Этажей: 10 • Объектов: ${total}</div>
-      </div>
-      <div style="margin-top: 12px; display: flex; gap: 12px; font-size: 0.85rem;">
-        <span style="color: var(--emerald);">⚪ ${free}</span>
-        <span style="color: var(--emerald);">✅ ${sold}</span>
-        <span style="color: var(--yellow);">🟡 ${inst}</span>
-      </div>
-      <div class="progress-bg"><div class="progress-fill" style="width: ${percent}%"></div></div>
-      <div style="font-size: 0.8rem; margin-top: 8px; color: var(--text-muted);">Продажи: ${percent}%</div>
-    </div>`;
-}
-
-// -------------------- HOUSES LIST --------------------
-function renderHousesList(container) {
-  container.innerHTML = `
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
-      <h2>Все блоки</h2>
-      <button class="btn" onclick="window.openAddHouseModal()">+ Добавить блок</button>
-    </div>
-    <div class="houses-grid">${state.houses.map(h => houseCardHTML(h)).join('')}</div>
-  `;
-}
-
-// -------------------- HOUSE DETAIL --------------------
-function renderHouseDetail(container) {
-  const house = getHouse(currentHouseId);
-  if (!house) return navigate('dashboard');
-
-  const floors = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-  const floorNames = {
-    0: 'Подвал', 1: '1 этаж', 2: '2 этаж', 3: '3 этаж', 4: '4 этаж',
-    5: '5 этаж', 6: '6 этаж', 7: '7 этаж', 8: '8 этаж', 9: '9 этаж', 10: 'Пентхаус'
-  };
-
-  container.innerHTML = `
-    <button class="btn secondary" onclick="window.navigate('houses')">← Назад</button>
-    <div style="margin-top: 24px;">
-      <h2>${house.name}</h2>
-      <p style="color: var(--text-secondary); margin-top: 8px;">${house.address} • ${house.status}</p>
-    </div>
-
-    <div style="margin: 24px 0; display: flex; gap: 12px; flex-wrap: wrap;">
-      <button class="filter-btn active" onclick="window.setFilter('all')">Все</button>
-      <button class="filter-btn" onclick="window.setFilter('available')">⚪ Свободные</button>
-      <button class="filter-btn" onclick="window.setFilter('sold')">✅ Проданные</button>
-      <button class="filter-btn" onclick="window.setFilter('installment')">🟡 Рассрочка</button>
-      <button class="filter-btn" onclick="window.setFilter('overdue')">🔴 Должники</button>
-    </div>
-
-    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 16px; margin-top: 20px;">
-      ${floors.map(floor => {
-        const floorApts = state.apartments.filter(a => a.houseId === house.id && a.floor === floor);
-        const soldCount = floorApts.filter(a => a.status === 'sold').length;
-        const freeCount = floorApts.filter(a => a.status === 'available').length;
-        return `
-          <div class="house-card" onclick="window.navigate('floor-detail', '${house.id}', ${floor})">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-              <strong>${floorNames[floor]}</strong>
-              <span style="color: var(--text-muted); font-size: 0.85rem;">${floorApts.length} об.</span>
-            </div>
-            <div style="margin-top: 12px; display: flex; gap: 8px; font-size: 0.85rem;">
-              <span style="color: var(--emerald);">⚪ ${freeCount}</span>
-              <span style="color: var(--emerald);">✅ ${soldCount}</span>
-            </div>
-            <div class="progress-bg">
-              <div class="progress-fill" style="width: ${floorApts.length ? (soldCount / floorApts.length * 100) : 0}%"></div>
-            </div>
-          </div>`;
-      }).join('')}
-    </div>
-  `;
-}
-
-// -------------------- FLOOR DETAIL --------------------
-function renderFloorDetail(container) {
-  const house = getHouse(currentHouseId);
-  const floor = currentFloor;
-  if (!house || floor === null) return navigate('house-detail', currentHouseId);
-
-  const floorApts = state.apartments.filter(a => a.houseId === house.id && a.floor === floor);
-  const floorName = floor === 0 ? 'Подвал' : floor === 10 ? 'Пентхаус' : `${floor} этаж`;
-
-  container.innerHTML = `
-    <button class="btn secondary" onclick="window.navigate('house-detail', '${house.id}')">← Назад</button>
-    <div style="margin-top: 24px;"><h2>${house.name} • ${floorName}</h2></div>
-
-    <div style="margin: 24px 0; display: flex; gap: 12px; flex-wrap: wrap;">
-      <button class="filter-btn ${currentFilter === 'all' ? 'active' : ''}" onclick="window.setFilter('all')">Все</button>
-      <button class="filter-btn ${currentFilter === 'available' ? 'active' : ''}" onclick="window.setFilter('available')">⚪ Свободные</button>
-      <button class="filter-btn ${currentFilter === 'sold' ? 'active' : ''}" onclick="window.setFilter('sold')">✅ Проданные</button>
-      <button class="filter-btn ${currentFilter === 'installment' ? 'active' : ''}" onclick="window.setFilter('installment')">🟡 Рассрочка</button>
-      <button class="filter-btn ${currentFilter === 'overdue' ? 'active' : ''}" onclick="window.setFilter('overdue')">🔴 Должники</button>
-    </div>
-
-    <div class="apartment-grid">
-      ${filterApts(floorApts).map(apt => apartmentCell(apt)).join('')}
-    </div>
-
-    <button class="btn" style="margin-top: 20px;" onclick="window.openAddApartmentModal('${house.id}', ${floor})">
-      + Добавить объект
-    </button>
-  `;
-}
-
-function filterApts(apts) {
-  if (currentFilter === 'all') return apts;
-  if (currentFilter === 'overdue') {
-    return apts.filter(a => {
-      if (a.status !== 'installment') return false;
-      return state.payments.some(p => p.apartmentId === a.id && p.status === 'overdue');
-    });
-  }
-  return apts.filter(a => a.status === currentFilter);
-}
-
-function apartmentCell(apt) {
-  let cls = 'apt-free', statusIcon = '⚪', statusText = 'Свободен';
-
-  if (apt.status === 'sold') {
-    cls = 'apt-sold'; statusIcon = '✅'; statusText = 'Продан';
-  } else if (apt.status === 'installment') {
-    const hasOverdue = state.payments.some(p => p.apartmentId === apt.id && p.status === 'overdue');
-    if (hasOverdue) { cls = 'apt-overdue'; statusIcon = '🔴'; statusText = 'Долг'; }
-    else            { cls = 'apt-installment'; statusIcon = '🟡'; statusText = 'Рассрочка'; }
-  }
-
-  const typeIcon = apt.type === 'basement' ? '🏠'
-                 : apt.type === 'commercial' ? '🏪'
-                 : apt.type === 'penthouse' ? '🏰' : '🏢';
-
-  return `
-    <div class="apt-cell ${cls}" onclick="window.openApartmentModal('${apt.id}')">
-      <div style="font-size: 1.5rem; margin-bottom: 8px;">${typeIcon}</div>
-      <div style="font-weight: 700; font-size: 1.1rem;">№${apt.number}</div>
-      ${apt.rooms > 0
-        ? `<div style="color: var(--text-secondary); font-size: 0.9rem;">${apt.rooms} комн.</div>`
-        : '<div style="color: var(--text-muted); font-size: 0.9rem;">помещение</div>'}
-      <div style="color: var(--text-secondary); font-size: 0.9rem;">${apt.area} м²</div>
-      <div style="margin-top: 8px; font-size: 0.8rem;">${statusIcon} ${statusText}</div>
-    </div>`;
-}
-
-// ============================================================================
-// APARTMENT MODAL
-// ============================================================================
-window.openApartmentModal = function (aptId) {
-  const apt = getApt(aptId);
-  if (!apt) return;
-
-  const client = getClient(apt.clientId);
-  const payments = getPaymentsByApt(aptId);
-  const paidSum = payments.filter(p => p.status === 'paid').reduce((s, p) => s + p.amount, 0);
-  const progress = apt.price ? Math.round(paidSum / apt.price * 100) : 0;
-
-  const typeName = apt.type === 'basement' ? 'Подвальное помещение'
-                 : apt.type === 'commercial' ? 'Коммерческое помещение'
-                 : apt.type === 'penthouse' ? 'Пентхаус' : 'Квартира';
-
-  const modal = document.createElement('div');
-  modal.className = 'modal';
-  modal.innerHTML = `
-    <div class="modal-content">
-      <span style="float:right;cursor:pointer;font-size:1.5rem;color: var(--text-secondary);" onclick="this.closest('.modal').remove()">&times;</span>
-      <h3 style="color: var(--gold-dark);">${typeName} №${apt.number}</h3>
-      <div style="margin-top: 16px; display: grid; gap: 12px;">
-        <div style="display: flex; justify-content: space-between;"><span style="color: var(--text-secondary);">Блок:</span><strong>${getHouse(apt.houseId)?.name}</strong></div>
-        <div style="display: flex; justify-content: space-between;"><span style="color: var(--text-secondary);">Этаж:</span><strong>${apt.floor === 0 ? 'Подвал' : apt.floor === 10 ? 'Пентхаус' : apt.floor + ' этаж'}</strong></div>
-        <div style="display: flex; justify-content: space-between;"><span style="color: var(--text-secondary);">Статус:</span><strong style="color: ${apt.status === 'available' ? 'var(--emerald)' : apt.status === 'sold' ? 'var(--emerald)' : 'var(--yellow)'};">${apt.status === 'available' ? '⚪ Свободен' : apt.status === 'sold' ? '✅ Продан' : '🟡 Рассрочка'}</strong></div>
-        <div style="display: flex; justify-content: space-between;"><span style="color: var(--text-secondary);">Площадь:</span><strong>${apt.area} м²</strong></div>
-        ${apt.rooms > 0 ? `<div style="display: flex; justify-content: space-between;"><span style="color: var(--text-secondary);">Комнат:</span><strong>${apt.rooms}</strong></div>` : ''}
-        <div style="display: flex; justify-content: space-between;"><span style="color: var(--text-secondary);">Цена:</span><strong style="color: var(--gold-dark);">${formatMoney(apt.price)}</strong></div>
-        ${client ? `
-          <div style="display: flex; justify-content: space-between;"><span style="color: var(--text-secondary);">Покупатель:</span><strong>${client.name}</strong></div>
-          <div style="display: flex; justify-content: space-between;"><span style="color: var(--text-secondary);">Телефон:</span><strong>${client.phone}</strong></div>` : ''}
-        ${apt.installment ? `
-          <div style="display: flex; justify-content: space-between;"><span style="color: var(--text-secondary);">Рассрочка:</span><strong>${apt.installment.months} мес.</strong></div>
-          <div style="display: flex; justify-content: space-between;"><span style="color: var(--text-secondary);">Первоначальный взнос:</span><strong>${formatMoney(apt.installment.initialPayment)}</strong></div>` : ''}
-      </div>
-
-      <div style="margin-top: 20px;">
-        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-          <span style="color: var(--text-secondary);">Оплачено:</span>
-          <strong>${formatMoney(paidSum)} из ${formatMoney(apt.price)} (${progress}%)</strong>
-        </div>
-        <div class="progress-bg"><div class="progress-fill" style="width: ${progress}%"></div></div>
-      </div>
-
-      <div style="margin-top: 24px; display: flex; gap: 12px; flex-wrap: wrap;">
-        ${apt.status === 'available' ? `<button class="btn" onclick="window.sellApartment('${apt.id}')">💼 Продать</button>` : ''}
-        ${apt.installment ? `<button class="btn secondary" onclick="window.openInstallmentPayments('${apt.id}')">📊 График платежей</button>` : ''}
-        <button class="btn secondary" onclick="window.editApartment('${apt.id}')">✏️ Редактировать</button>
-      </div>
-    </div>`;
-  document.body.appendChild(modal);
-  modal.onclick = e => { if (e.target === modal) modal.remove(); };
-};
-
-// ============================================================================
-// INSTALLMENT PLAN
-// ============================================================================
-const BLOCK_INSTALLMENT_YEARS = { 'block-a': 3, 'block-b': 3, 'block-v': 1 };
-const INSTALLMENT_START_DATE = '2025-08-01';
-
-function buildInstallmentPlan(apt) {
-  const years = BLOCK_INSTALLMENT_YEARS[apt.houseId] || 1;
-  const termMonths = years * 12;
-  const initialPayment = Math.round(apt.price * 0.3);
-  const financedAmount = apt.price - initialPayment;
-  const baseMonthly = Math.floor(financedAmount / termMonths);
-  const remainder = financedAmount - baseMonthly * termMonths;
-  const startDate = new Date(INSTALLMENT_START_DATE + 'T00:00:00');
-  const today = new Date();
-  const payments = [];
-
-  for (let i = 0; i < termMonths; i++) {
-    const d = new Date(startDate.getFullYear(), startDate.getMonth() + i + 1, 0);
-    const dateStr = d.toISOString().split('T')[0];
-    payments.push({
-      dateStr,
-      amount: baseMonthly + (i === termMonths - 1 ? remainder : 0),
-      status: d < today ? 'overdue' : 'pending'
-    });
-  }
-
-  return { years, termMonths, initialPayment, monthlyPayment: baseMonthly, startDate: INSTALLMENT_START_DATE, payments };
-}
-
-window.sellApartment = function (aptId) {
-  const apt = getApt(aptId);
-  if (!apt) return;
-  const modal = document.createElement('div');
-  modal.className = 'modal';
-  modal.innerHTML = `
-    <div class="modal-content">
-      <span style="float:right;cursor:pointer;font-size:1.5rem;color: var(--text-secondary);" onclick="this.closest('.modal').remove()">&times;</span>
-      <h3 style="color: var(--gold-dark);">Продажа объекта №${apt.number}</h3>
-      <div style="margin-top: 20px; display: grid; gap: 12px;">
-        <input id="clientName" placeholder="ФИО покупателя" style="width:100%;padding:12px;border-radius:12px;border:1px solid var(--border-color);background:var(--bg-primary);color:var(--text-primary);">
-        <input id="clientPhone" placeholder="Телефон" style="width:100%;padding:12px;border-radius:12px;border:1px solid var(--border-color);background:var(--bg-primary);color:var(--text-primary);">
-        <input id="clientEmail" placeholder="Email (опционально)" style="width:100%;padding:12px;border-radius:12px;border:1px solid var(--border-color);background:var(--bg-primary);color:var(--text-primary);">
-        <select id="payType" style="width:100%;padding:12px;border-radius:12px;border:1px solid var(--border-color);background:var(--bg-primary);color:var(--text-primary);">
-          <option value="full">Полная оплата</option>
-          <option value="installment">Рассрочка</option>
-        </select>
-        <div id="installDetails" style="display:none; background: var(--bg-primary); border-radius: 12px; padding: 14px; font-size: 0.9rem; color: var(--text-secondary);"></div>
-        <button class="btn" id="confirmSale" style="margin-top:8px;">Подтвердить продажу</button>
-      </div>
-    </div>`;
-  document.body.appendChild(modal);
-
-  const installDetailsEl = modal.querySelector('#installDetails');
-  function renderInstallDetails() {
-    const plan = buildInstallmentPlan(apt);
-    installDetailsEl.innerHTML = `
-      <div>📅 Период: ${formatDate(plan.payments[0].dateStr)} — ${formatDate(plan.payments[plan.payments.length - 1].dateStr)} (${plan.years} г.)</div>
-      <div>💰 Первый взнос (30%): <strong>${formatMoney(plan.initialPayment)}</strong></div>
-      <div>📆 Ежемесячный платёж: <strong>${formatMoney(plan.monthlyPayment)}</strong></div>
-      <div>📊 Всего платежей: <strong>${plan.termMonths}</strong></div>`;
-  }
-
-  document.getElementById('payType').onchange = function () {
-    const isInstallment = this.value === 'installment';
-    installDetailsEl.style.display = isInstallment ? 'block' : 'none';
-    if (isInstallment) renderInstallDetails();
-  };
-
-  document.getElementById('confirmSale').onclick = () => {
-    const name = document.getElementById('clientName').value.trim();
-    const phone = document.getElementById('clientPhone').value.trim();
-    if (!name || !phone) return alert('Введите данные покупателя');
-
-    const client = {
-      id: 'c' + Date.now(),
-      name, phone,
-      email: document.getElementById('clientEmail').value.trim()
-    };
-    state.clients.push(client);
-    apt.clientId = client.id;
-
-    if (document.getElementById('payType').value === 'full') {
-      apt.status = 'sold';
-      apt.installment = null;
-    } else {
-      const plan = buildInstallmentPlan(apt);
-      apt.status = 'installment';
-      apt.installment = {
-        months: plan.termMonths,
-        termYears: plan.years,
-        startDate: plan.startDate,
-        initialPayment: plan.initialPayment,
-        monthlyPayment: plan.monthlyPayment
-      };
-      plan.payments.forEach((pp, i) => {
-        state.payments.push({
-          id: 'p' + Date.now() + '_' + i,
-          apartmentId: apt.id,
-          clientId: client.id,
-          date: pp.dateStr,
-          amount: pp.amount,
-          status: pp.status
+<script>
+/* =========================================================
+   ДАННЫЕ: только занятые объекты. Свободные генерируются.
+   history: [{m: 'месяц', v: сумма}]
+   ========================================================= */
+const OCCUPIED = [
+  // ---------- БЛОК А ----------
+  {block:'A', number:'1/1', name:'Сангов Илхомуддин Боронов', area:425.0, price:10500, roomAmount:4462500, paid:1860250, baqiya:2602250, history:[
+    {m:'январ',v:1338750},{m:'март',v:178000},{m:'апрел',v:86500},{m:'май',v:90000},{m:'июнь',v:82000},{m:'июль',v:85000}
+  ]},
+  {block:'A', number:'1/2', name:'Начимов Рахматулло Абдук', area:100.0, price:11000, roomAmount:1100000, paid:273000, baqiya:827000, history:[
+    {m:'январ',v:150000},{m:'феврал',v:20000},{m:'март',v:20000},{m:'апрел',v:20000},{m:'май',v:20000},{m:'июнь',v:23000},{m:'июль',v:20000}
+  ]},
+  {block:'A', number:'1/3', name:'Хомидов Аличон Мукимчон', area:120.0, price:12000, roomAmount:1440000, paid:691747, baqiya:748253, history:[
+    {m:'ноябр',v:300000},{m:'декабр',v:35100},{m:'январ',v:36000},{m:'феврал',v:36300},{m:'март',v:34500},{m:'апрел',v:41600},{m:'май',v:38060},{m:'июнь',v:34957},{m:'июль',v:32000},{m:'август',v:103230}
+  ]},
+  {block:'A', number:'3/3', name:'Хабибова Сайпочо Карим', area:70.5, price:5000, roomAmount:352500, paid:110834, baqiya:241666, history:[
+    {m:'феврал',v:102500},{m:'август',v:8334}
+  ]},
+  {block:'A', number:'3/6', name:'Бекназаров Музаффар Саит..', area:70.50, price:5500, roomAmount:387750, paid:191725, baqiya:196025, history:[
+    {m:'декабр',v:138945},{m:'март',v:7540},{m:'апрел',v:7540},{m:'май',v:7540},{m:'июнь',v:30160}
+  ]},
+  {block:'A', number:'4/2', name:'Шарифзода Далер Ахтамчон', area:69.3, price:5000, roomAmount:346500, paid:49700, baqiya:296800, history:[
+    {m:'июнь',v:30000},{m:'июль',v:6600},{m:'август',v:6500},{m:'сентябрь',v:6600}
+  ]},
+  {block:'A', number:'5/3', name:'Нозимов Бекижон Абдушари', area:70.5, price:4500, roomAmount:317250, paid:18000, baqiya:299250, history:[
+    {m:'август',v:9000},{m:'сентябрь',v:9000}
+  ]},
+  {block:'A', number:'6/4', name:'Назаров Ривочиддин Серг', area:50.0, price:500, roomAmount:250000, paid:50000, baqiya:200000, history:[
+    {m:'август',v:50000}
+  ]},
+  {block:'A', number:'7/4', name:'Чумахмедова Мавлуда Абдур', area:50.0, price:4500, roomAmount:225000, paid:10500, baqiya:214500, history:[
+    {m:'июль',v:9000},{m:'август',v:1500}
+  ]},
+
+  // ---------- БЛОК Б ----------
+  {block:'B', number:'0/4', name:'Эмомов Чума Халил', area:120.0, price:12000, roomAmount:1440000, paid:180000, baqiya:1260000, history:[
+    {m:'август',v:180000}
+  ]},
+  {block:'B', number:'1/1', name:'Азизов Шукрулло Махмад', area:null, price:null, roomAmount:null, paid:0, baqiya:null, history:[]},
+  {block:'B', number:'1/2', name:'Качулов Махмадхуча Юсуф', area:120.0, price:1100, roomAmount:1320000, paid:840000, baqiya:480000, history:[
+    {m:'январ',v:840000}
+  ]},
+  {block:'B', number:'1/3', name:'Шарипов Шамсиддин Саид', area:120.0, price:1200, roomAmount:1440000, paid:290000, baqiya:1150000, history:[
+    {m:'январ',v:150000},{m:'феврал',v:20000},{m:'март',v:20000},{m:'апрел',v:15000},{m:'май',v:15000},{m:'июнь',v:50000},{m:'июль',v:20000}
+  ]},
+  {block:'B', number:'1/4', name:'Хамидов Аличон Муким', area:70.0, price:11500, roomAmount:805000, paid:520500, baqiya:284500, history:[
+    {m:'ноябр',v:200000},{m:'декабр',v:72500},{m:'январ',v:15000},{m:'феврал',v:45000},{m:'март',v:20000},{m:'апрел',v:80000},{m:'май',v:73000},{m:'август',v:15000}
+  ]},
+  {block:'B', number:'1/5', name:'Точибаева Мухабатхон', area:120.0, price:1200, roomAmount:1327639, paid:572139, baqiya:755500, history:[
+    {m:'август',v:200000},{m:'сентябр',v:37400},{m:'октябр',v:40529},{m:'ноябр',v:37200},{m:'декабр',v:27900},{m:'январ',v:37400},{m:'феврал',v:33250},{m:'март',v:38400},{m:'апрел',v:28050},{m:'май',v:31650},{m:'июнь',v:25000},{m:'июль',v:35360}
+  ]},
+  {block:'B', number:'2/1', name:'Розиков Сайжамил Чалил', area:120.0, price:1200, roomAmount:1327639, paid:559310, baqiya:768329, history:[
+    {m:'август',v:345000},{m:'сентябр',v:9350},{m:'октябр',v:15725},{m:'ноябр',v:18600},{m:'декабр',v:18600},{m:'январ',v:23375},{m:'феврал',v:19000},{m:'март',v:19200},{m:'апрел',v:18700},{m:'май',v:18560},{m:'июнь',v:34000}
+  ]},
+  {block:'B', number:'3/7', name:'Сафаров Мирзоназар Саймуза', area:69.3, price:5200, roomAmount:360360, paid:153160, baqiya:207200, history:[
+    {m:'апрел',v:120000},{m:'май',v:10023},{m:'июнь',v:10607},{m:'июль',v:12530},{m:'август',v:11504}
+  ]},
+  {block:'B', number:'4/1', name:'Фозилов Хадятулло Шамс', area:118.0, price:5300, roomAmount:625400, paid:180000, baqiya:445400, history:[
+    {m:'май',v:180000}
+  ]},
+  {block:'B', number:'4/2', name:'Фозилов Хадятулло Шамс', area:null, price:null, roomAmount:null, paid:0, baqiya:null, history:[]},
+  {block:'B', number:'4/4', name:'Сафаров Сангак Рач', area:49.8, price:4000, roomAmount:200000, paid:199000, baqiya:1000, history:[
+    {m:'ноябр',v:100000},{m:'декабр',v:74000},{m:'июнь',v:25000}
+  ]},
+  {block:'B', number:'4/6', name:'Умронов Амрулло Диловар', area:70.5, price:5000, roomAmount:352500, paid:200000, baqiya:152500, history:[
+    {m:'апрел',v:200000}
+  ]},
+  {block:'B', number:'5/3', name:'Шарипов Мухаммадчон Саф', area:70.5, price:4500, roomAmount:317250, paid:110000, baqiya:207250, history:[
+    {m:'июль',v:100000},{m:'август',v:10000}
+  ]},
+  {block:'B', number:'5/4', name:'Асроров Муродбек Давлат', area:49.8, price:4317, roomAmount:215000, paid:88027, baqiya:126973, history:[
+    {m:'апрел',v:64000},{m:'май',v:6017},{m:'июнь',v:6000},{m:'июль',v:6000},{m:'август',v:6010}
+  ]},
+  {block:'B', number:'5/5', name:'Шамсов Саймуддин Ахлид', area:49.8, price:5000, roomAmount:250000, paid:123000, baqiya:127000, history:[
+    {m:'май',v:123000}
+  ]},
+  {block:'B', number:'5/8', name:'Икромов Умар Толибович', area:66.5, price:4850, roomAmount:322525, paid:35000, baqiya:287525, history:[
+    {m:'июль',v:22500},{m:'август',v:12500}
+  ]},
+  {block:'B', number:'6/8', name:'Жураев Абдухолик Махм', area:66.5, price:4800, roomAmount:319200, paid:105000, baqiya:214200, history:[
+    {m:'июнь',v:100000},{m:'июль',v:5000}
+  ]},
+  {block:'B', number:'7/4', name:'Мухритдинов Одилжон Ак', area:50.0, price:4300, roomAmount:215000, paid:155000, baqiya:60000, history:[
+    {m:'июль',v:150000},{m:'август',v:5000}
+  ]},
+  {block:'B', number:'8/5', name:'Каримова Матлубахон Джур', area:49.8, price:4000, roomAmount:200000, paid:140000, baqiya:60000, history:[
+    {m:'май',v:80000},{m:'июнь',v:60000}
+  ]},
+  {block:'B', number:'9/5', name:'Хамидов Аличон Муким', area:49.8, price:4000, roomAmount:200000, paid:72000, baqiya:128000, history:[
+    {m:'май',v:50000},{m:'июнь',v:6000},{m:'июль',v:6000},{m:'август',v:10000}
+  ]},
+
+  // ---------- БЛОК В ----------
+  {block:'C', number:'0/1', name:'Ахмадчонов Зиевиддин Кием', area:70.0, price:10500, roomAmount:735000, paid:600000, baqiya:135000, history:[
+    {m:'август',v:600000}
+  ]},
+  {block:'C', number:'1/1', name:'Собиров Мусаябджон Махмад', area:120.0, price:9000, roomAmount:1080000, paid:155800, baqiya:924200, history:[
+    {m:'июнь',v:105800},{m:'июль',v:50000}
+  ]},
+  {block:'C', number:'1/2', name:'Азизов Шукрулло Махмад', area:470.0, price:10500, roomAmount:4935000, paid:1465000, baqiya:3470000, history:[
+    {m:'апрел',v:1000000},{m:'август',v:465000}
+  ]},
+  {block:'C', number:'1/3', name:'Шодмонзода Шодмон', area:70.0, price:9286, roomAmount:650020, paid:306000, baqiya:344000, history:[
+    {m:'январ',v:200000},{m:'март',v:36000},{m:'апрел',v:20000},{m:'май',v:20000},{m:'июнь',v:20000},{m:'август',v:10000}
+  ]},
+  {block:'C', number:'3/1', name:'Шарипов Киёмулиди Шо', area:47.0, price:4650, roomAmount:218550, paid:197000, baqiya:21550, history:[
+    {m:'ноябр',v:135000},{m:'декабр',v:17000},{m:'март',v:20000},{m:'май',v:20000},{m:'июнь',v:5000}
+  ]},
+  {block:'C', number:'3/3', name:'Юлдашев Расулчон Хош', area:70.5, price:4000, roomAmount:282000, paid:96000, baqiya:186000, history:[
+    {m:'ноябр',v:96000}
+  ]},
+  {block:'C', number:'3/4', name:'Хусаинов Олимчон Мух', area:49.8, price:5300, roomAmount:263940, paid:200270, baqiya:63670, history:[
+    {m:'сентябр',v:100000},{m:'октябр',v:9110},{m:'ноябр',v:9110},{m:'декабр',v:45540},{m:'май',v:9180},{m:'июнь',v:9110},{m:'июль',v:9110},{m:'август',v:9110}
+  ]},
+  {block:'C', number:'3/5', name:'Юлдашев Расулчон Хоч', area:49.8, price:4000, roomAmount:199200, paid:86900, baqiya:113100, history:[
+    {m:'октябр',v:74500},{m:'декабр',v:12400}
+  ]},
+  {block:'C', number:'3/6', name:'Юсуфов Сабур Талбиев', area:70.5, price:4900, roomAmount:345450, paid:217000, baqiya:128450, history:[
+    {m:'январ',v:160000},{m:'феврал',v:18000},{m:'июнь',v:39000}
+  ]},
+  {block:'C', number:'3/7', name:'Гафоров Махмад Шераф', area:69.3, price:5500, roomAmount:381150, paid:249000, baqiya:131000, history:[
+    {m:'январ',v:249000}
+  ]},
+  {block:'C', number:'3/8', name:'Юсуфов Мухаммад Тал', area:66.5, price:4962, roomAmount:329973, paid:330000, baqiya:0, history:[
+    {m:'феврал',v:330000}
+  ]},
+  {block:'C', number:'4/3', name:'Юсуфова Файзимох Ахм', area:70.5, price:4500, roomAmount:317250, paid:300700, baqiya:16550, history:[
+    {m:'декабр',v:160000},{m:'январ',v:29000},{m:'феврал',v:35600},{m:'апрел',v:17000},{m:'июль',v:59100}
+  ]},
+  {block:'C', number:'4/4', name:'Сафаров Сангак Рачабо', area:49.8, price:4000, roomAmount:199200, paid:200000, baqiya:0, history:[
+    {m:'октябр',v:200000}
+  ]},
+  {block:'C', number:'4/5', name:'Куватова Замира Азамо', area:49.8, price:4000, roomAmount:200000, paid:180000, baqiya:20000, history:[
+    {m:'август',v:100000},{m:'ноябр',v:80000}
+  ]},
+  {block:'C', number:'4/6', name:'Мачидов Зокирчон Зоир', area:70.5, price:5000, roomAmount:352500, paid:170500, baqiya:182000, history:[
+    {m:'январ',v:114000},{m:'феврал',v:11000},{m:'март',v:11000},{m:'июнь',v:12000},{m:'июль',v:11500},{m:'август',v:11000}
+  ]},
+  {block:'C', number:'4/7', name:'Миршарипов Мирзомуддин', area:69.3, price:4000, roomAmount:277200, paid:110000, baqiya:167200, history:[
+    {m:'ноябр',v:100000},{m:'январ',v:10000}
+  ]},
+  {block:'C', number:'5/1', name:'Шоймардиов Баргет Сафи', area:47.0, price:5000, roomAmount:235000, paid:139370, baqiya:95630, history:[
+    {m:'март',v:75000},{m:'апрел',v:13300},{m:'май',v:13000},{m:'июнь',v:13000},{m:'июль',v:12070},{m:'август',v:13000}
+  ]},
+  {block:'C', number:'5/7', name:'Азизов Саламшо Курбона', area:69.3, price:4329, roomAmount:299999.7, paid:257230, baqiya:42770, history:[
+    {m:'сентябр',v:94860},{m:'октябр',v:20000},{m:'ноябр',v:15170},{m:'декабр',v:13100},{m:'январ',v:13300},{m:'феврал',v:14300},{m:'март',v:13200},{m:'апрел',v:16070},{m:'май',v:14680},{m:'июнь',v:14450},{m:'июль',v:14000},{m:'август',v:14100}
+  ]},
+  {block:'C', number:'5/8', name:'Болтаев Курбон Садикович', area:66.5, price:5250, roomAmount:349125, paid:204000, baqiya:145125, history:[
+    {m:'январ',v:160000},{m:'феврал',v:24000},{m:'июнь',v:10000},{m:'июль',v:10000}
+  ]},
+  {block:'C', number:'6/1', name:'Рахматова Мадина Кут...', area:47.0, price:4000, roomAmount:188000, paid:110000, baqiya:78000, history:[
+    {m:'апрел',v:110000}
+  ]},
+  {block:'C', number:'6/4', name:'Абдуллоев Саидакрам К...', area:49.8, price:4000, roomAmount:199200, paid:132000, baqiya:67200, history:[
+    {m:'ноябр',v:60000},{m:'декабр',v:8000},{m:'январ',v:8000},{m:'феврал',v:8000},{m:'март',v:8000},{m:'апрел',v:8000},{m:'май',v:8000},{m:'июнь',v:8000},{m:'июль',v:8000},{m:'август',v:8000}
+  ]},
+  {block:'C', number:'6/5', name:'Хомидов Аличон Муким', area:49.8, price:4300, roomAmount:215000, paid:215000, baqiya:0, history:[
+    {m:'июнь',v:215000}
+  ]},
+  {block:'C', number:'7/1', name:'Суфиева Махина Сироч...', area:47.0, price:3700, roomAmount:173900, paid:97680, baqiya:76220, history:[
+    {m:'апрел',v:60000},{m:'май',v:9420},{m:'июнь',v:9420},{m:'июль',v:9420},{m:'август',v:9420}
+  ]},
+  {block:'C', number:'7/4', name:'Шодмонзода Комрон Ш...', area:49.8, price:4000, roomAmount:199200, paid:30000, baqiya:170000, history:[
+    {m:'май',v:25000},{m:'июнь',v:5000}
+  ]},
+  {block:'C', number:'7/5', name:'Курбонова Максуда Ма...', area:49.8, price:4000, roomAmount:199200, paid:114000, baqiya:86000, history:[
+    {m:'май',v:100000},{m:'август',v:14000}
+  ]},
+  {block:'C', number:'8/1', name:'Хасанова Фируза Авазовна', area:47.0, price:5000, roomAmount:235000, paid:50000, baqiya:185000, history:[
+    {m:'август',v:50000}
+  ]},
+  {block:'C', number:'8/5', name:'Пиржанова Зулайхо Олимч', area:50.0, price:4200, roomAmount:210000, paid:120000, baqiya:90000, history:[
+    {m:'август',v:120000}
+  ]},
+  {block:'C', number:'9/1', name:'Шоймардиов Баргет Сафи', area:47.0, price:4600, roomAmount:216200, paid:143267, baqiya:72933, history:[
+    {m:'май',v:110200},{m:'июнь',v:7067},{m:'июль',v:26000}
+  ]}
+];
+
+/* =========================================================
+   LAYOUT И ГЕНЕРАЦИЯ ВСЕХ 228 ОБЪЕКТОВ
+   ========================================================= */
+const LAYOUT = [
+  {floor:0, units:[1,2,3,4,5]},
+  {floor:1, units:[1,2,3,4,5]},
+  {floor:2, units:[1,2,3,4,5]},
+  {floor:3, units:[1,2,3,4,5,6,7,8]},
+  {floor:4, units:[1,2,3,4,5,6,7,8]},
+  {floor:5, units:[1,2,3,4,5,6,7,8]},
+  {floor:6, units:[1,2,3,4,5,6,7,8]},
+  {floor:7, units:[1,2,3,4,5,6,7,8]},
+  {floor:8, units:[1,2,3,4,5,6,7,8]},
+  {floor:9, units:[1,2,3,4,5,6,7,8]},
+  {floor:10, units:[1,2,3,4,5]},
+];
+const BLOCKS = ['A','B','C'];
+
+const ALL_OBJECTS = [];
+BLOCKS.forEach(block => {
+  LAYOUT.forEach(({floor, units}) => {
+    units.forEach(unit => {
+      const number = `${floor}/${unit}`;
+      const occ = OCCUPIED.find(o => o.block === block && o.number === number);
+      if (occ) {
+        ALL_OBJECTS.push({
+          block, number, floor, unit,
+          name: occ.name || '',
+          area: occ.area,
+          price: occ.price,
+          roomAmount: occ.roomAmount,
+          paid: occ.paid || 0,
+          baqiya: occ.baqiya === null || occ.baqiya === undefined ? null : Number(occ.baqiya),
+          history: occ.history || [],
+          status: !occ.name ? 'free' : (Number(occ.baqiya) === 0 ? 'sold' : 'installment')
         });
-      });
-    }
-
-    saveState();
-    modal.remove();
-    render();
-    toast('✅ Продажа завершена');
-  };
-};
-
-// ============================================================================
-// INSTALLMENT PAYMENTS MODAL
-// ============================================================================
-window.openInstallmentPayments = function (aptId) {
-  const payments = getPaymentsByApt(aptId);
-  const apt = getApt(aptId);
-  const modal = document.createElement('div');
-  modal.className = 'modal';
-  modal.innerHTML = `
-    <div class="modal-content">
-      <span style="float:right;cursor:pointer;font-size:1.5rem;color: var(--text-secondary);" onclick="this.closest('.modal').remove()">&times;</span>
-      <h3 style="color: var(--gold-dark);">График платежей - ${apt?.number || ''}</h3>
-      <div style="margin-top: 16px; display: flex; gap: 16px; flex-wrap: wrap;">
-        <div style="background: var(--bg-primary); padding: 12px; border-radius: 8px; flex: 1; min-width: 150px;">
-          <div style="font-size: 0.85rem; color: var(--text-secondary);">Всего оплачено:</div>
-          <div style="font-weight: 700; color: var(--emerald);" id="totalPaidDisplay">${formatMoney(payments.filter(p => p.status === 'paid').reduce((s, p) => s + p.amount, 0))}</div>
-        </div>
-        <div style="background: var(--bg-primary); padding: 12px; border-radius: 8px; flex: 1; min-width: 150px;">
-          <div style="font-size: 0.85rem; color: var(--text-secondary);">Осталось:</div>
-          <div style="font-weight: 700; color: var(--red);" id="remainingDisplay">${formatMoney(payments.filter(p => p.status !== 'paid' && p.amount > 0).reduce((s, p) => s + p.amount, 0))}</div>
-        </div>
-      </div>
-      <table class="table-mini" style="margin-top: 20px;">
-        <tr><th>№</th><th>Дата</th><th>Сумма</th><th>Статус</th></tr>
-        ${payments.map((p, idx) => `
-          <tr id="payment-row-${p.id}">
-            <td>${idx + 1}</td>
-            <td>${formatDate(p.date)}</td>
-            <td>
-              <input type="number" value="${p.amount}"
-                onchange="window.updatePaymentAmount('${p.id}', this.value)"
-                style="width:110px;padding:6px 8px;border-radius:8px;border:1px solid var(--border-color);background:${p.status === 'unpaid' ? '#f3f4f6' : 'var(--bg-primary)'};color:${p.status === 'unpaid' ? '#9ca3af' : 'var(--text-primary)'};">
-            </td>
-            <td>
-              <select onchange="window.updatePaymentStatus('${p.id}', this.value)"
-                style="padding:6px 8px;border-radius:8px;border:1px solid var(--border-color);background:var(--bg-primary);color:var(--text-primary);">
-                <option value="unpaid" ${p.status === 'unpaid' ? 'selected' : ''}>⚪ Не оплачено</option>
-                <option value="overdue" ${p.status === 'overdue' ? 'selected' : ''}>🔴 Не оплачено (просрочено)</option>
-                <option value="partial" ${p.status === 'partial' ? 'selected' : ''}>🟡 Частично</option>
-                <option value="paid" ${p.status === 'paid' ? 'selected' : ''}>✅ Оплачено</option>
-              </select>
-            </td>
-          </tr>`).join('')}
-      </table>
-    </div>`;
-  document.body.appendChild(modal);
-};
-
-window.updatePaymentAmount = function (paymentId, value) {
-  const p = state.payments.find(p => p.id === paymentId);
-  if (!p) return;
-  const amount = parseFloat(value);
-  if (isNaN(amount) || amount < 0) return;
-  p.amount = amount;
-  saveState();
-  updatePaymentTotals(p.apartmentId);
-  toast('✅ Сумма обновлена');
-};
-
-window.updatePaymentStatus = function (paymentId, value) {
-  const p = state.payments.find(p => p.id === paymentId);
-  if (!p) return;
-  p.status = value;
-  if (value === 'unpaid') p.amount = 0;
-  if (value === 'paid') p.paidDate = new Date().toISOString().split('T')[0];
-  else delete p.paidDate;
-
-  saveState();
-
-  const row = document.getElementById(`payment-row-${paymentId}`);
-  if (row) {
-    const input = row.querySelector('input[type="number"]');
-    const select = row.querySelector('select');
-    if (input) {
-      input.value = p.amount;
-      input.style.background = value === 'unpaid' ? '#f3f4f6' : 'var(--bg-primary)';
-      input.style.color = value === 'unpaid' ? '#9ca3af' : 'var(--text-primary)';
-    }
-    if (select) select.value = value;
-  }
-  updatePaymentTotals(p.apartmentId);
-  toast('✅ Статус обновлён');
-};
-
-function updatePaymentTotals(aptId) {
-  const payments = getPaymentsByApt(aptId);
-  const totalPaid = payments.filter(p => p.status === 'paid').reduce((s, p) => s + p.amount, 0);
-  const remaining = payments.filter(p => p.status !== 'paid' && p.amount > 0).reduce((s, p) => s + p.amount, 0);
-  const totalPaidDisplay = document.getElementById('totalPaidDisplay');
-  const remainingDisplay = document.getElementById('remainingDisplay');
-  if (totalPaidDisplay) totalPaidDisplay.textContent = formatMoney(totalPaid);
-  if (remainingDisplay) remainingDisplay.textContent = formatMoney(remaining);
-}
-
-window.markPaid = function (paymentId) {
-  const p = state.payments.find(p => p.id === paymentId);
-  if (p) {
-    p.status = 'paid';
-    p.paidDate = new Date().toISOString().split('T')[0];
-    saveState();
-    render();
-    document.querySelector('.modal')?.remove();
-    toast('✅ Платеж отмечен');
-  }
-};
-
-// ============================================================================
-// EDIT / ADD
-// ============================================================================
-window.editApartment = function (aptId) {
-  const apt = getApt(aptId);
-  if (!apt) return;
-  const modal = document.createElement('div');
-  modal.className = 'modal';
-  modal.innerHTML = `
-    <div class="modal-content">
-      <span style="float:right;cursor:pointer;font-size:1.5rem;color: var(--text-secondary);" onclick="this.closest('.modal').remove()">&times;</span>
-      <h3 style="color: var(--gold-dark);">Редактировать объект №${apt.number}</h3>
-      <div style="margin-top: 20px; display: grid; gap: 12px;">
-        <label style="color: var(--text-secondary);">Номер</label>
-        <input id="aNumber" value="${apt.number}" style="width:100%;padding:12px;border-radius:12px;border:1px solid var(--border-color);background:var(--bg-primary);color:var(--text-primary);">
-        <label style="color: var(--text-secondary);">Площадь (м²)</label>
-        <input id="aArea" type="number" value="${apt.area}" style="width:100%;padding:12px;border-radius:12px;border:1px solid var(--border-color);background:var(--bg-primary);color:var(--text-primary);">
-        <label style="color: var(--text-secondary);">Комнат</label>
-        <input id="aRooms" type="number" value="${apt.rooms}" style="width:100%;padding:12px;border-radius:12px;border:1px solid var(--border-color);background:var(--bg-primary);color:var(--text-primary);">
-        <label style="color: var(--text-secondary);">Цена (сомони)</label>
-        <input id="aPrice" type="number" value="${apt.price}" style="width:100%;padding:12px;border-radius:12px;border:1px solid var(--border-color);background:var(--bg-primary);color:var(--text-primary);">
-        <label style="color: var(--text-secondary);">Статус</label>
-        <select id="aStatus" style="width:100%;padding:12px;border-radius:12px;border:1px solid var(--border-color);background:var(--bg-primary);color:var(--text-primary);">
-          <option value="available" ${apt.status === 'available' ? 'selected' : ''}>⚪ Свободен</option>
-          <option value="sold" ${apt.status === 'sold' ? 'selected' : ''}>✅ Продан</option>
-          <option value="installment" ${apt.status === 'installment' ? 'selected' : ''}>🟡 Рассрочка</option>
-        </select>
-        <button class="btn" id="saveApt" style="margin-top:8px;">Сохранить</button>
-      </div>
-    </div>`;
-  document.body.appendChild(modal);
-
-  document.getElementById('saveApt').onclick = () => {
-    apt.number = document.getElementById('aNumber').value;
-    apt.area = parseFloat(document.getElementById('aArea').value);
-    apt.rooms = parseInt(document.getElementById('aRooms').value);
-    apt.price = parseInt(document.getElementById('aPrice').value);
-    apt.status = document.getElementById('aStatus').value;
-    saveState();
-    modal.remove();
-    render();
-    toast('✅ Изменения сохранены');
-  };
-};
-
-window.openAddHouseModal = function () {
-  const modal = document.createElement('div');
-  modal.className = 'modal';
-  modal.innerHTML = `
-    <div class="modal-content">
-      <span style="float:right;cursor:pointer;font-size:1.5rem;color: var(--text-secondary);" onclick="this.closest('.modal').remove()">&times;</span>
-      <h3 style="color: var(--gold-dark);">Новый блок</h3>
-      <div style="margin-top: 20px; display: grid; gap: 12px;">
-        <input id="hNumber" placeholder="Название блока (А, Б, В...)" style="width:100%;padding:12px;border-radius:12px;border:1px solid var(--border-color);background:var(--bg-primary);color:var(--text-primary);">
-        <input id="hAddress" placeholder="Адрес" style="width:100%;padding:12px;border-radius:12px;border:1px solid var(--border-color);background:var(--bg-primary);color:var(--text-primary);">
-        <button class="btn" id="saveHouse" style="margin-top:8px;">Создать блок</button>
-      </div>
-    </div>`;
-  document.body.appendChild(modal);
-
-  document.getElementById('saveHouse').onclick = () => {
-    const name = document.getElementById('hNumber').value.trim();
-    const address = document.getElementById('hAddress').value.trim();
-    if (!name) return alert('Введите название блока');
-
-    const newHouse = {
-      id: 'block' + Date.now(),
-      name: `Блок ${name}`,
-      address: address || 'Адрес не указан',
-      status: 'Строится',
-      createdAt: new Date().toISOString()
-    };
-    state.houses.push(newHouse);
-
-    let aptCounter = state.apartments.reduce((max, a) => {
-      const m = /^apt-(\d+)$/.exec(a.id || '');
-      return m ? Math.max(max, parseInt(m[1], 10)) : max;
-    }, 0);
-
-    const pushApt = data => {
-      const apt = {
-        id: `apt-${++aptCounter}`,
-        houseId: newHouse.id,
-        clientId: null,
-        installment: null,
-        status: 'available',
-        ...data
-      };
-      state.apartments.push(apt);
-    };
-
-    for (let i = 1; i <= 5; i++) {
-      pushApt({ type: 'basement', floor: 0, number: `П${String(i).padStart(2, '0')}`, rooms: 0, area: 30, price: 15000 });
-    }
-    for (let floor = 1; floor <= 2; floor++) {
-      for (let room = 1; room <= 8; room++) {
-        pushApt({ type: 'commercial', floor, number: `${floor}${String(room).padStart(2, '0')}`, rooms: 1, area: 60, price: 120000 });
-      }
-    }
-    for (let floor = 3; floor <= 9; floor++) {
-      for (let room = 1; room <= 8; room++) {
-        const rooms = (room % 3) + 1;
-        pushApt({
-          type: 'residential', floor,
-          number: `${floor}${String(room).padStart(2, '0')}`,
-          rooms, area: 45 + rooms * 15, price: (45 + rooms * 15) * 4200
+      } else {
+        ALL_OBJECTS.push({
+          block, number, floor, unit,
+          name: '', area: null, price: null, roomAmount: null,
+          paid: 0, baqiya: null, history: [], status: 'free'
         });
       }
-    }
-    for (let room = 1; room <= 5; room++) {
-      pushApt({ type: 'penthouse', floor: 10, number: `10${String(room).padStart(2, '0')}`, rooms: 4, area: 150, price: 600000 });
-    }
-
-    saveState();
-    modal.remove();
-    render();
-    toast('✅ Блок создан');
-  };
-};
-
-window.openAddApartmentModal = function (houseId, floor) {
-  const modal = document.createElement('div');
-  modal.className = 'modal';
-  modal.innerHTML = `
-    <div class="modal-content">
-      <span style="float:right;cursor:pointer;font-size:1.5rem;color: var(--text-secondary);" onclick="this.closest('.modal').remove()">&times;</span>
-      <h3 style="color: var(--gold-dark);">Добавить объект</h3>
-      <div style="margin-top: 20px; display: grid; gap: 12px;">
-        <input id="aNumber" placeholder="Номер" style="width:100%;padding:12px;border-radius:12px;border:1px solid var(--border-color);background:var(--bg-primary);color:var(--text-primary);">
-        <input id="aArea" type="number" placeholder="Площадь (м²)" style="width:100%;padding:12px;border-radius:12px;border:1px solid var(--border-color);background:var(--bg-primary);color:var(--text-primary);">
-        <input id="aRooms" type="number" placeholder="Комнат" style="width:100%;padding:12px;border-radius:12px;border:1px solid var(--border-color);background:var(--bg-primary);color:var(--text-primary);">
-        <input id="aPrice" type="number" placeholder="Цена (сомони)" style="width:100%;padding:12px;border-radius:12px;border:1px solid var(--border-color);background:var(--bg-primary);color:var(--text-primary);">
-        <button class="btn" id="saveApt" style="margin-top:8px;">Добавить</button>
-      </div>
-    </div>`;
-  document.body.appendChild(modal);
-
-  document.getElementById('saveApt').onclick = () => {
-    const newApt = {
-      id: 'apt' + Date.now(),
-      houseId, floor,
-      number: document.getElementById('aNumber').value,
-      rooms: parseInt(document.getElementById('aRooms').value) || 0,
-      area: parseFloat(document.getElementById('aArea').value) || 0,
-      price: parseInt(document.getElementById('aPrice').value) || 0,
-      status: 'available', clientId: null, installment: null,
-      type: floor === 0 ? 'basement' : floor === 10 ? 'penthouse' : floor <= 2 ? 'commercial' : 'residential'
-    };
-    state.apartments.push(newApt);
-    saveState();
-    modal.remove();
-    render();
-    toast('✅ Объект добавлен');
-  };
-};
-
-// ============================================================================
-// FILTER / SEARCH
-// ============================================================================
-window.setFilter = function (filter) { currentFilter = filter; render(); };
-
-window.handleGlobalSearch = function (query) {
-  if (!query || query.length < 2) return;
-  const results = state.apartments.filter(a =>
-    a.number.includes(query) ||
-    (getClient(a.clientId)?.name || '').toLowerCase().includes(query.toLowerCase()) ||
-    (getClient(a.clientId)?.phone || '').includes(query)
-  );
-  if (results.length) window.openApartmentModal(results[0].id);
-};
-
-// ============================================================================
-// PAGES
-// ============================================================================
-function renderPaymentsPage(container) {
-  const all = [...state.payments].sort((a, b) => b.date.localeCompare(a.date));
-  const paidTotal = state.payments.filter(p => p.status === 'paid').reduce((s, p) => s + p.amount, 0);
-  const pendingTotal = state.payments.filter(p => p.status === 'pending' || p.status === 'unpaid').reduce((s, p) => s + p.amount, 0);
-  const overdueTotal = state.payments.filter(p => p.status === 'overdue').reduce((s, p) => s + p.amount, 0);
-
-  container.innerHTML = `
-    <h2>Все платежи</h2>
-    <div class="stats-grid" style="margin-top: 20px;">
-      <div class="stat-card"><div class="stat-value" style="color: var(--emerald);">${formatMoney(paidTotal)}</div><div class="stat-label">✅ Оплачено</div></div>
-      <div class="stat-card"><div class="stat-value" style="color: var(--yellow);">${formatMoney(pendingTotal)}</div><div class="stat-label">🟡 Ожидает</div></div>
-      <div class="stat-card"><div class="stat-value" style="color: var(--red);">${formatMoney(overdueTotal)}</div><div class="stat-label">🔴 Просрочено</div></div>
-    </div>
-    <div style="background: var(--bg-card); border-radius: 16px; padding: 20px; margin-top: 20px; border: 1px solid var(--border-color);">
-      <table class="table-mini">
-        <tr><th>Квартира</th><th>Блок</th><th>Дата</th><th>Сумма</th><th>Статус</th><th></th></tr>
-        ${all.map(p => {
-          const apt = getApt(p.apartmentId);
-          const house = getHouse(apt?.houseId);
-          return `
-            <tr>
-              <td>${apt?.number || '?'}</td>
-              <td>${house?.name || '?'}</td>
-              <td>${formatDate(p.date)}</td>
-              <td>${formatMoney(p.amount)}</td>
-              <td>${
-                p.status === 'paid' ? '<span style="color: var(--emerald);">✅ Оплачен</span>' :
-                p.status === 'overdue' ? '<span style="color: var(--red);">🔴 Просрочен</span>' :
-                p.status === 'unpaid' ? '<span style="color: #6b7280;">⚪ Не оплачен</span>' :
-                '<span style="color: var(--yellow);">Ожидает</span>'
-              }</td>
-              <td>${p.status !== 'paid' ? `<button class="btn" style="padding:6px 12px;font-size:0.8rem;" onclick="window.markPaid('${p.id}')">Оплатить</button>` : ''}</td>
-            </tr>`;
-        }).join('')}
-      </table>
-    </div>`;
-}
-
-function renderClientsPage(container) {
-  container.innerHTML = `
-    <h2>Клиенты</h2>
-    <div class="houses-grid" style="margin-top: 20px;">
-      ${state.clients.map(c => {
-        const clientApts = state.apartments.filter(a => a.clientId === c.id);
-        const totalPaid = state.payments.filter(p => p.clientId === c.id && p.status === 'paid').reduce((s, p) => s + p.amount, 0);
-        return `
-          <div class="house-card">
-            <strong>${c.name}</strong>
-            <div style="color: var(--text-secondary); margin-top: 8px;">📞 ${c.phone}</div>
-            ${c.email ? `<div style="color: var(--text-secondary);">✉️ ${c.email}</div>` : ''}
-            <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border-color);">
-              <div style="color: var(--text-secondary);">Объектов: ${clientApts.length}</div>
-              <div style="color: var(--gold-dark); font-weight: 600;">Выплачено: ${formatMoney(totalPaid)}</div>
-            </div>
-          </div>`;
-      }).join('')}
-    </div>`;
-}
-
-function renderSalesPage(container) {
-  const total = state.payments.filter(p => p.status === 'paid').reduce((s, p) => s + p.amount, 0);
-  const monthlySales = {};
-  state.payments.filter(p => p.status === 'paid').forEach(p => {
-    const month = p.date.substring(0, 7);
-    monthlySales[month] = (monthlySales[month] || 0) + p.amount;
+    });
   });
+});
 
-  container.innerHTML = `
-    <h2>Продажи</h2>
-    <div class="stats-grid" style="margin-top: 20px;">
-      <div class="stat-card"><div class="stat-value" style="color: var(--gold-dark);">${formatMoney(total)}</div><div class="stat-label">💰 Общая выручка</div></div>
-      <div class="stat-card"><div class="stat-value" style="color: var(--emerald);">${state.apartments.filter(a => a.status === 'sold').length}</div><div class="stat-label">✅ Продано объектов</div></div>
+/* =========================================================
+   KPI
+   ========================================================= */
+function calcKpi(objects) {
+  const total = objects.length;
+  const sold = objects.filter(o => o.status === 'sold').length;
+  const inst = objects.filter(o => o.status === 'installment').length;
+  const free = objects.filter(o => o.status === 'free').length;
+  const paid = objects.reduce((s, o) => s + (o.paid || 0), 0);
+  const baqiya = objects.reduce((s, o) => s + (o.baqiya || 0), 0);
+  return { total, sold, inst, free, paid, baqiya };
+}
+
+const KPI = calcKpi(ALL_OBJECTS);
+
+function money(v) {
+  return new Intl.NumberFormat('ru-RU').format(Math.round(v || 0)) + ' c.';
+}
+
+function renderKpi() {
+  const el = document.getElementById('kpi');
+  const items = [
+    { label:'Всего объектов', value: KPI.total, color:'text-slate-100' },
+    { label:'Продано', value: KPI.sold, color:'text-emerald-400' },
+    { label:'В рассрочке', value: KPI.inst, color:'text-sky-400' },
+    { label:'Свободно', value: KPI.free, color:'text-slate-400' },
+    { label:'Итого получено', value: money(KPI.paid), color:'text-amber-300' },
+    { label:'Остаток к получению', value: money(KPI.baqiya), color:'text-rose-300' },
+  ];
+  el.innerHTML = items.map(i => `
+    <div class="bg-slate-900/70 border border-slate-800 rounded-2xl px-3 py-2.5">
+      <div class="text-[10px] uppercase tracking-wide text-slate-500">${i.label}</div>
+      <div class="text-sm sm:text-base font-semibold ${i.color} truncate">${i.value}</div>
     </div>
-    <div style="background: var(--bg-card); border-radius: 16px; padding: 20px; margin-top: 20px; border: 1px solid var(--border-color);">
-      <h3 style="margin-bottom: 16px; color: var(--gold-dark);">По месяцам</h3>
-      ${Object.entries(monthlySales).sort((a, b) => b[0].localeCompare(a[0])).map(([month, amount]) => `
-        <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border-color);">
-          <span style="color: var(--text-secondary);">${month}</span>
-          <strong>${formatMoney(amount)}</strong>
-        </div>`).join('')}
-    </div>`;
+  `).join('');
 }
 
-// ============================================================================
-// REPORTS (локальные данные)
-// ============================================================================
-const REPORT_AUTHORS = {
-  abdulloh: 'Абдуллох',
-  firdavs:  'Фирдавс',
-  faridun:  'Фаридун',
-  hisrav:   'Хисрав'
+/* =========================================================
+   UI STATE
+   ========================================================= */
+let state = {
+  block: 'ALL',
+  status: 'all',
+  search: ''
 };
-const reportsState = {};
-const PAGE_SIZE = 10;
 
-function getReportState(slug) {
-  if (!reportsState[slug]) {
-    reportsState[slug] = { filtered: [], visibleCount: PAGE_SIZE };
-  }
-  return reportsState[slug];
-}
-
-function getReportsByAuthor(slug) {
-  return state.reports
-    .filter(r => r.authorSlug === slug)
-    .sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
-}
-
-function applyReportFilters(slug) {
-  const rs = getReportState(slug);
-  const year  = document.getElementById('filterYear')?.value  || '';
-  const month = document.getElementById('filterMonth')?.value || '';
-  const day   = document.getElementById('filterDay')?.value   || '';
-  const all = getReportsByAuthor(slug);
-  rs.filtered = all.filter(r => {
-    if (year  && String(r.year)  !== year)  return false;
-    if (month && String(r.month) !== month) return false;
-    if (day   && String(r.day)   !== day)   return false;
+function filteredObjects() {
+  return ALL_OBJECTS.filter(o => {
+    if (state.block !== 'ALL' && o.block !== state.block) return false;
+    if (state.status !== 'all' && o.status !== state.status) return false;
+    if (state.search) {
+      const q = state.search.toLowerCase();
+      const hay = `${o.name} ${o.number} ${o.block}`.toLowerCase();
+      if (!hay.includes(q)) return false;
+    }
     return true;
   });
-  rs.visibleCount = PAGE_SIZE;
-  renderReportsList(slug);
-}
-window.applyReportFilters = applyReportFilters;
-
-window.showOlderReports = function (slug) {
-  const rs = getReportState(slug);
-  rs.visibleCount += PAGE_SIZE;
-  renderReportsList(slug);
-};
-
-function renderReportPage(container, slug) {
-  const authorName = REPORT_AUTHORS[slug];
-  const now = new Date();
-  const years = [];
-  for (let y = now.getFullYear() - 2; y <= now.getFullYear() + 1; y++) years.push(y);
-
-  container.innerHTML = `
-    <h2>Отчёт ${authorName}</h2>
-    <div class="report-filters">
-      <select id="filterYear" onchange="window.applyReportFilters('${slug}')">
-        <option value="">Год: все</option>
-        ${years.map(y => `<option value="${y}" ${y === now.getFullYear() ? 'selected' : ''}>${y}</option>`).join('')}
-      </select>
-      <select id="filterMonth" onchange="window.applyReportFilters('${slug}')">
-        <option value="">Месяц: все</option>
-        ${Array.from({ length: 12 }, (_, i) => i + 1).map(m => `<option value="${m}" ${m === now.getMonth() + 1 ? 'selected' : ''}>${String(m).padStart(2, '0')}</option>`).join('')}
-      </select>
-      <select id="filterDay" onchange="window.applyReportFilters('${slug}')">
-        <option value="">День: все</option>
-        ${Array.from({ length: 31 }, (_, i) => i + 1).map(d => `<option value="${d}" ${d === now.getDate() ? 'selected' : ''}>${String(d).padStart(2, '0')}</option>`).join('')}
-      </select>
-      <button class="btn" onclick="window.openReportModal('${slug}')">+ Добавить отчёт</button>
-    </div>
-    <div id="reportsList"></div>`;
-
-  applyReportFilters(slug);
-}
-window.renderReportPage = renderReportPage;
-
-function renderReportsList(slug) {
-  const rs = getReportState(slug);
-  const list = document.getElementById('reportsList');
-  if (!list) return;
-
-  if (rs.filtered.length === 0) {
-    list.innerHTML = `<div style="color: var(--text-muted); padding: 20px 0;">Отчётов не найдено.</div>`;
-    return;
-  }
-
-  const visible = rs.filtered.slice(0, rs.visibleCount);
-  list.innerHTML = visible.map(r => reportCardHTML(slug, r)).join('') +
-    (rs.filtered.length > rs.visibleCount
-      ? `<button class="btn secondary" onclick="window.showOlderReports('${slug}')">Показать старые</button>`
-      : '');
 }
 
-function reportCardHTML(slug, r) {
-  const tableHTML = (r.table && r.table.length)
-    ? `<table class="table-mini"><tbody>${r.table.map(row => `<tr>${row.map(cell => `<td>${cell || ''}</td>`).join('')}</tr>`).join('')}</tbody></table>`
-    : '';
-  const imagesHTML = (r.images && r.images.length)
-    ? `<div class="report-card-images">${r.images.map(src => `<img src="${src}" onclick="window.openLightbox('${src}')">`).join('')}</div>`
-    : '';
-
-  return `
-    <div class="report-card">
-      <div class="report-card-header">
-        <span class="report-card-date">${r.dateStr}</span>
-        <div style="display:flex; gap:8px;">
-          <button class="btn secondary" onclick="window.openReportModal('${slug}', '${r.id}')">✏️ Редактировать</button>
-          <button class="btn secondary" onclick="window.deleteReport('${slug}', '${r.id}')">🗑️ Удалить</button>
-        </div>
-      </div>
-      ${r.text ? `<div class="report-card-text">${r.text}</div>` : ''}
-      ${tableHTML}
-      ${imagesHTML}
-    </div>`;
-}
-
-window.deleteReport = function (slug, reportId) {
-  if (!confirm('Удалить этот отчёт?')) return;
-  state.reports = state.reports.filter(r => r.id !== reportId);
-  saveState();
-  applyReportFilters(slug);
-  toast('🗑️ Отчёт удалён');
-};
-
-// ============================================================================
-// EDITOR: таблица и изображения
-// ============================================================================
-let editingTable = [['', '', ''], ['', '', '']];
-let editingImages = [];
-
-function syncTableFromDOM() {
-  const rows = document.querySelectorAll('#tableEditorWrap tr');
-  if (!rows.length) return;
-  editingTable = Array.from(rows).map(tr => Array.from(tr.querySelectorAll('td')).map(td => td.textContent));
-}
-
-function renderTableEditor() {
-  const wrap = document.getElementById('tableEditorWrap');
-  if (!wrap) return;
-  wrap.innerHTML = `
-    <table class="report-table-editor"><tbody>
-      ${editingTable.map(row => `<tr>${row.map(cell => `<td contenteditable="true">${cell || ''}</td>`).join('')}</tr>`).join('')}
-    </tbody></table>`;
-}
-
-window.reportTableAddRow = function () { syncTableFromDOM(); editingTable.push(new Array(editingTable[0]?.length || 3).fill('')); renderTableEditor(); };
-window.reportTableAddCol = function () { syncTableFromDOM(); editingTable.forEach(row => row.push('')); renderTableEditor(); };
-window.reportTableRemoveRow = function () { syncTableFromDOM(); if (editingTable.length > 1) editingTable.pop(); renderTableEditor(); };
-window.reportTableRemoveCol = function () { syncTableFromDOM(); if (editingTable[0].length > 1) editingTable.forEach(row => row.pop()); renderTableEditor(); };
-
-function resizeImageFile(file, maxWidth = 640, quality = 0.5) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => {
-      const img = new Image();
-      img.onload = () => {
-        const scale = Math.min(1, maxWidth / img.width);
-        const canvas = document.createElement('canvas');
-        canvas.width = img.width * scale;
-        canvas.height = img.height * scale;
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-        resolve(canvas.toDataURL('image/jpeg', quality));
-      };
-      img.onerror = reject;
-      img.src = reader.result;
-    };
-    reader.onerror = reject;
-    reader.readAsDataURL(file);
+/* =========================================================
+   TABS / FILTERS
+   ========================================================= */
+function renderTabs() {
+  const el = document.getElementById('tabs');
+  const tabs = [
+    { id:'ALL', label:'Все блоки' },
+    { id:'A', label:'Блок А' },
+    { id:'B', label:'Блок Б' },
+    { id:'C', label:'Блок В' },
+  ];
+  el.innerHTML = tabs.map(t => `
+    <button data-block="${t.id}" class="px-4 py-2 rounded-xl text-sm border transition
+      ${state.block === t.id ? 'bg-brand-500 text-slate-950 border-brand-500 font-medium' : 'bg-slate-900 border-slate-700 text-slate-300 hover:border-slate-500'}">
+      ${t.label}
+    </button>
+  `).join('');
+  el.querySelectorAll('button').forEach(btn => {
+    btn.onclick = () => { state.block = btn.dataset.block; renderAll(); };
   });
 }
 
-function renderImageThumbs() {
-  const wrap = document.getElementById('reportThumbs');
-  if (!wrap) return;
-  wrap.innerHTML = editingImages.map((src, i) => `
-    <div class="report-thumb">
-      <img src="${src}" onclick="window.openLightbox('${src}')">
-      <button class="remove-thumb" onclick="window.removeReportImage(${i})">&times;</button>
-    </div>`).join('');
+function renderStatusFilter() {
+  const el = document.getElementById('statusFilter');
+  const statuses = [
+    { id:'all', label:'Все статусы' },
+    { id:'sold', label:'Продано' },
+    { id:'installment', label:'Рассрочка' },
+    { id:'free', label:'Свободно' },
+  ];
+  el.innerHTML = statuses.map(s => `
+    <button data-status="${s.id}" class="px-3 py-1.5 rounded-lg text-xs border transition
+      ${state.status === s.id ? 'bg-slate-100 text-slate-900 border-slate-100 font-medium' : 'bg-slate-900 border-slate-700 text-slate-300 hover:border-slate-500'}">
+      ${s.label}
+    </button>
+  `).join('');
+  el.querySelectorAll('button').forEach(btn => {
+    btn.onclick = () => { state.status = btn.dataset.status; renderAll(); };
+  });
 }
 
-window.removeReportImage = function (i) { editingImages.splice(i, 1); renderImageThumbs(); };
-
-async function handleReportFiles(fileList) {
-  const files = Array.from(fileList).filter(f => f.type.startsWith('image/'));
-  const remaining = 3 - editingImages.length;
-  if (remaining <= 0) { toast('⚠️ Максимум 3 изображения'); return; }
-  for (const file of files.slice(0, remaining)) {
-    try { editingImages.push(await resizeImageFile(file)); }
-    catch (error) { console.error('resizeImageFile error:', error); }
-  }
-  renderImageThumbs();
+/* =========================================================
+   CHESSBOARD
+   ========================================================= */
+function cellClass(status) {
+  if (status === 'sold') return 'cell-sold';
+  if (status === 'installment') return 'cell-inst';
+  return 'cell-free';
 }
 
-window.openLightbox = function (src) {
-  const overlay = document.createElement('div');
-  overlay.className = 'lightbox-overlay';
-  overlay.innerHTML = `<img src="${src}">`;
-  overlay.onclick = () => overlay.remove();
-  document.body.appendChild(overlay);
-};
+function renderChessboard(block) {
+  const objects = ALL_OBJECTS.filter(o => o.block === block);
+  const floors = [...new Set(LAYOUT.map(l => l.floor))].sort((a,b) => b - a);
+  const maxUnits = Math.max(...LAYOUT.map(l => l.units.length));
 
-window.openReportModal = function (slug, reportId = null) {
-  const existing = reportId ? state.reports.find(r => r.id === reportId) : null;
-
-  editingTable = existing ? JSON.parse(JSON.stringify(existing.table || [['', '', '']])) : [['', '', ''], ['', '', '']];
-  editingImages = existing ? [...(existing.images || [])] : [];
-
-  const todayStr = new Date().toISOString().split('T')[0];
-  const dateValue = existing ? existing.dateStr : todayStr;
-
-  const modal = document.createElement('div');
-  modal.className = 'modal';
-  modal.innerHTML = `
-    <div class="modal-content">
-      <span style="float:right;cursor:pointer;font-size:1.5rem;color: var(--text-secondary);" onclick="this.closest('.modal').remove()">&times;</span>
-      <h3 style="color: var(--gold-dark);">${existing ? 'Редактировать отчёт' : 'Добавить отчёт'} — ${REPORT_AUTHORS[slug]}</h3>
-      <div style="margin-top: 20px; display: grid; gap: 12px;">
-        <input id="reportDate" type="date" value="${dateValue}" style="width:100%;padding:12px;border-radius:12px;border:1px solid var(--border-color);background:var(--bg-primary);color:var(--text-primary);">
-        <textarea id="reportText" placeholder="Комментарий / описание" rows="4" style="width:100%;padding:12px;border-radius:12px;border:1px solid var(--border-color);background:var(--bg-primary);color:var(--text-primary);">${existing?.text || ''}</textarea>
-        <div>
-          <div id="tableEditorWrap"></div>
-          <div class="report-table-actions">
-            <button onclick="window.reportTableAddRow()">+ Строка</button>
-            <button onclick="window.reportTableAddCol()">+ Столбец</button>
-            <button onclick="window.reportTableRemoveRow()">- Строка</button>
-            <button onclick="window.reportTableRemoveCol()">- Столбец</button>
-          </div>
-        </div>
-        <div>
-          <div class="report-dropzone" id="reportDropzone">📷 Перетащите до 3 изображений или нажмите, чтобы выбрать</div>
-          <input type="file" id="reportFileInput" accept="image/*" multiple style="display:none;">
-          <div class="report-thumbs" id="reportThumbs"></div>
-        </div>
-        <button class="btn" id="saveReport" style="margin-top:8px;">Сохранить</button>
-      </div>
-    </div>`;
-  document.body.appendChild(modal);
-
-  renderTableEditor();
-  renderImageThumbs();
-
-  const dropzone = document.getElementById('reportDropzone');
-  const fileInput = document.getElementById('reportFileInput');
-  dropzone.onclick = () => fileInput.click();
-  fileInput.onchange = e => handleReportFiles(e.target.files);
-  dropzone.ondragover = e => { e.preventDefault(); dropzone.classList.add('dragover'); };
-  dropzone.ondragleave = () => dropzone.classList.remove('dragover');
-  dropzone.ondrop = e => {
-    e.preventDefault();
-    dropzone.classList.remove('dragover');
-    handleReportFiles(e.dataTransfer.files);
-  };
-
-  document.getElementById('saveReport').onclick = () => {
-    syncTableFromDOM();
-    const dateStr = document.getElementById('reportDate').value || todayStr;
-    const [year, month, day] = dateStr.split('-').map(Number);
-    const text = document.getElementById('reportText').value;
-
-    const report = {
-      id: existing ? existing.id : `rep_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
-      authorSlug: slug,
-      authorName: REPORT_AUTHORS[slug],
-      year, month, day, dateStr,
-      text,
-      table: editingTable,
-      images: editingImages,
-      createdAt: existing ? existing.createdAt : Date.now()
-    };
-
-    if (existing) {
-      const idx = state.reports.findIndex(r => r.id === existing.id);
-      if (idx >= 0) state.reports[idx] = report;
-      else state.reports.push(report);
-    } else {
-      state.reports.push(report);
-    }
-
-    saveState();
-    modal.remove();
-    applyReportFilters(slug);
-    toast('✅ Отчёт сохранён');
-  };
-};
-
-// ============================================================================
-// EXPORT / IMPORT
-// ============================================================================
-document.getElementById('exportBtn').addEventListener('click', () => {
-  const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = `backup_khisrav_${new Date().toISOString().split('T')[0]}.json`;
-  a.click();
-  toast('📤 Данные экспортированы');
-});
-
-const importBtn = document.getElementById('importBtn');
-const importCsvInput = document.getElementById('importCsvInput');
-
-importBtn.addEventListener('click', () => importCsvInput.click());
-
-importCsvInput.addEventListener('change', () => {
-  const file = importCsvInput.files && importCsvInput.files[0];
-  if (!file) return;
-
-  const isJson = file.name.toLowerCase().endsWith('.json') || file.type === 'application/json';
-  const reader = new FileReader();
-
-  if (isJson) {
-    // ---------- JSON (полный backup) ----------
-    reader.onload = event => {
-      try {
-        const data = JSON.parse(event.target.result);
-        if (data.houses && Array.isArray(data.houses))       state.houses     = data.houses;
-        if (data.apartments && Array.isArray(data.apartments)) state.apartments = data.apartments;
-        if (data.clients && Array.isArray(data.clients))     state.clients    = data.clients;
-        if (data.payments && Array.isArray(data.payments))   state.payments   = data.payments;
-        if (data.reports && Array.isArray(data.reports))     state.reports    = data.reports;
-        saveState();
-        render();
-        toast('📥 Данные импортированы из JSON');
-      } catch (err) {
-        alert('Ошибка чтения JSON: ' + err.message);
-      } finally {
-        importCsvInput.value = '';
+  let rows = '';
+  floors.forEach(floor => {
+    const units = LAYOUT.find(l => l.floor === floor).units;
+    let cells = '';
+    for (let i = 1; i <= maxUnits; i++) {
+      if (units.includes(i)) {
+        const obj = objects.find(o => o.floor === floor && o.unit === i);
+        cells += `
+          <button data-block="${block}" data-number="${obj.number}"
+            class="cell ${cellClass(obj.status)} border rounded-lg h-9 sm:h-10 text-[10px] sm:text-xs font-medium transition hover:scale-[1.03]"
+            title="${obj.number} · ${obj.name || 'Свободно'}">
+            ${obj.number}
+          </button>
+        `;
+      } else {
+        cells += `<div class="h-9 sm:h-10"></div>`;
       }
+    }
+    rows += `
+      <div class="flex items-center gap-1.5">
+        <div class="w-7 text-[10px] text-slate-500 text-right">${floor}</div>
+        <div class="grid flex-1 gap-1.5" style="grid-template-columns: repeat(${maxUnits}, minmax(0,1fr));">${cells}</div>
+      </div>
+    `;
+  });
+
+  const k = calcKpi(objects);
+  return `
+    <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-4">
+      <div class="flex items-center justify-between mb-3">
+        <h3 class="font-semibold">Блок ${block}</h3>
+        <div class="text-[10px] text-slate-400 flex gap-3">
+          <span class="text-emerald-400">Продано: ${k.sold}</span>
+          <span class="text-sky-400">Рассрочка: ${k.inst}</span>
+          <span>Свободно: ${k.free}</span>
+        </div>
+      </div>
+      <div class="space-y-1.5 overflow-x-auto">${rows}</div>
+    </div>
+  `;
+}
+
+function renderChessboards() {
+  const el = document.getElementById('chessboards');
+  const blocks = state.block === 'ALL' ? BLOCKS : [state.block];
+  el.innerHTML = blocks.map(b => renderChessboard(b)).join('');
+
+  el.querySelectorAll('button[data-number]').forEach(btn => {
+    btn.onclick = () => {
+      const block = btn.dataset.block;
+      const number = btn.dataset.number;
+      const obj = ALL_OBJECTS.find(o => o.block === block && o.number === number);
+      openModal(obj);
     };
-    reader.readAsText(file, 'utf-8');
+  });
+}
+
+/* =========================================================
+   TABLE
+   ========================================================= */
+function statusBadge(status) {
+  if (status === 'sold') return `<span class="px-2 py-0.5 rounded-md text-[10px] bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">Продано</span>`;
+  if (status === 'installment') return `<span class="px-2 py-0.5 rounded-md text-[10px] bg-sky-500/15 text-sky-300 border border-sky-500/30">Рассрочка</span>`;
+  return `<span class="px-2 py-0.5 rounded-md text-[10px] bg-slate-700/40 text-slate-400 border border-slate-600/40">Свободно</span>`;
+}
+
+function renderTable() {
+  const objects = filteredObjects();
+  const wrap = document.getElementById('tableWrap');
+  document.getElementById('filteredCount').textContent = `${objects.length} шт.`;
+
+  if (!objects.length) {
+    wrap.innerHTML = `<div class="p-6 text-center text-sm text-slate-500">Ничего не найдено</div>`;
     return;
   }
 
-  // ---------- CSV ----------
-  reader.onload = event => {
-    const lines = event.target.result.split(/\r?\n/);
-    let successCount = 0;
+  wrap.innerHTML = `
+    <table class="w-full text-xs">
+      <thead class="bg-slate-900/80 sticky top-0">
+        <tr class="text-left text-slate-400">
+          <th class="px-3 py-2 font-medium">№</th>
+          <th class="px-3 py-2 font-medium">Покупатель</th>
+          <th class="px-3 py-2 font-medium">Статус</th>
+          <th class="px-3 py-2 font-medium text-right">Оплачено</th>
+          <th class="px-3 py-2 font-medium text-right">Остаток</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-slate-800">
+        ${objects.map(o => `
+          <tr class="hover:bg-slate-800/40 cursor-pointer" data-block="${o.block}" data-number="${o.number}">
+            <td class="px-3 py-2 whitespace-nowrap font-medium">${o.block}-${o.number}</td>
+            <td class="px-3 py-2 truncate max-w-[140px]">${o.name || '—'}</td>
+            <td class="px-3 py-2">${statusBadge(o.status)}</td>
+            <td class="px-3 py-2 text-right whitespace-nowrap">${o.paid ? money(o.paid) : '—'}</td>
+            <td class="px-3 py-2 text-right whitespace-nowrap">${o.baqiya ? money(o.baqiya) : (o.baqiya === 0 ? '0 c.' : '—')}</td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>
+  `;
 
-    for (let index = 8; index < lines.length; index++) {
-      const row = lines[index].trim();
-      if (!row) continue;
+  wrap.querySelectorAll('tr[data-number]').forEach(tr => {
+    tr.onclick = () => {
+      const obj = ALL_OBJECTS.find(o => o.block === tr.dataset.block && o.number === tr.dataset.number);
+      openModal(obj);
+    };
+  });
+}
 
-      const cols = row.split(';');
-      const objectNo = cols[1]?.trim();
-      const clientName = cols[2]?.trim();
-      if (!objectNo || !clientName || clientName.includes('Ному насаб')) continue;
+/* =========================================================
+   MODAL / BOTTOM SHEET
+   ========================================================= */
+function openModal(obj) {
+  const modal = document.getElementById('modal');
+  const content = document.getElementById('modalContent');
+  document.getElementById('modalTitle').textContent = `Блок ${obj.block} · ${obj.number}`;
 
-      const area = parseFloat((cols[3] || '0').replace(',', '.')) || 0;
-      const pricePerMeter = parseInt((cols[4] || '0').replace(/\s/g, ''), 10) || 0;
-      const totalPrice = parseInt((cols[5] || '0').replace(/\s/g, ''), 10) || 0;
-      const paid = parseInt((cols[cols.length - 2] || '0').replace(/\s/g, ''), 10) || 0;
-      const debt = parseInt((cols[cols.length - 1] || '0').replace(/\s/g, ''), 10) || 0;
-      const floorNum = objectNo.includes('/') ? objectNo.split('/')[0] : '1';
+  const historyRows = obj.history && obj.history.length
+    ? obj.history.map(h => `
+        <tr class="border-b border-slate-800/60">
+          <td class="py-2 text-slate-400">${h.m}</td>
+          <td class="py-2 text-right font-medium">${money(h.v)}</td>
+        </tr>
+      `).join('')
+    : `<tr><td colspan="2" class="py-4 text-center text-slate-500">Нет помесячной детализации</td></tr>`;
 
-      const aptId = `Block_A_${objectNo.replace('/', '-')}`;
-      const apartmentData = {
-        id: aptId,
-        objectNumber: objectNo,
-        name: clientName,
-        area, pricePerMeter, totalPrice, paid, debt,
-        status: debt > 0 ? 'installment' : 'sold',
-        block: 'Блок А',
-        floor: parseInt(floorNum) || 1,
-        houseId: 'block-a',
-        type: 'residential',
-        number: objectNo,
-        rooms: 0,
-        price: totalPrice || area * pricePerMeter,
-        clientId: null,
-        installment: null
-      };
+  document.getElementById('modalBody').innerHTML = `
+    <div class="space-y-4">
+      <div class="grid grid-cols-2 gap-3">
+        <div class="bg-slate-950/50 border border-slate-800 rounded-xl p-3">
+          <div class="text-[10px] text-slate-500 uppercase">Покупатель</div>
+          <div class="text-sm font-medium mt-1">${obj.name || 'Свободно'}</div>
+        </div>
+        <div class="bg-slate-950/50 border border-slate-800 rounded-xl p-3">
+          <div class="text-[10px] text-slate-500 uppercase">Статус</div>
+          <div class="mt-1">${statusBadge(obj.status)}</div>
+        </div>
+        <div class="bg-slate-950/50 border border-slate-800 rounded-xl p-3">
+          <div class="text-[10px] text-slate-500 uppercase">Площадь</div>
+          <div class="text-sm font-medium mt-1">${obj.area ? obj.area + ' м²' : '—'}</div>
+        </div>
+        <div class="bg-slate-950/50 border border-slate-800 rounded-xl p-3">
+          <div class="text-[10px] text-slate-500 uppercase">Стоимость</div>
+          <div class="text-sm font-medium mt-1">${obj.roomAmount ? money(obj.roomAmount) : '—'}</div>
+        </div>
+        <div class="bg-slate-950/50 border border-slate-800 rounded-xl p-3">
+          <div class="text-[10px] text-slate-500 uppercase">Оплачено</div>
+          <div class="text-sm font-semibold text-amber-300 mt-1">${money(obj.paid)}</div>
+        </div>
+        <div class="bg-slate-950/50 border border-slate-800 rounded-xl p-3">
+          <div class="text-[10px] text-slate-500 uppercase">Остаток</div>
+          <div class="text-sm font-semibold text-rose-300 mt-1">${obj.baqiya !== null ? money(obj.baqiya) : '—'}</div>
+        </div>
+      </div>
 
-      const idx = state.apartments.findIndex(a => a.id === aptId);
-      if (idx >= 0) state.apartments[idx] = apartmentData;
-      else state.apartments.push(apartmentData);
-      successCount++;
-    }
+      <div>
+        <h4 class="text-xs uppercase tracking-wide text-slate-500 mb-2">История выплат по месяцам</h4>
+        <div class="bg-slate-950/50 border border-slate-800 rounded-xl overflow-hidden">
+          <table class="w-full text-sm">
+            <tbody>${historyRows}</tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  `;
 
-    saveState();
-    render();
-    toast(`Импортировано записей: ${successCount}`);
-    importCsvInput.value = '';
-  };
-  reader.readAsText(file, 'windows-1251');
-});
-
-// ============================================================================
-// INIT
-// ============================================================================
-window.navigate = navigate;
-
-function initApp() {
-  // Первый рендер
-  updateSyncStatus('synced');
-  render();
-
-  // Клик по индикатору — сброс к data.js
-  const statusEl = document.getElementById('syncStatus');
-  if (statusEl) {
-    statusEl.addEventListener('click', window.restoreAllData);
+  modal.classList.remove('hidden');
+  if (window.innerWidth <= 640) {
+    setTimeout(() => content.classList.add('open'), 10);
   }
 }
 
-initApp();
+function closeModal() {
+  const modal = document.getElementById('modal');
+  const content = document.getElementById('modalContent');
+  if (window.innerWidth <= 640) {
+    content.classList.remove('open');
+    setTimeout(() => modal.classList.add('hidden'), 250);
+  } else {
+    modal.classList.add('hidden');
+  }
+}
 
-// Навигация по меню
-document.querySelectorAll('.nav-item, .mobile-nav button').forEach(btn => {
-  btn.addEventListener('click', (e) => {
-    const page = e.currentTarget.dataset.page;
-    if (page) navigate(page);
-  });
+/* =========================================================
+   INIT
+   ========================================================= */
+function renderAll() {
+  renderKpi();
+  renderTabs();
+  renderStatusFilter();
+  renderChessboards();
+  renderTable();
+}
+
+document.getElementById('search').addEventListener('input', e => {
+  state.search = e.target.value.trim();
+  renderTable();
 });
+
+document.getElementById('modalClose').onclick = closeModal;
+document.getElementById('modalBackdrop').onclick = closeModal;
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+renderAll();
 </script>
 </body>
 </html>
