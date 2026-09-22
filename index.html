@@ -4,21 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Директор — ЖК К. Худжанди</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          colors: {
-            brand: { 500: '#38bdf8', 600: '#0ea5e9' }
-          }
-        }
-      }
-    }
-  </script>
 
-<!-- Для iPhone / iPad — обязательно 180×180 PNG -->
+ <!-- Для iPhone / iPad — обязательно 180×180 PNG -->
 <link rel="apple-touch-icon" sizes="180x180" href="logo.jpg">
 
 <!-- Для Android / PWA -->
@@ -29,28 +16,48 @@
 <link rel="icon" type="image/png" sizes="32x32" href="logo.jpg">
 <link rel="icon" type="image/png" sizes="16x16" href="logo.jpg">
 <link rel="shortcut icon" href="logo.jpg">
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: { 500: '#38bdf8', 600: '#0ea5e9' },
+            base: { bg: '#080c14', card: '#0f1624' }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Alpine.js -->
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
   <style>
     ::-webkit-scrollbar { width: 8px; height: 8px; }
-    ::-webkit-scrollbar-track { background: #0f172a; }
-    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 8px; }
+    ::-webkit-scrollbar-track { background: #080c14; }
+    ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 8px; }
+    ::-webkit-scrollbar-thumb:hover { background: #334155; }
 
     /* ==== СТАТУСЫ ЯЧЕЕК ШАХМАТКИ ==== */
-    /* Продано — зелёный */
-    .cell-sold { background: rgba(16,185,129,.20); border-color: rgba(16,185,129,.55); color: #6ee7b7; }
-    .cell-sold:hover { background: rgba(16,185,129,.34); }
+    /* Продано — изумрудно-зелёный */
+    .cell-sold { background: rgba(16,185,129,.18); border-color: rgba(16,185,129,.55); color: #6ee7b7; }
+    .cell-sold:hover { background: rgba(16,185,129,.32); }
 
-    /* Рассрочка — янтарный/жёлтый */
-    .cell-inst { background: rgba(245,158,11,.22); border-color: rgba(245,158,11,.60); color: #fcd34d; }
-    .cell-inst:hover { background: rgba(245,158,11,.36); }
+    /* Рассрочка — янтарно-жёлтый */
+    .cell-inst { background: rgba(245,158,11,.20); border-color: rgba(245,158,11,.60); color: #fcd34d; }
+    .cell-inst:hover { background: rgba(245,158,11,.34); }
 
-    /* Свободно — серый */
+    /* Свободно — нейтральный серый */
     .cell-free { background: rgba(51,65,85,.35); border-color: rgba(71,85,105,.6); color: #94a3b8; }
     .cell-free:hover { background: rgba(51,65,85,.6); }
 
     @media (max-width: 640px) {
       .modal-content {
         position: fixed; left: 0; right: 0; bottom: 0; top: auto;
-        border-radius: 1.5rem 1.5rem 0 0; max-height: 85vh;
+        border-radius: 1.5rem 1.5rem 0 0; max-height: 88vh;
         transform: translateY(100%); transition: transform .25s ease;
       }
       .modal-content.open { transform: translateY(0); }
@@ -59,6 +66,7 @@
     /* Плавное скрытие логин-экрана */
     #loginScreen { transition: opacity .35s ease, visibility .35s ease; }
     #loginScreen.hidden-login { opacity: 0; visibility: hidden; pointer-events: none; }
+
     @keyframes shake {
       0%,100% { transform: translateX(0); }
       20% { transform: translateX(-6px); }
@@ -69,27 +77,27 @@
     .shake { animation: shake .4s ease; }
   </style>
 </head>
-<body class="bg-slate-950 text-slate-200 min-h-screen">
+<body class="bg-[#080c14] text-slate-200 min-h-screen">
 
   <!-- ================= LOGIN SCREEN ================= -->
-  <div id="loginScreen" class="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950">
+  <div id="loginScreen" class="fixed inset-0 z-[100] flex items-center justify-center bg-[#080c14]">
     <div class="absolute inset-0 overflow-hidden pointer-events-none">
       <div class="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-brand-500/10 blur-3xl"></div>
       <div class="absolute -bottom-32 -right-32 w-96 h-96 rounded-full bg-emerald-500/10 blur-3xl"></div>
     </div>
 
-    <form id="loginForm" class="relative w-full max-w-sm mx-4 bg-slate-900/80 border border-slate-800 rounded-2xl shadow-2xl p-6 sm:p-8 backdrop-blur">
+    <form id="loginForm" class="relative w-full max-w-sm mx-4 bg-[#0f1624]/95 border border-slate-800 rounded-2xl shadow-2xl p-6 sm:p-8 backdrop-blur">
       <div class="flex flex-col items-center text-center mb-6">
-        <div class="w-12 h-12 rounded-2xl bg-brand-500/20 border border-brand-500/40 flex items-center justify-center text-brand-500 font-bold text-lg mb-3">ЖК</div>
+        <div class="w-14 h-14 rounded-2xl bg-[#0284c7] border border-sky-400/40 flex items-center justify-center text-white font-bold text-lg mb-3 shadow-lg">ЖК</div>
         <h1 class="text-lg font-semibold tracking-tight">Директор</h1>
         <p class="text-xs text-slate-400 mt-1">ул. К. Худжанди · Блоки А, Б, В</p>
       </div>
 
-      <label for="password" class="block text-xs uppercase tracking-wide text-slate-400 mb-2">Введите пароль управляющего</label>
+      <label for="password" class="block text-xs uppercase tracking-wide text-slate-400 mb-2">Пароль управляющего</label>
       <input id="password" type="password" autocomplete="current-password" placeholder="••••••••"
-        class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-brand-500 placeholder:text-slate-600 mb-3" />
+        class="w-full bg-[#080c14] border border-slate-700 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-brand-500 placeholder:text-slate-600 mb-3" />
 
-      <div id="loginError" class="hidden text-xs text-rose-400 mb-3">Неверный пароль, доступ ограничен</div>
+      <div id="loginError" class="hidden text-xs text-rose-400 mb-3">Отказ в доступе. Неверный пароль.</div>
 
       <button type="submit" class="w-full bg-brand-500 hover:bg-brand-600 transition text-slate-950 font-semibold rounded-xl py-2.5 text-sm">
         Войти
@@ -99,10 +107,10 @@
   </div>
 
   <!-- ================= HEADER ================= -->
-  <header class="sticky top-0 z-40 bg-slate-950/90 backdrop-blur border-b border-slate-800">
+  <header class="sticky top-0 z-40 bg-[#080c14]/95 backdrop-blur border-b border-slate-800">
     <div class="max-w-7xl mx-auto px-4 py-3 flex flex-col sm:flex-row sm:items-center gap-3">
       <div class="flex items-center gap-3">
-        <div class="w-9 h-9 rounded-xl bg-brand-500/20 border border-brand-500/40 flex items-center justify-center text-brand-500 font-bold">ЖК</div>
+        <div class="w-9 h-9 rounded-xl bg-[#0284c7] border border-sky-400/40 flex items-center justify-center text-white font-bold text-xs">ЖК</div>
         <div>
           <h1 class="text-lg font-semibold tracking-tight">Директор</h1>
           <p class="text-xs text-slate-400">ул. К. Худжанди · Блоки А, Б, В · 228 объектов</p>
@@ -110,15 +118,15 @@
       </div>
       <div class="sm:ml-auto w-full sm:w-80 flex gap-2">
         <input id="search" type="text" placeholder="Поиск: ФИО или № квартиры…"
-          class="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-sm outline-none focus:border-brand-500 placeholder:text-slate-500" />
+          class="flex-1 bg-[#0f1624] border border-slate-700 rounded-xl px-4 py-2 text-sm outline-none focus:border-brand-500 placeholder:text-slate-500" />
         <button id="logoutBtn" title="Выйти"
-          class="px-3 rounded-xl bg-slate-900 border border-slate-700 hover:border-rose-500/60 hover:text-rose-400 text-slate-400 text-sm transition">⎋</button>
+          class="px-3 rounded-xl bg-[#0f1624] border border-slate-700 hover:border-rose-500/60 hover:text-rose-400 text-slate-400 text-sm transition">⎋</button>
       </div>
     </div>
   </header>
 
   <!-- ================= KPI ================= -->
-  <section class="sticky top-[57px] z-30 bg-slate-950/95 backdrop-blur border-b border-slate-800">
+  <section class="sticky top-[57px] z-30 bg-[#080c14]/95 backdrop-blur border-b border-slate-800">
     <div class="max-w-7xl mx-auto px-4 py-3">
       <div id="kpi" class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-3"></div>
     </div>
@@ -138,7 +146,7 @@
       </div>
 
       <!-- TABLE / LIST -->
-      <aside class="bg-slate-900/60 border border-slate-800 rounded-2xl overflow-hidden">
+      <aside class="bg-[#0f1624] border border-slate-800 rounded-2xl overflow-hidden">
         <div class="px-4 py-3 border-b border-slate-800 flex items-center justify-between">
           <h2 class="font-semibold text-sm">Объекты</h2>
           <span id="filteredCount" class="text-xs text-slate-400"></span>
@@ -151,7 +159,7 @@
   <!-- ================= MODAL / BOTTOM SHEET ================= -->
   <div id="modal" class="fixed inset-0 z-50 hidden">
     <div id="modalBackdrop" class="absolute inset-0 bg-black/70 backdrop-blur-sm"></div>
-    <div id="modalContent" class="modal-content sm:relative sm:mx-auto sm:my-10 sm:max-w-lg sm:rounded-2xl bg-slate-900 border border-slate-700 shadow-2xl overflow-hidden">
+    <div id="modalContent" class="modal-content sm:relative sm:mx-auto sm:my-10 sm:max-w-lg sm:rounded-2xl bg-[#0f1624] border border-slate-700 shadow-2xl overflow-hidden">
       <div class="flex items-center justify-between px-4 py-3 border-b border-slate-800">
         <h3 id="modalTitle" class="font-semibold"></h3>
         <button id="modalClose" class="w-8 h-8 rounded-lg hover:bg-slate-800 text-slate-400">✕</button>
@@ -162,10 +170,11 @@
 
 <script>
 /* =========================================================
-   АВТОРИЗАЦИЯ
+   АВТОРИЗАЦИЯ (SSO MANAGER TOKEN)
    ========================================================= */
 const ACCESS_PASSWORD = '18121979';
-const STORAGE_KEY = 'jk_dashboard_auth';
+const STORAGE_KEY = 'sso_manager_token';
+const STORAGE_VALUE = 'verified_true';
 
 (function initAuth() {
   const loginScreen = document.getElementById('loginScreen');
@@ -174,7 +183,7 @@ const STORAGE_KEY = 'jk_dashboard_auth';
   const error = document.getElementById('loginError');
 
   // Если уже авторизован — сразу скрываем экран входа
-  if (localStorage.getItem(STORAGE_KEY) === 'ok') {
+  if (localStorage.getItem(STORAGE_KEY) === STORAGE_VALUE) {
     loginScreen.classList.add('hidden-login');
   } else {
     setTimeout(() => input.focus(), 100);
@@ -183,7 +192,7 @@ const STORAGE_KEY = 'jk_dashboard_auth';
   form.addEventListener('submit', (e) => {
     e.preventDefault();
     if (input.value === ACCESS_PASSWORD) {
-      localStorage.setItem(STORAGE_KEY, 'ok');
+      localStorage.setItem(STORAGE_KEY, STORAGE_VALUE);
       loginScreen.classList.add('hidden-login');
       input.value = '';
       error.classList.add('hidden');
@@ -196,7 +205,7 @@ const STORAGE_KEY = 'jk_dashboard_auth';
     }
   });
 
-  // Logout
+  // Выход — очищаем токен
   document.getElementById('logoutBtn').addEventListener('click', () => {
     localStorage.removeItem(STORAGE_KEY);
     loginScreen.classList.remove('hidden-login');
@@ -207,202 +216,202 @@ const STORAGE_KEY = 'jk_dashboard_auth';
 })();
 
 /* =========================================================
-   ДАННЫЕ: только занятые объекты. Свободные генерируются.
-   history: [{m: 'месяц', v: сумма}]
+   БАЗА ДАННЫХ (только занятые объекты, бл = 'А' | 'Б' | 'В')
    ========================================================= */
 const OCCUPIED = [
-  // ---------- БЛОК А ----------
-  {block:'A', number:'1/1', name:'Сангов Илхомуддин Боронов', area:425.0, price:10500, roomAmount:4462500, paid:1860250, baqiya:2602250, history:[
+  // -------------------- БЛОК А --------------------
+  {block:'А', number:'1/1', name:'Сангов Илхомуддин Боронов', area:425.0, price:10500, roomAmount:4462500, paid:1860250, baqiya:2602250, history:[
     {m:'январ',v:1338750},{m:'март',v:178000},{m:'апрел',v:86500},{m:'май',v:90000},{m:'июнь',v:82000},{m:'июль',v:85000}
   ]},
-  {block:'A', number:'1/2', name:'Начимов Рахматулло Абдук', area:100.0, price:11000, roomAmount:1100000, paid:273000, baqiya:827000, history:[
+  {block:'А', number:'1/2', name:'Начимов Рахматулло Абдук', area:100.0, price:11000, roomAmount:1100000, paid:273000, baqiya:827000, history:[
     {m:'январ',v:150000},{m:'феврал',v:20000},{m:'март',v:20000},{m:'апрел',v:20000},{m:'май',v:20000},{m:'июнь',v:23000},{m:'июль',v:20000}
   ]},
-  {block:'A', number:'1/3', name:'Хомидов Аличон Мукимчон', area:120.0, price:12000, roomAmount:1440000, paid:691747, baqiya:748253, history:[
+  {block:'А', number:'1/3', name:'Хомидов Аличон Мукимчон', area:120.0, price:12000, roomAmount:1440000, paid:691747, baqiya:748253, history:[
     {m:'ноябр',v:300000},{m:'декабр',v:35100},{m:'январ',v:36000},{m:'феврал',v:36300},{m:'март',v:34500},{m:'апрел',v:41600},{m:'май',v:38060},{m:'июнь',v:34957},{m:'июль',v:32000},{m:'август',v:103230}
   ]},
-  {block:'A', number:'3/3', name:'Хабибова Сайпочо Карим', area:70.5, price:5000, roomAmount:352500, paid:110834, baqiya:241666, history:[
+  {block:'А', number:'3/3', name:'Хабибова Сайпочо Карим', area:70.5, price:5000, roomAmount:352500, paid:110834, baqiya:241666, history:[
     {m:'феврал',v:102500},{m:'август',v:8334}
   ]},
-  {block:'A', number:'3/6', name:'Бекназаров Музаффар Саит..', area:70.50, price:5500, roomAmount:387750, paid:191725, baqiya:196025, history:[
+  {block:'А', number:'3/6', name:'Бекназаров Музаффар Саит..', area:70.5, price:5500, roomAmount:387750, paid:191725, baqiya:196025, history:[
     {m:'декабр',v:138945},{m:'март',v:7540},{m:'апрел',v:7540},{m:'май',v:7540},{m:'июнь',v:30160}
   ]},
-  {block:'A', number:'4/2', name:'Шарифзода Далер Ахтамчон', area:69.3, price:5000, roomAmount:346500, paid:49700, baqiya:296800, history:[
+  {block:'А', number:'4/2', name:'Шарифзода Далер Ахтамчон', area:69.3, price:5000, roomAmount:346500, paid:49700, baqiya:296800, history:[
     {m:'июнь',v:30000},{m:'июль',v:6600},{m:'август',v:6500},{m:'сентябрь',v:6600}
   ]},
-  {block:'A', number:'5/3', name:'Нозимов Бекижон Абдушари', area:70.5, price:4500, roomAmount:317250, paid:18000, baqiya:299250, history:[
+  {block:'А', number:'5/3', name:'Нозимов Бекижон Абдушари', area:70.5, price:4500, roomAmount:317250, paid:18000, baqiya:299250, history:[
     {m:'август',v:9000},{m:'сентябрь',v:9000}
   ]},
-  {block:'A', number:'6/4', name:'Назаров Ривочиддин Серг', area:50.0, price:500, roomAmount:250000, paid:50000, baqiya:200000, history:[
+  {block:'А', number:'6/4', name:'Назаров Ривочиддин Серг', area:50.0, price:500, roomAmount:250000, paid:50000, baqiya:200000, history:[
     {m:'август',v:50000}
   ]},
-  {block:'A', number:'7/4', name:'Чумахмедова Мавлуда Абдур', area:50.0, price:4500, roomAmount:225000, paid:10500, baqiya:214500, history:[
+  {block:'А', number:'7/4', name:'Чумахмедова Мавлуда Абдур', area:50.0, price:4500, roomAmount:225000, paid:10500, baqiya:214500, history:[
     {m:'июль',v:9000},{m:'август',v:1500}
   ]},
 
-  // ---------- БЛОК Б ----------
-  {block:'B', number:'0/4', name:'Эмомов Чума Халил', area:120.0, price:12000, roomAmount:1440000, paid:180000, baqiya:1260000, history:[
+  // -------------------- БЛОК Б --------------------
+  {block:'Б', number:'0/4', name:'Эмомов Чума Халил', area:120.0, price:12000, roomAmount:1440000, paid:180000, baqiya:1260000, history:[
     {m:'август',v:180000}
   ]},
-  {block:'B', number:'1/1', name:'Азизов Шукрулло Махмад', area:null, price:null, roomAmount:null, paid:0, baqiya:null, history:[]},
-  {block:'B', number:'1/2', name:'Качулов Махмадхуча Юсуф', area:120.0, price:1100, roomAmount:1320000, paid:840000, baqiya:480000, history:[
+  {block:'Б', number:'1/1', name:'Азизов Шукрулло Махмад', area:null, price:null, roomAmount:null, paid:0, baqiya:null, history:[]},
+  {block:'Б', number:'1/2', name:'Качулов Махмадхуча Юсуф', area:120.0, price:1100, roomAmount:1320000, paid:840000, baqiya:480000, history:[
     {m:'январ',v:840000}
   ]},
-  {block:'B', number:'1/3', name:'Шарипов Шамсиддин Саид', area:120.0, price:1200, roomAmount:1440000, paid:290000, baqiya:1150000, history:[
+  {block:'Б', number:'1/3', name:'Шарипов Шамсиддин Саид', area:120.0, price:1200, roomAmount:1440000, paid:290000, baqiya:1150000, history:[
     {m:'январ',v:150000},{m:'феврал',v:20000},{m:'март',v:20000},{m:'апрел',v:15000},{m:'май',v:15000},{m:'июнь',v:50000},{m:'июль',v:20000}
   ]},
-  {block:'B', number:'1/4', name:'Хамидов Аличон Муким', area:70.0, price:11500, roomAmount:805000, paid:520500, baqiya:284500, history:[
+  {block:'Б', number:'1/4', name:'Хамидов Аличон Муким', area:70.0, price:11500, roomAmount:805000, paid:520500, baqiya:284500, history:[
     {m:'ноябр',v:200000},{m:'декабр',v:72500},{m:'январ',v:15000},{m:'феврал',v:45000},{m:'март',v:20000},{m:'апрел',v:80000},{m:'май',v:73000},{m:'август',v:15000}
   ]},
-  {block:'B', number:'1/5', name:'Точибаева Мухабатхон', area:120.0, price:1200, roomAmount:1327639, paid:572139, baqiya:755500, history:[
+  {block:'Б', number:'1/5', name:'Точибаева Мухабатхон', area:120.0, price:1200, roomAmount:1327639, paid:572139, baqiya:755500, history:[
     {m:'август',v:200000},{m:'сентябр',v:37400},{m:'октябр',v:40529},{m:'ноябр',v:37200},{m:'декабр',v:27900},{m:'январ',v:37400},{m:'феврал',v:33250},{m:'март',v:38400},{m:'апрел',v:28050},{m:'май',v:31650},{m:'июнь',v:25000},{m:'июль',v:35360}
   ]},
-  {block:'B', number:'2/1', name:'Розиков Сайжамил Чалил', area:120.0, price:1200, roomAmount:1327639, paid:559310, baqiya:768329, history:[
+  {block:'Б', number:'2/1', name:'Розиков Сайжамил Чалил', area:120.0, price:1200, roomAmount:1327639, paid:559310, baqiya:768329, history:[
     {m:'август',v:345000},{m:'сентябр',v:9350},{m:'октябр',v:15725},{m:'ноябр',v:18600},{m:'декабр',v:18600},{m:'январ',v:23375},{m:'феврал',v:19000},{m:'март',v:19200},{m:'апрел',v:18700},{m:'май',v:18560},{m:'июнь',v:34000}
   ]},
-  {block:'B', number:'3/7', name:'Сафаров Мирзоназар Саймуза', area:69.3, price:5200, roomAmount:360360, paid:153160, baqiya:207200, history:[
+  {block:'Б', number:'3/7', name:'Сафаров Мирзоназар Саймуза', area:69.3, price:5200, roomAmount:360360, paid:153160, baqiya:207200, history:[
     {m:'апрел',v:120000},{m:'май',v:10023},{m:'июнь',v:10607},{m:'июль',v:12530},{m:'август',v:11504}
   ]},
-  {block:'B', number:'4/1', name:'Фозилов Хадятулло Шамс', area:118.0, price:5300, roomAmount:625400, paid:180000, baqiya:445400, history:[
+  {block:'Б', number:'4/1', name:'Фозилов Хадятулло Шамс', area:118.0, price:5300, roomAmount:625400, paid:180000, baqiya:445400, history:[
     {m:'май',v:180000}
   ]},
-  {block:'B', number:'4/2', name:'Фозилов Хадятулло Шамс', area:null, price:null, roomAmount:null, paid:0, baqiya:null, history:[]},
-  {block:'B', number:'4/4', name:'Сафаров Сангак Рач', area:49.8, price:4000, roomAmount:200000, paid:199000, baqiya:1000, history:[
+  {block:'Б', number:'4/2', name:'Фозилов Хадятулло Шамс', area:null, price:null, roomAmount:null, paid:0, baqiya:null, history:[]},
+  {block:'Б', number:'4/4', name:'Сафаров Сангак Рач', area:49.8, price:4000, roomAmount:200000, paid:199000, baqiya:1000, history:[
     {m:'ноябр',v:100000},{m:'декабр',v:74000},{m:'июнь',v:25000}
   ]},
-  {block:'B', number:'4/6', name:'Умронов Амрулло Диловар', area:70.5, price:5000, roomAmount:352500, paid:200000, baqiya:152500, history:[
+  {block:'Б', number:'4/6', name:'Умронов Амрулло Диловар', area:70.5, price:5000, roomAmount:352500, paid:200000, baqiya:152500, history:[
     {m:'апрел',v:200000}
   ]},
-  {block:'B', number:'5/3', name:'Шарипов Мухаммадчон Саф', area:70.5, price:4500, roomAmount:317250, paid:110000, baqiya:207250, history:[
+  {block:'Б', number:'5/3', name:'Шарипов Мухаммадчон Саф', area:70.5, price:4500, roomAmount:317250, paid:110000, baqiya:207250, history:[
     {m:'июль',v:100000},{m:'август',v:10000}
   ]},
-  {block:'B', number:'5/4', name:'Асроров Муродбек Давлат', area:49.8, price:4317, roomAmount:215000, paid:88027, baqiya:126973, history:[
+  {block:'Б', number:'5/4', name:'Асроров Муродбек Давлат', area:49.8, price:4317, roomAmount:215000, paid:88027, baqiya:126973, history:[
     {m:'апрел',v:64000},{m:'май',v:6017},{m:'июнь',v:6000},{m:'июль',v:6000},{m:'август',v:6010}
   ]},
-  {block:'B', number:'5/5', name:'Шамсов Саймуддин Ахлид', area:49.8, price:5000, roomAmount:250000, paid:123000, baqiya:127000, history:[
+  {block:'Б', number:'5/5', name:'Шамсов Саймуддин Ахлид', area:49.8, price:5000, roomAmount:250000, paid:123000, baqiya:127000, history:[
     {m:'май',v:123000}
   ]},
-  {block:'B', number:'5/8', name:'Икромов Умар Толибович', area:66.5, price:4850, roomAmount:322525, paid:35000, baqiya:287525, history:[
+  {block:'Б', number:'5/8', name:'Икромов Умар Толибович', area:66.5, price:4850, roomAmount:322525, paid:35000, baqiya:287525, history:[
     {m:'июль',v:22500},{m:'август',v:12500}
   ]},
-  {block:'B', number:'6/8', name:'Жураев Абдухолик Махм', area:66.5, price:4800, roomAmount:319200, paid:105000, baqiya:214200, history:[
+  {block:'Б', number:'6/8', name:'Жураев Абдухолик Махм', area:66.5, price:4800, roomAmount:319200, paid:105000, baqiya:214200, history:[
     {m:'июнь',v:100000},{m:'июль',v:5000}
   ]},
-  {block:'B', number:'7/4', name:'Мухритдинов Одилжон Ак', area:50.0, price:4300, roomAmount:215000, paid:155000, baqiya:60000, history:[
+  {block:'Б', number:'7/4', name:'Мухритдинов Одилжон Ак', area:50.0, price:4300, roomAmount:215000, paid:155000, baqiya:60000, history:[
     {m:'июль',v:150000},{m:'август',v:5000}
   ]},
-  {block:'B', number:'8/5', name:'Каримова Матлубахон Джур', area:49.8, price:4000, roomAmount:200000, paid:140000, baqiya:60000, history:[
+  {block:'Б', number:'8/5', name:'Каримова Матлубахон Джур', area:49.8, price:4000, roomAmount:200000, paid:140000, baqiya:60000, history:[
     {m:'май',v:80000},{m:'июнь',v:60000}
   ]},
-  {block:'B', number:'9/5', name:'Хамидов Аличон Муким', area:49.8, price:4000, roomAmount:200000, paid:72000, baqiya:128000, history:[
+  {block:'Б', number:'9/5', name:'Хамидов Аличон Муким', area:49.8, price:4000, roomAmount:200000, paid:72000, baqiya:128000, history:[
     {m:'май',v:50000},{m:'июнь',v:6000},{m:'июль',v:6000},{m:'август',v:10000}
   ]},
 
-  // ---------- БЛОК В ----------
-  {block:'C', number:'0/1', name:'Ахмадчонов Зиевиддин Кием', area:70.0, price:10500, roomAmount:735000, paid:600000, baqiya:135000, history:[
+  // -------------------- БЛОК В --------------------
+  {block:'В', number:'0/1', name:'Ахмадчонов Зиевиддин Кием', area:70.0, price:10500, roomAmount:735000, paid:600000, baqiya:135000, history:[
     {m:'август',v:600000}
   ]},
-  {block:'C', number:'1/1', name:'Собиров Мусаябджон Махмад', area:120.0, price:9000, roomAmount:1080000, paid:155800, baqiya:924200, history:[
+  {block:'В', number:'1/1', name:'Собиров Мусаябджон Махмад', area:120.0, price:9000, roomAmount:1080000, paid:155800, baqiya:924200, history:[
     {m:'июнь',v:105800},{m:'июль',v:50000}
   ]},
-  {block:'C', number:'1/2', name:'Азизов Шукрулло Махмад', area:470.0, price:10500, roomAmount:4935000, paid:1465000, baqiya:3470000, history:[
+  {block:'В', number:'1/2', name:'Азизов Шукрулло Махмад', area:470.0, price:10500, roomAmount:4935000, paid:1465000, baqiya:3470000, history:[
     {m:'апрел',v:1000000},{m:'август',v:465000}
   ]},
-  {block:'C', number:'1/3', name:'Шодмонзода Шодмон', area:70.0, price:9286, roomAmount:650020, paid:306000, baqiya:344000, history:[
+  {block:'В', number:'1/3', name:'Шодмонзода Шодмон', area:70.0, price:9286, roomAmount:650020, paid:306000, baqiya:344000, history:[
     {m:'январ',v:200000},{m:'март',v:36000},{m:'апрел',v:20000},{m:'май',v:20000},{m:'июнь',v:20000},{m:'август',v:10000}
   ]},
-  {block:'C', number:'3/1', name:'Шарипов Киёмулиди Шо', area:47.0, price:4650, roomAmount:218550, paid:197000, baqiya:21550, history:[
+  {block:'В', number:'3/1', name:'Шарипов Киёмулиди Шо', area:47.0, price:4650, roomAmount:218550, paid:197000, baqiya:21550, history:[
     {m:'ноябр',v:135000},{m:'декабр',v:17000},{m:'март',v:20000},{m:'май',v:20000},{m:'июнь',v:5000}
   ]},
-  {block:'C', number:'3/3', name:'Юлдашев Расулчон Хош', area:70.5, price:4000, roomAmount:282000, paid:96000, baqiya:186000, history:[
+  {block:'В', number:'3/3', name:'Юлдашев Расулчон Хош', area:70.5, price:4000, roomAmount:282000, paid:96000, baqiya:186000, history:[
     {m:'ноябр',v:96000}
   ]},
-  {block:'C', number:'3/4', name:'Хусаинов Олимчон Мух', area:49.8, price:5300, roomAmount:263940, paid:200270, baqiya:63670, history:[
+  {block:'В', number:'3/4', name:'Хусаинов Олимчон Мух', area:49.8, price:5300, roomAmount:263940, paid:200270, baqiya:63670, history:[
     {m:'сентябр',v:100000},{m:'октябр',v:9110},{m:'ноябр',v:9110},{m:'декабр',v:45540},{m:'май',v:9180},{m:'июнь',v:9110},{m:'июль',v:9110},{m:'август',v:9110}
   ]},
-  {block:'C', number:'3/5', name:'Юлдашев Расулчон Хоч', area:49.8, price:4000, roomAmount:199200, paid:86900, baqiya:113100, history:[
+  {block:'В', number:'3/5', name:'Юлдашев Расулчон Хоч', area:49.8, price:4000, roomAmount:199200, paid:86900, baqiya:113100, history:[
     {m:'октябр',v:74500},{m:'декабр',v:12400}
   ]},
-  {block:'C', number:'3/6', name:'Юсуфов Сабур Талбиев', area:70.5, price:4900, roomAmount:345450, paid:217000, baqiya:128450, history:[
+  {block:'В', number:'3/6', name:'Юсуфов Сабур Талбиев', area:70.5, price:4900, roomAmount:345450, paid:217000, baqiya:128450, history:[
     {m:'январ',v:160000},{m:'феврал',v:18000},{m:'июнь',v:39000}
   ]},
-  {block:'C', number:'3/7', name:'Гафоров Махмад Шераф', area:69.3, price:5500, roomAmount:381150, paid:249000, baqiya:131000, history:[
+  {block:'В', number:'3/7', name:'Гафоров Махмад Шераф', area:69.3, price:5500, roomAmount:381150, paid:249000, baqiya:131000, history:[
     {m:'январ',v:249000}
   ]},
-  {block:'C', number:'3/8', name:'Юсуфов Мухаммад Тал', area:66.5, price:4962, roomAmount:329973, paid:330000, baqiya:0, history:[
+  {block:'В', number:'3/8', name:'Юсуфов Мухаммад Тал', area:66.5, price:4962, roomAmount:329973, paid:330000, baqiya:0, history:[
     {m:'феврал',v:330000}
   ]},
-  {block:'C', number:'4/3', name:'Юсуфова Файзимох Ахм', area:70.5, price:4500, roomAmount:317250, paid:300700, baqiya:16550, history:[
+  {block:'В', number:'4/3', name:'Юсуфова Файзимох Ахм', area:70.5, price:4500, roomAmount:317250, paid:300700, baqiya:16550, history:[
     {m:'декабр',v:160000},{m:'январ',v:29000},{m:'феврал',v:35600},{m:'апрел',v:17000},{m:'июль',v:59100}
   ]},
-  {block:'C', number:'4/4', name:'Сафаров Сангак Рачабо', area:49.8, price:4000, roomAmount:199200, paid:200000, baqiya:0, history:[
+  {block:'В', number:'4/4', name:'Сафаров Сангак Рачабо', area:49.8, price:4000, roomAmount:199200, paid:200000, baqiya:0, history:[
     {m:'октябр',v:200000}
   ]},
-  {block:'C', number:'4/5', name:'Куватова Замира Азамо', area:49.8, price:4000, roomAmount:200000, paid:180000, baqiya:20000, history:[
+  {block:'В', number:'4/5', name:'Куватова Замира Азамо', area:49.8, price:4000, roomAmount:200000, paid:180000, baqiya:20000, history:[
     {m:'август',v:100000},{m:'ноябр',v:80000}
   ]},
-  {block:'C', number:'4/6', name:'Мачидов Зокирчон Зоир', area:70.5, price:5000, roomAmount:352500, paid:170500, baqiya:182000, history:[
+  {block:'В', number:'4/6', name:'Мачидов Зокирчон Зоир', area:70.5, price:5000, roomAmount:352500, paid:170500, baqiya:182000, history:[
     {m:'январ',v:114000},{m:'феврал',v:11000},{m:'март',v:11000},{m:'июнь',v:12000},{m:'июль',v:11500},{m:'август',v:11000}
   ]},
-  {block:'C', number:'4/7', name:'Миршарипов Мирзомуддин', area:69.3, price:4000, roomAmount:277200, paid:110000, baqiya:167200, history:[
+  {block:'В', number:'4/7', name:'Миршарипов Мирзомуддин', area:69.3, price:4000, roomAmount:277200, paid:110000, baqiya:167200, history:[
     {m:'ноябр',v:100000},{m:'январ',v:10000}
   ]},
-  {block:'C', number:'5/1', name:'Шоймардиов Баргет Сафи', area:47.0, price:5000, roomAmount:235000, paid:139370, baqiya:95630, history:[
+  {block:'В', number:'5/1', name:'Шоймардиов Баргет Сафи', area:47.0, price:5000, roomAmount:235000, paid:139370, baqiya:95630, history:[
     {m:'март',v:75000},{m:'апрел',v:13300},{m:'май',v:13000},{m:'июнь',v:13000},{m:'июль',v:12070},{m:'август',v:13000}
   ]},
-  {block:'C', number:'5/7', name:'Азизов Саламшо Курбона', area:69.3, price:4329, roomAmount:299999.7, paid:257230, baqiya:42770, history:[
+  {block:'В', number:'5/7', name:'Азизов Саламшо Курбона', area:69.3, price:4329, roomAmount:299999.7, paid:257230, baqiya:42770, history:[
     {m:'сентябр',v:94860},{m:'октябр',v:20000},{m:'ноябр',v:15170},{m:'декабр',v:13100},{m:'январ',v:13300},{m:'феврал',v:14300},{m:'март',v:13200},{m:'апрел',v:16070},{m:'май',v:14680},{m:'июнь',v:14450},{m:'июль',v:14000},{m:'август',v:14100}
   ]},
-  {block:'C', number:'5/8', name:'Болтаев Курбон Садикович', area:66.5, price:5250, roomAmount:349125, paid:204000, baqiya:145125, history:[
+  {block:'В', number:'5/8', name:'Болтаев Курбон Садикович', area:66.5, price:5250, roomAmount:349125, paid:204000, baqiya:145125, history:[
     {m:'январ',v:160000},{m:'феврал',v:24000},{m:'июнь',v:10000},{m:'июль',v:10000}
   ]},
-  {block:'C', number:'6/1', name:'Рахматова Мадина Кут...', area:47.0, price:4000, roomAmount:188000, paid:110000, baqiya:78000, history:[
+  {block:'В', number:'6/1', name:'Рахматова Мадина Кут...', area:47.0, price:4000, roomAmount:188000, paid:110000, baqiya:78000, history:[
     {m:'апрел',v:110000}
   ]},
-  {block:'C', number:'6/4', name:'Абдуллоев Саидакрам К...', area:49.8, price:4000, roomAmount:199200, paid:132000, baqiya:67200, history:[
+  {block:'В', number:'6/4', name:'Абдуллоев Саидакрам К...', area:49.8, price:4000, roomAmount:199200, paid:132000, baqiya:67200, history:[
     {m:'ноябр',v:60000},{m:'декабр',v:8000},{m:'январ',v:8000},{m:'феврал',v:8000},{m:'март',v:8000},{m:'апрел',v:8000},{m:'май',v:8000},{m:'июнь',v:8000},{m:'июль',v:8000},{m:'август',v:8000}
   ]},
-  {block:'C', number:'6/5', name:'Хомидов Аличон Муким', area:49.8, price:4300, roomAmount:215000, paid:215000, baqiya:0, history:[
+  {block:'В', number:'6/5', name:'Хомидов Аличон Муким', area:49.8, price:4300, roomAmount:215000, paid:215000, baqiya:0, history:[
     {m:'июнь',v:215000}
   ]},
-  {block:'C', number:'7/1', name:'Суфиева Махина Сироч...', area:47.0, price:3700, roomAmount:173900, paid:97680, baqiya:76220, history:[
+  {block:'В', number:'7/1', name:'Суфиева Махина Сироч...', area:47.0, price:3700, roomAmount:173900, paid:97680, baqiya:76220, history:[
     {m:'апрел',v:60000},{m:'май',v:9420},{m:'июнь',v:9420},{m:'июль',v:9420},{m:'август',v:9420}
   ]},
-  {block:'C', number:'7/4', name:'Шодмонзода Комрон Ш...', area:49.8, price:4000, roomAmount:199200, paid:30000, baqiya:170000, history:[
+  {block:'В', number:'7/4', name:'Шодмонзода Комрон Ш...', area:49.8, price:4000, roomAmount:199200, paid:30000, baqiya:170000, history:[
     {m:'май',v:25000},{m:'июнь',v:5000}
   ]},
-  {block:'C', number:'7/5', name:'Курбонова Максуда Ма...', area:49.8, price:4000, roomAmount:199200, paid:114000, baqiya:86000, history:[
+  {block:'В', number:'7/5', name:'Курбонова Максуда Ма...', area:49.8, price:4000, roomAmount:199200, paid:114000, baqiya:86000, history:[
     {m:'май',v:100000},{m:'август',v:14000}
   ]},
-  {block:'C', number:'8/1', name:'Хасанова Фируза Авазовна', area:47.0, price:5000, roomAmount:235000, paid:50000, baqiya:185000, history:[
+  {block:'В', number:'8/1', name:'Хасанова Фируза Авазовна', area:47.0, price:5000, roomAmount:235000, paid:50000, baqiya:185000, history:[
     {m:'август',v:50000}
   ]},
-  {block:'C', number:'8/5', name:'Пиржанова Зулайхо Олимч', area:50.0, price:4200, roomAmount:210000, paid:120000, baqiya:90000, history:[
+  {block:'В', number:'8/5', name:'Пиржанова Зулайхо Олимч', area:50.0, price:4200, roomAmount:210000, paid:120000, baqiya:90000, history:[
     {m:'август',v:120000}
   ]},
-  {block:'C', number:'9/1', name:'Шоймардиов Баргет Сафи', area:47.0, price:4600, roomAmount:216200, paid:143267, baqiya:72933, history:[
+  {block:'В', number:'9/1', name:'Шоймардиов Баргет Сафи', area:47.0, price:4600, roomAmount:216200, paid:143267, baqiya:72933, history:[
     {m:'май',v:110200},{m:'июнь',v:7067},{m:'июль',v:26000}
   ]}
 ];
 
 /* =========================================================
-   LAYOUT И ГЕНЕРАЦИЯ ВСЕХ 228 ОБЪЕКТОВ
+   LAYOUT: 11 уровней (0..10), суммарно по 76 квартир на блок
    ========================================================= */
 const LAYOUT = [
-  {floor:0, units:[1,2,3,4,5]},
-  {floor:1, units:[1,2,3,4,5]},
-  {floor:2, units:[1,2,3,4,5]},
-  {floor:3, units:[1,2,3,4,5,6,7,8]},
-  {floor:4, units:[1,2,3,4,5,6,7,8]},
-  {floor:5, units:[1,2,3,4,5,6,7,8]},
-  {floor:6, units:[1,2,3,4,5,6,7,8]},
-  {floor:7, units:[1,2,3,4,5,6,7,8]},
-  {floor:8, units:[1,2,3,4,5,6,7,8]},
-  {floor:9, units:[1,2,3,4,5,6,7,8]},
-  {floor:10, units:[1,2,3,4,5]},
+  {floor:0,  units:[1,2,3,4,5]},
+  {floor:1,  units:[1,2,3,4,5]},
+  {floor:2,  units:[1,2,3,4,5]},
+  {floor:3,  units:[1,2,3,4,5,6,7,8]},
+  {floor:4,  units:[1,2,3,4,5,6,7,8]},
+  {floor:5,  units:[1,2,3,4,5,6,7,8]},
+  {floor:6,  units:[1,2,3,4,5,6,7,8]},
+  {floor:7,  units:[1,2,3,4,5,6,7,8]},
+  {floor:8,  units:[1,2,3,4,5,6,7,8]},
+  {floor:9,  units:[1,2,3,4,5,6,7,8]},
+  {floor:10, units:[1,2,3,4,5]}
 ];
-const BLOCKS = ['A','B','C'];
+const BLOCKS = ['А','Б','В'];
 
+/* Генерация всех 228 объектов (по 76 на блок) */
 const ALL_OBJECTS = [];
 BLOCKS.forEach(block => {
   LAYOUT.forEach(({floor, units}) => {
@@ -410,6 +419,8 @@ BLOCKS.forEach(block => {
       const number = `${floor}/${unit}`;
       const occ = OCCUPIED.find(o => o.block === block && o.number === number);
       if (occ) {
+        const hasOwner = !!occ.name;
+        const bal = (occ.baqiya === null || occ.baqiya === undefined) ? null : Number(occ.baqiya);
         ALL_OBJECTS.push({
           block, number, floor, unit,
           name: occ.name || '',
@@ -417,9 +428,9 @@ BLOCKS.forEach(block => {
           price: occ.price,
           roomAmount: occ.roomAmount,
           paid: occ.paid || 0,
-          baqiya: occ.baqiya === null || occ.baqiya === undefined ? null : Number(occ.baqiya),
+          baqiya: bal,
           history: occ.history || [],
-          status: !occ.name ? 'free' : (Number(occ.baqiya) === 0 ? 'sold' : 'installment')
+          status: !hasOwner ? 'free' : (bal === 0 ? 'sold' : 'installment')
         });
       } else {
         ALL_OBJECTS.push({
@@ -433,7 +444,7 @@ BLOCKS.forEach(block => {
 });
 
 /* =========================================================
-   KPI
+   KPI и форматирование
    ========================================================= */
 function calcKpi(objects) {
   const total = objects.length;
@@ -448,21 +459,21 @@ function calcKpi(objects) {
 const KPI = calcKpi(ALL_OBJECTS);
 
 function money(v) {
-  return new Intl.NumberFormat('ru-RU').format(Math.round(v || 0)) + ' c.';
+  return new Intl.NumberFormat('ru-RU').format(Math.round(v || 0)) + ' с.';
 }
 
 function renderKpi() {
   const el = document.getElementById('kpi');
   const items = [
-    { label:'Всего объектов', value: KPI.total, color:'text-slate-100' },
-    { label:'Продано', value: KPI.sold, color:'text-emerald-400' },
-    { label:'В рассрочке', value: KPI.inst, color:'text-amber-400' },
-    { label:'Свободно', value: KPI.free, color:'text-slate-400' },
-    { label:'Итого получено', value: money(KPI.paid), color:'text-emerald-300' },
-    { label:'Остаток к получению', value: money(KPI.baqiya), color:'text-rose-300' },
+    { label:'Всего объектов',       value: KPI.total,          color:'text-slate-100' },
+    { label:'Продано',              value: KPI.sold,           color:'text-emerald-400' },
+    { label:'В рассрочке',          value: KPI.inst,           color:'text-amber-400' },
+    { label:'Свободно',             value: KPI.free,           color:'text-slate-400' },
+    { label:'Итого получено',       value: money(KPI.paid),    color:'text-emerald-300' },
+    { label:'Остаток к получению',  value: money(KPI.baqiya),  color:'text-rose-300' }
   ];
   el.innerHTML = items.map(i => `
-    <div class="bg-slate-900/70 border border-slate-800 rounded-2xl px-3 py-2.5">
+    <div class="bg-[#0f1624] border border-slate-800 rounded-2xl px-3 py-2.5">
       <div class="text-[10px] uppercase tracking-wide text-slate-500">${i.label}</div>
       <div class="text-sm sm:text-base font-semibold ${i.color} truncate">${i.value}</div>
     </div>
@@ -472,7 +483,7 @@ function renderKpi() {
 /* =========================================================
    UI STATE
    ========================================================= */
-let state = {
+const state = {
   block: 'ALL',
   status: 'all',
   search: ''
@@ -498,13 +509,13 @@ function renderTabs() {
   const el = document.getElementById('tabs');
   const tabs = [
     { id:'ALL', label:'Все блоки' },
-    { id:'A', label:'Блок А' },
-    { id:'B', label:'Блок Б' },
-    { id:'C', label:'Блок В' },
+    { id:'А',   label:'Блок А' },
+    { id:'Б',   label:'Блок Б' },
+    { id:'В',   label:'Блок В' }
   ];
   el.innerHTML = tabs.map(t => `
     <button data-block="${t.id}" class="px-4 py-2 rounded-xl text-sm border transition whitespace-nowrap
-      ${state.block === t.id ? 'bg-brand-500 text-slate-950 border-brand-500 font-medium' : 'bg-slate-900 border-slate-700 text-slate-300 hover:border-slate-500'}">
+      ${state.block === t.id ? 'bg-brand-500 text-slate-950 border-brand-500 font-medium' : 'bg-[#0f1624] border-slate-700 text-slate-300 hover:border-slate-500'}">
       ${t.label}
     </button>
   `).join('');
@@ -516,14 +527,14 @@ function renderTabs() {
 function renderStatusFilter() {
   const el = document.getElementById('statusFilter');
   const statuses = [
-    { id:'all', label:'Все статусы' },
-    { id:'sold', label:'Продано' },
+    { id:'all',         label:'Все статусы' },
+    { id:'sold',        label:'Продано' },
     { id:'installment', label:'Рассрочка' },
-    { id:'free', label:'Свободно' },
+    { id:'free',        label:'Свободно' }
   ];
   el.innerHTML = statuses.map(s => `
     <button data-status="${s.id}" class="px-3 py-1.5 rounded-lg text-xs border transition whitespace-nowrap
-      ${state.status === s.id ? 'bg-slate-100 text-slate-900 border-slate-100 font-medium' : 'bg-slate-900 border-slate-700 text-slate-300 hover:border-slate-500'}">
+      ${state.status === s.id ? 'bg-slate-100 text-slate-900 border-slate-100 font-medium' : 'bg-[#0f1624] border-slate-700 text-slate-300 hover:border-slate-500'}">
       ${s.label}
     </button>
   `).join('');
@@ -574,7 +585,7 @@ function renderChessboard(block) {
 
   const k = calcKpi(objects);
   return `
-    <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-4">
+    <div class="bg-[#0f1624] border border-slate-800 rounded-2xl p-4">
       <div class="flex items-center justify-between mb-3 flex-wrap gap-2">
         <h3 class="font-semibold">Блок ${block}</h3>
         <div class="text-[10px] text-slate-400 flex gap-3">
@@ -624,7 +635,7 @@ function renderTable() {
 
   wrap.innerHTML = `
     <table class="w-full text-xs">
-      <thead class="bg-slate-900/80 sticky top-0">
+      <thead class="bg-[#0f1624] sticky top-0">
         <tr class="text-left text-slate-400">
           <th class="px-3 py-2 font-medium">№</th>
           <th class="px-3 py-2 font-medium">Покупатель</th>
@@ -640,7 +651,7 @@ function renderTable() {
             <td class="px-3 py-2 truncate max-w-[140px]">${o.name || '—'}</td>
             <td class="px-3 py-2">${statusBadge(o.status)}</td>
             <td class="px-3 py-2 text-right whitespace-nowrap">${o.paid ? money(o.paid) : '—'}</td>
-            <td class="px-3 py-2 text-right whitespace-nowrap">${o.baqiya ? money(o.baqiya) : (o.baqiya === 0 ? '0 c.' : '—')}</td>
+            <td class="px-3 py-2 text-right whitespace-nowrap">${o.baqiya ? money(o.baqiya) : (o.baqiya === 0 ? '0 с.' : '—')}</td>
           </tr>
         `).join('')}
       </tbody>
@@ -675,27 +686,27 @@ function openModal(obj) {
   document.getElementById('modalBody').innerHTML = `
     <div class="space-y-4">
       <div class="grid grid-cols-2 gap-3">
-        <div class="bg-slate-950/50 border border-slate-800 rounded-xl p-3">
+        <div class="bg-[#080c14]/60 border border-slate-800 rounded-xl p-3">
           <div class="text-[10px] text-slate-500 uppercase">Покупатель</div>
           <div class="text-sm font-medium mt-1">${obj.name || 'Свободно'}</div>
         </div>
-        <div class="bg-slate-950/50 border border-slate-800 rounded-xl p-3">
+        <div class="bg-[#080c14]/60 border border-slate-800 rounded-xl p-3">
           <div class="text-[10px] text-slate-500 uppercase">Статус</div>
           <div class="mt-1">${statusBadge(obj.status)}</div>
         </div>
-        <div class="bg-slate-950/50 border border-slate-800 rounded-xl p-3">
+        <div class="bg-[#080c14]/60 border border-slate-800 rounded-xl p-3">
           <div class="text-[10px] text-slate-500 uppercase">Площадь</div>
           <div class="text-sm font-medium mt-1">${obj.area ? obj.area + ' м²' : '—'}</div>
         </div>
-        <div class="bg-slate-950/50 border border-slate-800 rounded-xl p-3">
+        <div class="bg-[#080c14]/60 border border-slate-800 rounded-xl p-3">
           <div class="text-[10px] text-slate-500 uppercase">Стоимость</div>
           <div class="text-sm font-medium mt-1">${obj.roomAmount ? money(obj.roomAmount) : '—'}</div>
         </div>
-        <div class="bg-slate-950/50 border border-slate-800 rounded-xl p-3">
+        <div class="bg-[#080c14]/60 border border-slate-800 rounded-xl p-3">
           <div class="text-[10px] text-slate-500 uppercase">Оплачено</div>
           <div class="text-sm font-semibold text-emerald-300 mt-1">${money(obj.paid)}</div>
         </div>
-        <div class="bg-slate-950/50 border border-slate-800 rounded-xl p-3">
+        <div class="bg-[#080c14]/60 border border-slate-800 rounded-xl p-3">
           <div class="text-[10px] text-slate-500 uppercase">Остаток</div>
           <div class="text-sm font-semibold text-rose-300 mt-1">${obj.baqiya !== null ? money(obj.baqiya) : '—'}</div>
         </div>
@@ -703,7 +714,7 @@ function openModal(obj) {
 
       <div>
         <h4 class="text-xs uppercase tracking-wide text-slate-500 mb-2">История выплат по месяцам</h4>
-        <div class="bg-slate-950/50 border border-slate-800 rounded-xl overflow-hidden">
+        <div class="bg-[#080c14]/60 border border-slate-800 rounded-xl overflow-hidden">
           <table class="w-full text-sm">
             <tbody>${historyRows}</tbody>
           </table>
