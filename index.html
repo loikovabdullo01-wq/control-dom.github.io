@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Дашборд управляющего — ЖК К. Худжанди</title>
+  <title>Директор — ЖК К. Худжанди</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -17,16 +17,27 @@
       }
     }
   </script>
+  <link rel="icon" type="image/png" sizes="32x32" href="logo.jpg">
+<link rel="icon" type="image/png" sizes="16x16" href="logo.jpg">
+<link rel="shortcut icon" href="logo.jpg">
   <style>
     ::-webkit-scrollbar { width: 8px; height: 8px; }
     ::-webkit-scrollbar-track { background: #0f172a; }
     ::-webkit-scrollbar-thumb { background: #334155; border-radius: 8px; }
-    .cell-sold { background: rgba(16,185,129,.18); border-color: rgba(16,185,129,.45); color: #6ee7b7; }
-    .cell-inst { background: rgba(56,189,248,.18); border-color: rgba(56,189,248,.45); color: #7dd3fc; }
+
+    /* ==== СТАТУСЫ ЯЧЕЕК ШАХМАТКИ ==== */
+    /* Продано — зелёный */
+    .cell-sold { background: rgba(16,185,129,.20); border-color: rgba(16,185,129,.55); color: #6ee7b7; }
+    .cell-sold:hover { background: rgba(16,185,129,.34); }
+
+    /* Рассрочка — янтарный/жёлтый */
+    .cell-inst { background: rgba(245,158,11,.22); border-color: rgba(245,158,11,.60); color: #fcd34d; }
+    .cell-inst:hover { background: rgba(245,158,11,.36); }
+
+    /* Свободно — серый */
     .cell-free { background: rgba(51,65,85,.35); border-color: rgba(71,85,105,.6); color: #94a3b8; }
-    .cell-sold:hover { background: rgba(16,185,129,.3); }
-    .cell-inst:hover { background: rgba(56,189,248,.3); }
     .cell-free:hover { background: rgba(51,65,85,.6); }
+
     @media (max-width: 640px) {
       .modal-content {
         position: fixed; left: 0; right: 0; bottom: 0; top: auto;
@@ -35,9 +46,48 @@
       }
       .modal-content.open { transform: translateY(0); }
     }
+
+    /* Плавное скрытие логин-экрана */
+    #loginScreen { transition: opacity .35s ease, visibility .35s ease; }
+    #loginScreen.hidden-login { opacity: 0; visibility: hidden; pointer-events: none; }
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      20% { transform: translateX(-6px); }
+      40% { transform: translateX(6px); }
+      60% { transform: translateX(-4px); }
+      80% { transform: translateX(4px); }
+    }
+    .shake { animation: shake .4s ease; }
   </style>
 </head>
 <body class="bg-slate-950 text-slate-200 min-h-screen">
+
+  <!-- ================= LOGIN SCREEN ================= -->
+  <div id="loginScreen" class="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950">
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+      <div class="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-brand-500/10 blur-3xl"></div>
+      <div class="absolute -bottom-32 -right-32 w-96 h-96 rounded-full bg-emerald-500/10 blur-3xl"></div>
+    </div>
+
+    <form id="loginForm" class="relative w-full max-w-sm mx-4 bg-slate-900/80 border border-slate-800 rounded-2xl shadow-2xl p-6 sm:p-8 backdrop-blur">
+      <div class="flex flex-col items-center text-center mb-6">
+        <div class="w-12 h-12 rounded-2xl bg-brand-500/20 border border-brand-500/40 flex items-center justify-center text-brand-500 font-bold text-lg mb-3">ЖК</div>
+        <h1 class="text-lg font-semibold tracking-tight">Директор</h1>
+        <p class="text-xs text-slate-400 mt-1">ул. К. Худжанди · Блоки А, Б, В</p>
+      </div>
+
+      <label for="password" class="block text-xs uppercase tracking-wide text-slate-400 mb-2">Введите пароль управляющего</label>
+      <input id="password" type="password" autocomplete="current-password" placeholder="••••••••"
+        class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-brand-500 placeholder:text-slate-600 mb-3" />
+
+      <div id="loginError" class="hidden text-xs text-rose-400 mb-3">Неверный пароль, доступ ограничен</div>
+
+      <button type="submit" class="w-full bg-brand-500 hover:bg-brand-600 transition text-slate-950 font-semibold rounded-xl py-2.5 text-sm">
+        Войти
+      </button>
+      <p class="text-[10px] text-slate-600 text-center mt-4">Доступ только для сотрудников</p>
+    </form>
+  </div>
 
   <!-- ================= HEADER ================= -->
   <header class="sticky top-0 z-40 bg-slate-950/90 backdrop-blur border-b border-slate-800">
@@ -45,13 +95,15 @@
       <div class="flex items-center gap-3">
         <div class="w-9 h-9 rounded-xl bg-brand-500/20 border border-brand-500/40 flex items-center justify-center text-brand-500 font-bold">ЖК</div>
         <div>
-          <h1 class="text-lg font-semibold tracking-tight">Дашборд управляющего</h1>
+          <h1 class="text-lg font-semibold tracking-tight">Директор</h1>
           <p class="text-xs text-slate-400">ул. К. Худжанди · Блоки А, Б, В · 228 объектов</p>
         </div>
       </div>
-      <div class="sm:ml-auto w-full sm:w-80">
+      <div class="sm:ml-auto w-full sm:w-80 flex gap-2">
         <input id="search" type="text" placeholder="Поиск: ФИО или № квартиры…"
-          class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-sm outline-none focus:border-brand-500 placeholder:text-slate-500" />
+          class="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-sm outline-none focus:border-brand-500 placeholder:text-slate-500" />
+        <button id="logoutBtn" title="Выйти"
+          class="px-3 rounded-xl bg-slate-900 border border-slate-700 hover:border-rose-500/60 hover:text-rose-400 text-slate-400 text-sm transition">⎋</button>
       </div>
     </div>
   </header>
@@ -100,6 +152,51 @@
   </div>
 
 <script>
+/* =========================================================
+   АВТОРИЗАЦИЯ
+   ========================================================= */
+const ACCESS_PASSWORD = '18121979';
+const STORAGE_KEY = 'jk_dashboard_auth';
+
+(function initAuth() {
+  const loginScreen = document.getElementById('loginScreen');
+  const form = document.getElementById('loginForm');
+  const input = document.getElementById('password');
+  const error = document.getElementById('loginError');
+
+  // Если уже авторизован — сразу скрываем экран входа
+  if (localStorage.getItem(STORAGE_KEY) === 'ok') {
+    loginScreen.classList.add('hidden-login');
+  } else {
+    setTimeout(() => input.focus(), 100);
+  }
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (input.value === ACCESS_PASSWORD) {
+      localStorage.setItem(STORAGE_KEY, 'ok');
+      loginScreen.classList.add('hidden-login');
+      input.value = '';
+      error.classList.add('hidden');
+    } else {
+      error.classList.remove('hidden');
+      form.classList.remove('shake');
+      void form.offsetWidth;
+      form.classList.add('shake');
+      input.select();
+    }
+  });
+
+  // Logout
+  document.getElementById('logoutBtn').addEventListener('click', () => {
+    localStorage.removeItem(STORAGE_KEY);
+    loginScreen.classList.remove('hidden-login');
+    input.value = '';
+    error.classList.add('hidden');
+    setTimeout(() => input.focus(), 200);
+  });
+})();
+
 /* =========================================================
    ДАННЫЕ: только занятые объекты. Свободные генерируются.
    history: [{m: 'месяц', v: сумма}]
@@ -350,9 +447,9 @@ function renderKpi() {
   const items = [
     { label:'Всего объектов', value: KPI.total, color:'text-slate-100' },
     { label:'Продано', value: KPI.sold, color:'text-emerald-400' },
-    { label:'В рассрочке', value: KPI.inst, color:'text-sky-400' },
+    { label:'В рассрочке', value: KPI.inst, color:'text-amber-400' },
     { label:'Свободно', value: KPI.free, color:'text-slate-400' },
-    { label:'Итого получено', value: money(KPI.paid), color:'text-amber-300' },
+    { label:'Итого получено', value: money(KPI.paid), color:'text-emerald-300' },
     { label:'Остаток к получению', value: money(KPI.baqiya), color:'text-rose-300' },
   ];
   el.innerHTML = items.map(i => `
@@ -397,7 +494,7 @@ function renderTabs() {
     { id:'C', label:'Блок В' },
   ];
   el.innerHTML = tabs.map(t => `
-    <button data-block="${t.id}" class="px-4 py-2 rounded-xl text-sm border transition
+    <button data-block="${t.id}" class="px-4 py-2 rounded-xl text-sm border transition whitespace-nowrap
       ${state.block === t.id ? 'bg-brand-500 text-slate-950 border-brand-500 font-medium' : 'bg-slate-900 border-slate-700 text-slate-300 hover:border-slate-500'}">
       ${t.label}
     </button>
@@ -416,7 +513,7 @@ function renderStatusFilter() {
     { id:'free', label:'Свободно' },
   ];
   el.innerHTML = statuses.map(s => `
-    <button data-status="${s.id}" class="px-3 py-1.5 rounded-lg text-xs border transition
+    <button data-status="${s.id}" class="px-3 py-1.5 rounded-lg text-xs border transition whitespace-nowrap
       ${state.status === s.id ? 'bg-slate-100 text-slate-900 border-slate-100 font-medium' : 'bg-slate-900 border-slate-700 text-slate-300 hover:border-slate-500'}">
       ${s.label}
     </button>
@@ -469,11 +566,11 @@ function renderChessboard(block) {
   const k = calcKpi(objects);
   return `
     <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-4">
-      <div class="flex items-center justify-between mb-3">
+      <div class="flex items-center justify-between mb-3 flex-wrap gap-2">
         <h3 class="font-semibold">Блок ${block}</h3>
         <div class="text-[10px] text-slate-400 flex gap-3">
           <span class="text-emerald-400">Продано: ${k.sold}</span>
-          <span class="text-sky-400">Рассрочка: ${k.inst}</span>
+          <span class="text-amber-400">Рассрочка: ${k.inst}</span>
           <span>Свободно: ${k.free}</span>
         </div>
       </div>
@@ -502,7 +599,7 @@ function renderChessboards() {
    ========================================================= */
 function statusBadge(status) {
   if (status === 'sold') return `<span class="px-2 py-0.5 rounded-md text-[10px] bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">Продано</span>`;
-  if (status === 'installment') return `<span class="px-2 py-0.5 rounded-md text-[10px] bg-sky-500/15 text-sky-300 border border-sky-500/30">Рассрочка</span>`;
+  if (status === 'installment') return `<span class="px-2 py-0.5 rounded-md text-[10px] bg-amber-500/15 text-amber-300 border border-amber-500/30">Рассрочка</span>`;
   return `<span class="px-2 py-0.5 rounded-md text-[10px] bg-slate-700/40 text-slate-400 border border-slate-600/40">Свободно</span>`;
 }
 
@@ -587,7 +684,7 @@ function openModal(obj) {
         </div>
         <div class="bg-slate-950/50 border border-slate-800 rounded-xl p-3">
           <div class="text-[10px] text-slate-500 uppercase">Оплачено</div>
-          <div class="text-sm font-semibold text-amber-300 mt-1">${money(obj.paid)}</div>
+          <div class="text-sm font-semibold text-emerald-300 mt-1">${money(obj.paid)}</div>
         </div>
         <div class="bg-slate-950/50 border border-slate-800 rounded-xl p-3">
           <div class="text-[10px] text-slate-500 uppercase">Остаток</div>
