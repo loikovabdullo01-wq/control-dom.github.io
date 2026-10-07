@@ -223,132 +223,76 @@
    ========================================================= */
 const I18N = {
   ru: {
-    appTitle: 'Директор',
-    appSubtitle: 'ул. К. Худжанди · Блоки А, Б, В · 228 объектов',
-    loginTitle: 'Директор',
-    loginSubtitle: 'ул. К. Худжанди · Блоки А, Б, В',
-    loginLabel: 'Пароль управляющего',
-    loginPlaceholder: '••••••••',
-    loginError: 'Отказ в доступе. Неверный пароль.',
-    loginBtn: 'Войти',
+    appTitle: 'Директор', appSubtitle: 'ул. К. Худжанди · Блоки А, Б, В · 228 объектов',
+    loginTitle: 'Директор', loginSubtitle: 'ул. К. Худжанди · Блоки А, Б, В',
+    loginLabel: 'Пароль управляющего', loginPlaceholder: '••••••••',
+    loginError: 'Отказ в доступе. Неверный пароль.', loginBtn: 'Войти',
     loginNote: 'Доступ только для сотрудников',
-    searchPlaceholder: 'Поиск: ФИО или № квартиры…',
-    logoutTitle: 'Выйти',
-    reportsBtn: 'Отчёты',
-    themeTitle: 'Тема: тёмная / светлая',
+    searchPlaceholder: 'Поиск: ФИО или № квартиры…', logoutTitle: 'Выйти',
+    reportsBtn: 'Отчёты', themeTitle: 'Тема: тёмная / светлая',
     langTitle: 'Язык: русский / таджикский',
-    kpiTotal: 'Всего объектов',
-    kpiSold: 'Продано',
-    kpiInst: 'В рассрочке',
-    kpiFree: 'Свободно',
-    kpiPaid: 'Итого получено',
-    kpiBaqiya: 'Остаток к получению',
-    tabAll: 'Все блоки',
-    tabA: 'Блок А',
-    tabB: 'Блок Б',
-    tabV: 'Блок В',
-    stAll: 'Все статусы',
-    stSold: 'Продано',
-    stInst: 'Рассрочка',
-    stFree: 'Свободно',
-    objectsTitle: 'Объекты',
-    pcs: 'шт.',
-    notFound: 'Ничего не найдено',
-    thNum: '№',
-    thBuyer: 'Покупатель',
-    thStatus: 'Статус',
-    thPaid: 'Оплачено',
-    thBaqiya: 'Остаток',
-    blockWord: 'Блок',
-    freeWord: 'Свободно',
-    buyerLabel: 'Покупатель',
-    statusLabel: 'Статус',
-    areaLabel: 'Площадь',
-    costLabel: 'Стоимость',
-    paidLabel: 'Оплачено',
-    baqiyaLabel: 'Остаток',
-    historyTitle: 'История выплат по месяцам',
-    noHistory: 'Нет помесячной детализации',
-    reportsTitle: 'Отчёты',
-    back: '← Назад',
-    uploadBtn: 'Загрузить отчёт',
-    uploading: 'Загрузка…',
+    kpiTotal: 'Всего объектов', kpiSold: 'Продано', kpiInst: 'В рассрочке',
+    kpiFree: 'Свободно', kpiPaid: 'Итого получено', kpiBaqiya: 'Остаток к получению',
+    tabAll: 'Все блоки', tabA: 'Блок А', tabB: 'Блок Б', tabV: 'Блок В',
+    stAll: 'Все статусы', stSold: 'Продано', stInst: 'Рассрочка', stFree: 'Свободно',
+    objectsTitle: 'Объекты', pcs: 'шт.', notFound: 'Ничего не найдено',
+    thNum: '№', thBuyer: 'Покупатель', thStatus: 'Статус', thPaid: 'Оплачено', thBaqiya: 'Остаток',
+    blockWord: 'Блок', freeWord: 'Свободно',
+    buyerLabel: 'Покупатель', statusLabel: 'Статус', areaLabel: 'Площадь',
+    costLabel: 'Стоимость', paidLabel: 'Оплачено', baqiyaLabel: 'Остаток',
+    historyTitle: 'История выплат по месяцам', noHistory: 'Нет помесячной детализации',
+    reportsTitle: 'Отчёты', back: '← Назад',
+    uploadBtn: 'Загрузить отчёт', uploading: 'Загрузка…',
     selectImages: 'Выберите изображения или скриншоты Excel',
     noReports: 'Пока нет загруженных отчётов',
-    delete: 'Удалить',
-    uploadedAt: 'Загружено',
-    expiresAt: 'Удалится',
-    uploadOk: 'Успешно загружено: ',
-    uploadErr: 'Ошибка загрузки: ',
+    delete: 'Удалить', uploadedAt: 'Загружено', expiresAt: 'Удалится',
+    uploadOk: 'Успешно загружено: ', uploadErr: 'Ошибка загрузки: ',
     confirmDelete: 'Удалить этот отчёт?',
-    reportDateLabel: 'Дата отчёта',
-    reportNoteLabel: 'Комментарий',
-    reportNotePlaceholder: 'Например: оплата за сентябрь',
-    reportNoteEmpty: '—'
+    reportDateLabel: 'Дата отчёта', reportNoteLabel: 'Комментарий',
+    reportNotePlaceholder: 'Например: оплата за сентябрь', reportNoteEmpty: '—',
+    loadingReports: 'Загрузка отчётов с сервера…',
+    firebaseErr: 'Ошибка Firebase: ', retry: 'Повторить',
+    deleteErr: 'Не удалось удалить: ',
+    dailyUploadedToday: 'Загружено сегодня',
+    dailyLimitReached: 'Достигнут дневной лимит: не более 10 изображений в день для одного отчёта.',
+    dailyLimitPartial: 'Часть файлов не загружена — дневной лимит 10 шт.',
+    rulesHint: 'Если видите ошибку 403 — откройте Firebase Console → Firestore → Rules и разрешите чтение/запись для коллекции reports.'
   },
   tj: {
-    appTitle: 'Директор',
-    appSubtitle: 'кӯч. К. Хуҷандӣ · Блокҳои А, Б, В · 228 объект',
-    loginTitle: 'Директор',
-    loginSubtitle: 'кӯч. К. Хуҷандӣ · Блокҳои А, Б, В',
-    loginLabel: 'Рамзи идоракунанда',
-    loginPlaceholder: '••••••••',
-    loginError: 'Дастрасӣ рад шуд. Рамз нодуруст аст.',
-    loginBtn: 'Даромадан',
+    appTitle: 'Директор', appSubtitle: 'кӯч. К. Хуҷандӣ · Блокҳои А, Б, В · 228 объект',
+    loginTitle: 'Директор', loginSubtitle: 'кӯч. К. Хуҷандӣ · Блокҳои А, Б, В',
+    loginLabel: 'Рамзи идоракунанда', loginPlaceholder: '••••••••',
+    loginError: 'Дастрасӣ рад шуд. Рамз нодуруст аст.', loginBtn: 'Даромадан',
     loginNote: 'Дастрасӣ танҳо барои кормандон',
-    searchPlaceholder: 'Ҷустуҷӯ: Ном ё № хона…',
-    logoutTitle: 'Баромадан',
-    reportsBtn: 'Ҳисоботҳо',
-    themeTitle: 'Мавзӯъ: торик / равшан',
+    searchPlaceholder: 'Ҷустуҷӯ: Ном ё № хона…', logoutTitle: 'Баромадан',
+    reportsBtn: 'Ҳисоботҳо', themeTitle: 'Мавзӯъ: торик / равшан',
     langTitle: 'Забон: русӣ / тоҷикӣ',
-    kpiTotal: 'Ҳамагӣ объектҳо',
-    kpiSold: 'Фурӯхта шуд',
-    kpiInst: 'Дар қисмҳо',
-    kpiFree: 'Озод',
-    kpiPaid: 'Ҳамагӣ гирифта шуд',
-    kpiBaqiya: 'Боқимонда барои гирифтан',
-    tabAll: 'Ҳамаи блокҳо',
-    tabA: 'Блоки А',
-    tabB: 'Блоки Б',
-    tabV: 'Блоки В',
-    stAll: 'Ҳамаи ҳолатҳо',
-    stSold: 'Фурӯхта',
-    stInst: 'Қисмҳо',
-    stFree: 'Озод',
-    objectsTitle: 'Объектҳо',
-    pcs: 'дона',
-    notFound: 'Чизе ёфт нашуд',
-    thNum: '№',
-    thBuyer: 'Харидор',
-    thStatus: 'Ҳолат',
-    thPaid: 'Пардохт',
-    thBaqiya: 'Боқимонда',
-    blockWord: 'Блок',
-    freeWord: 'Озод',
-    buyerLabel: 'Харидор',
-    statusLabel: 'Ҳолат',
-    areaLabel: 'Масоҳат',
-    costLabel: 'Арзиш',
-    paidLabel: 'Пардохтшуда',
-    baqiyaLabel: 'Боқимонда',
-    historyTitle: 'Таърихи пардохтҳо аз рӯи моҳҳо',
-    noHistory: 'Тафсилоти моҳона нест',
-    reportsTitle: 'Ҳисоботҳо',
-    back: '← Бозгашт',
-    uploadBtn: 'Боргузории ҳисобот',
-    uploading: 'Боргузорӣ…',
+    kpiTotal: 'Ҳамагӣ объектҳо', kpiSold: 'Фурӯхта шуд', kpiInst: 'Дар қисмҳо',
+    kpiFree: 'Озод', kpiPaid: 'Ҳамагӣ гирифта шуд', kpiBaqiya: 'Боқимонда барои гирифтан',
+    tabAll: 'Ҳамаи блокҳо', tabA: 'Блоки А', tabB: 'Блоки Б', tabV: 'Блоки В',
+    stAll: 'Ҳамаи ҳолатҳо', stSold: 'Фурӯхта', stInst: 'Қисмҳо', stFree: 'Озод',
+    objectsTitle: 'Объектҳо', pcs: 'дона', notFound: 'Чизе ёфт нашуд',
+    thNum: '№', thBuyer: 'Харидор', thStatus: 'Ҳолат', thPaid: 'Пардохт', thBaqiya: 'Боқимонда',
+    blockWord: 'Блок', freeWord: 'Озод',
+    buyerLabel: 'Харидор', statusLabel: 'Ҳолат', areaLabel: 'Масоҳат',
+    costLabel: 'Арзиш', paidLabel: 'Пардохтшуда', baqiyaLabel: 'Боқимонда',
+    historyTitle: 'Таърихи пардохтҳо аз рӯи моҳҳо', noHistory: 'Тафсилоти моҳона нест',
+    reportsTitle: 'Ҳисоботҳо', back: '← Бозгашт',
+    uploadBtn: 'Боргузории ҳисобот', uploading: 'Боргузорӣ…',
     selectImages: 'Тасвирҳо ё скриншотҳои Excel-ро интихоб кунед',
     noReports: 'Ҳанӯз ҳисоботи боргузорӣшуда нест',
-    delete: 'Нест кардан',
-    uploadedAt: 'Боргузорӣ шуд',
-    expiresAt: 'Нест мешавад',
-    uploadOk: 'Бомуваффақият боргузорӣ шуд: ',
-    uploadErr: 'Хатои боргузорӣ: ',
+    delete: 'Нест кардан', uploadedAt: 'Боргузорӣ шуд', expiresAt: 'Нест мешавад',
+    uploadOk: 'Бомуваффақият боргузорӣ шуд: ', uploadErr: 'Хатои боргузорӣ: ',
     confirmDelete: 'Ин ҳисобот нест карда шавад?',
-    reportDateLabel: 'Санаи ҳисобот',
-    reportNoteLabel: 'Шарҳ',
-    reportNotePlaceholder: 'Масалан: пардохти сентябр',
-    reportNoteEmpty: '—'
+    reportDateLabel: 'Санаи ҳисобот', reportNoteLabel: 'Шарҳ',
+    reportNotePlaceholder: 'Масалан: пардохти сентябр', reportNoteEmpty: '—',
+    loadingReports: 'Боргузории ҳисоботҳо аз сервер…',
+    firebaseErr: 'Хатои Firebase: ', retry: 'Такрор',
+    deleteErr: 'Нест кардан муяссар нашуд: ',
+    dailyUploadedToday: 'Имрӯз боргузорӣ шуд',
+    dailyLimitReached: 'Лимити рӯзона расид: на бештар аз 10 тасвир дар як рӯз барои як ҳисобот.',
+    dailyLimitPartial: 'Қисми файлҳо боргузорӣ нашуданд — лимити рӯзона 10 дона.',
+    rulesHint: 'Агар хатои 403 бинед — Firebase Console → Firestore → Rules кушоед ва барои коллексияи reports иҷозат диҳед.'
   }
 };
 
@@ -445,13 +389,11 @@ const STORAGE_VALUE = 'verified_true';
    БАЗА ДАННЫХ
    ========================================================= */
 const OCCUPIED = [
-   // -------------------- БЛОК А --------------------
   {block:'А', number:'1/1', name:'Сангов Илхомуддин Боронов', area:425.0, price:10500, roomAmount:4462500, paid:1860250, baqiya:2602250, history:[
     {m:'январ',v:1338750},{m:'март',v:178000},{m:'апрел',v:86500},{m:'май',v:90000},{m:'июнь',v:82000},{m:'июль',v:85000}
   ]},
   {block:'А', number:'1/2', name:'Начимов Рахматулло Абдук', area:100.0, price:11000, roomAmount:1100000, paid:344000, baqiya:766000, history:[
-    {m:'январ',v:150000},{m:'феврал',v:20000},{m:'март',v:20000},{m:'апрел',v:20000},{m:'май',v:20000},{m:'июнь',v:23000},{m:'июль',v:20000}
-    ,{m:'сентябр',v:61000}
+    {m:'январ',v:150000},{m:'феврал',v:20000},{m:'март',v:20000},{m:'апрел',v:20000},{m:'май',v:20000},{m:'июнь',v:23000},{m:'июль',v:20000},{m:'сентябр',v:61000}
   ]},
   {block:'А', number:'1/3', name:'Хомидов Аличон Мукимчон', area:120.0, price:12000, roomAmount:1440000, paid:691747, baqiya:748253, history:[
     {m:'ноябр',v:300000},{m:'декабр',v:35100},{m:'январ',v:36000},{m:'феврал',v:36300},{m:'март',v:34500},{m:'апрел',v:41600},{m:'май',v:38060},{m:'июнь',v:34957},{m:'июль',v:32000},{m:'август',v:103230}
@@ -474,21 +416,16 @@ const OCCUPIED = [
   {block:'А', number:'7/4', name:'Чумахмедова Мавлуда Абдур', area:50.0, price:4500, roomAmount:225000, paid:13000, baqiya:21200, history:[
     {m:'июль',v:9000},{m:'август',v:1500},{m:'сентябр',v:2500}
   ]},
-
-  // -------------------- БЛОК Б --------------------
   {block:'Б', number:'0/4', name:'Эмомов Чума Халил', area:120.0, price:12000, roomAmount:1440000, paid:400000, baqiya:1040000, history:[
-    {m:'август',v:180000}, {m:'сентябр',v:120000}, {m:'октябр',v:100000}
+    {m:'август',v:180000},{m:'сентябр',v:120000},{m:'октябр',v:100000}
   ]},
   {block:'Б', number:'1/1', name:'Азизов Шукрулло Махмад', area:null, price:null, roomAmount:null, paid:0, baqiya:null, history:[]},
-  {block:'Б', number:'1/2', name:'Качулов Махмадхуча Юсуф', area:120.0, price:1100, roomAmount:1320000, paid:840000, baqiya:480000, history:[
-    {m:'феврал',v:840000}
-  ]},
+  {block:'Б', number:'1/2', name:'Качулов Махмадхуча Юсуф', area:120.0, price:1100, roomAmount:1320000, paid:840000, baqiya:480000, history:[{m:'феврал',v:840000}]},
   {block:'Б', number:'1/3', name:'Шарипов Шамсиддин Саид', area:120.0, price:1200, roomAmount:1440000, paid:290000, baqiya:1150000, history:[
     {m:'январ',v:150000},{m:'феврал',v:20000},{m:'март',v:20000},{m:'апрел',v:15000},{m:'май',v:15000},{m:'июнь',v:50000},{m:'июль',v:20000}
   ]},
   {block:'Б', number:'1/4', name:'Хомидов Аличон Муким', area:70.0, price:11500, roomAmount:805000, paid:566790, baqiya:238210, history:[
-    {m:'ноябр',v:200000},{m:'декабр',v:72500},{m:'январ',v:15000},{m:'феврал',v:45000},{m:'март',v:20000},{m:'апрел',v:80000},{m:'май',v:73000},{m:'август',v:15000}
-    ,{m:'сентябр',v:15000},{m:'октябр',v:31290}
+    {m:'ноябр',v:200000},{m:'декабр',v:72500},{m:'январ',v:15000},{m:'феврал',v:45000},{m:'март',v:20000},{m:'апрел',v:80000},{m:'май',v:73000},{m:'август',v:15000},{m:'сентябр',v:15000},{m:'октябр',v:31290}
   ]},
   {block:'Б', number:'1/5', name:'Точибаева Мухабатхон', area:120.0, price:1200, roomAmount:1327639, paid:572139, baqiya:755500, history:[
     {m:'август',v:200000},{m:'сентябр',v:37400},{m:'октябр',v:40529},{m:'ноябр',v:37200},{m:'декабр',v:27900},{m:'январ',v:37400},{m:'феврал',v:33250},{m:'март',v:38400},{m:'апрел',v:28050},{m:'май',v:31650},{m:'июнь',v:25000},{m:'июль',v:35360}
@@ -499,25 +436,19 @@ const OCCUPIED = [
   {block:'Б', number:'3/7', name:'Сафаров Мирзоназар Саймуза', area:69.3, price:5200, roomAmount:360360, paid:176676, baqiya:183684, history:[
     {m:'апрел',v:120000},{m:'май',v:10023},{m:'июнь',v:10607},{m:'июль',v:12530},{m:'август',v:11504},{m:'сентябр',v:12012}
   ]},
-  {block:'Б', number:'4/1', name:'Фозилов Хадятулло Шамс', area:118.0, price:5300, roomAmount:625400, paid:180000, baqiya:445400, history:[
-    {m:'май',v:180000}
-  ]},
+  {block:'Б', number:'4/1', name:'Фозилов Хадятулло Шамс', area:118.0, price:5300, roomAmount:625400, paid:180000, baqiya:445400, history:[{m:'май',v:180000}]},
   {block:'Б', number:'4/2', name:'Фозилов Хадятулло Шамс', area:null, price:null, roomAmount:null, paid:0, baqiya:null, history:[]},
   {block:'Б', number:'4/4', name:'Сафаров Сангак Рач', area:49.8, price:4000, roomAmount:200000, paid:200000, baqiya:0, history:[
     {m:'ноябр',v:100000},{m:'декабр',v:74000},{m:'июнь',v:25000}
   ]},
-  {block:'Б', number:'4/6', name:'Умронов Амрулло Диловар', area:70.5, price:5000, roomAmount:352500, paid:200000, baqiya:152500, history:[
-    {m:'апрел',v:200000}
-  ]},
+  {block:'Б', number:'4/6', name:'Умронов Амрулло Диловар', area:70.5, price:5000, roomAmount:352500, paid:200000, baqiya:152500, history:[{m:'апрел',v:200000}]},
   {block:'Б', number:'5/3', name:'Шарипов Мухаммадчон Саф', area:70.5, price:4500, roomAmount:317250, paid:120000, baqiya:197250, history:[
     {m:'июль',v:100000},{m:'август',v:10000},{m:'сентябр',v:10000}
   ]},
   {block:'Б', number:'5/4', name:'Асроров Муродбек Давлат', area:49.8, price:4317, roomAmount:215000, paid:94027, baqiya:120973, history:[
     {m:'апрел',v:64000},{m:'май',v:6017},{m:'июнь',v:6000},{m:'июль',v:6000},{m:'август',v:6010},{m:'сентябр',v:6000}
   ]},
-  {block:'Б', number:'5/5', name:'Шамсов Саймуддин Ахлид', area:49.8, price:5000, roomAmount:250000, paid:123000, baqiya:127000, history:[
-    {m:'май',v:123000}
-  ]},
+  {block:'Б', number:'5/5', name:'Шамсов Саймуддин Ахлид', area:49.8, price:5000, roomAmount:250000, paid:123000, baqiya:127000, history:[{m:'май',v:123000}]},
   {block:'Б', number:'5/8', name:'Икромов Умар Толибович', area:66.5, price:4850, roomAmount:322525, paid:47500, baqiya:275025, history:[
     {m:'июль',v:22500},{m:'август',v:12500},{m:'сентябр',v:12500}
   ]},
@@ -533,8 +464,6 @@ const OCCUPIED = [
   {block:'Б', number:'9/5', name:'Хомидов Аличон Муким', area:49.8, price:4000, roomAmount:200000, paid:82000, baqiya:118000, history:[
     {m:'апрел',v:50000},{m:'май',v:6000},{m:'июнь',v:6000},{m:'август',v:10000},{m:'сентябр',v:10000}
   ]},
-
-  // -------------------- БЛОК В --------------------
   {block:'В', number:'0/1', name:'Ахмадчонов Зиевиддин Кием', area:70.0, price:10500, roomAmount:735000, paid:610000, baqiya:125000, history:[
     {m:'август',v:600000},{m:'сентябр',v:10000}
   ]},
@@ -550,9 +479,7 @@ const OCCUPIED = [
   {block:'В', number:'3/1', name:'Шарипов Киёмулиди Шо', area:47.0, price:4650, roomAmount:218550, paid:197000, baqiya:21550, history:[
     {m:'ноябр',v:135000},{m:'декабр',v:17000},{m:'март',v:20000},{m:'май',v:20000},{m:'июнь',v:5000}
   ]},
-  {block:'В', number:'3/3', name:'Юлдашев Расулчон Хош', area:70.5, price:4000, roomAmount:282000, paid:96000, baqiya:186000, history:[
-    {m:'ноябр',v:96000}
-  ]},
+  {block:'В', number:'3/3', name:'Юлдашев Расулчон Хош', area:70.5, price:4000, roomAmount:282000, paid:96000, baqiya:186000, history:[{m:'ноябр',v:96000}]},
   {block:'В', number:'3/4', name:'Хусаинов Олимчон Мух', area:49.8, price:5300, roomAmount:263940, paid:209380, baqiya:54560, history:[
     {m:'сентябр',v:100000},{m:'октябр',v:9110},{m:'ноябр',v:9110},{m:'декабр',v:45540},{m:'май',v:9180},{m:'июнь',v:9110},{m:'июль',v:9110},{m:'август',v:9110},{m:'сентябр',v:9110}
   ]},
@@ -562,18 +489,12 @@ const OCCUPIED = [
   {block:'В', number:'3/6', name:'Юсуфов Сабур Талбиев', area:70.5, price:4900, roomAmount:345450, paid:237000, baqiya:108450, history:[
     {m:'январ',v:160000},{m:'феврал',v:18000},{m:'июнь',v:39000},{m:'сентябр',v:20000}
   ]},
-  {block:'В', number:'3/7', name:'Гафоров Махмад Шераф', area:69.3, price:5500, roomAmount:381150, paid:249000, baqiya:131000, history:[
-    {m:'январ',v:249000}
-  ]},
-  {block:'В', number:'3/8', name:'Юсуфов Мухаммад Тал', area:66.5, price:4962, roomAmount:329973, paid:330000, baqiya:0, history:[
-    {m:'феврал',v:330000}
-  ]},
+  {block:'В', number:'3/7', name:'Гафоров Махмад Шераф', area:69.3, price:5500, roomAmount:381150, paid:249000, baqiya:131000, history:[{m:'январ',v:249000}]},
+  {block:'В', number:'3/8', name:'Юсуфов Мухаммад Тал', area:66.5, price:4962, roomAmount:329973, paid:330000, baqiya:0, history:[{m:'феврал',v:330000}]},
   {block:'В', number:'4/3', name:'Юсуфова Файзимох Ахм', area:70.5, price:4500, roomAmount:317250, paid:300700, baqiya:16550, history:[
     {m:'декабр',v:160000},{m:'январ',v:29000},{m:'феврал',v:35600},{m:'апрел',v:17000},{m:'июль',v:59100}
   ]},
-  {block:'В', number:'4/4', name:'Сафаров Сангак Рачабо', area:49.8, price:4000, roomAmount:199200, paid:200000, baqiya:0, history:[
-    {m:'октябр',v:200000}
-  ]},
+  {block:'В', number:'4/4', name:'Сафаров Сангак Рачабо', area:49.8, price:4000, roomAmount:199200, paid:200000, baqiya:0, history:[{m:'октябр',v:200000}]},
   {block:'В', number:'4/5', name:'Куватова Замира Азамо', area:49.8, price:4000, roomAmount:200000, paid:180000, baqiya:20000, history:[
     {m:'август',v:100000},{m:'ноябр',v:80000}
   ]},
@@ -598,9 +519,7 @@ const OCCUPIED = [
   {block:'В', number:'6/4', name:'Абдуллоев Саидакрам К...', area:49.8, price:4000, roomAmount:199200, paid:140000, baqiya:59200, history:[
     {m:'ноябр',v:60000},{m:'декабр',v:8000},{m:'январ',v:8000},{m:'феврал',v:8000},{m:'март',v:8000},{m:'апрел',v:8000},{m:'май',v:8000},{m:'июнь',v:8000},{m:'июль',v:8000},{m:'август',v:8000},{m:'сентябр',v:8000}
   ]},
-  {block:'В', number:'6/5', name:'Хомидов Аличон Муким', area:49.8, price:4300, roomAmount:215000, paid:215000, baqiya:0, history:[
-    {m:'июнь',v:215000}
-  ]},
+  {block:'В', number:'6/5', name:'Хомидов Аличон Муким', area:49.8, price:4300, roomAmount:215000, paid:215000, baqiya:0, history:[{m:'июнь',v:215000}]},
   {block:'В', number:'7/1', name:'суфиева Махина Сироч...', area:47.0, price:3700, roomAmount:173900, paid:107100, baqiya:65900, history:[
     {m:'апрел',v:60000},{m:'май',v:9420},{m:'июнь',v:9420},{m:'июль',v:9420},{m:'август',v:9420},{m:'октябр',v:9420}
   ]},
@@ -613,9 +532,7 @@ const OCCUPIED = [
   {block:'В', number:'8/1', name:'Хасанова Фируза Авазовна', area:47.0, price:5000, roomAmount:235000, paid:60270, baqiya:174730, history:[
     {m:'сентябр',v:50000},{m:'октябр',v:10270}
   ]},
-  {block:'В', number:'8/4', name:'Шоев Абдулманон Одиочонов', area:50.0, price:4300, roomAmount:215000, paid:205000, baqiya:10000, history:[
-    {m:'сентябр',v:205000}
-  ]},
+  {block:'В', number:'8/4', name:'Шоев Абдулманон Одиочонов', area:50.0, price:4300, roomAmount:215000, paid:205000, baqiya:10000, history:[{m:'сентябр',v:205000}]},
   {block:'В', number:'8/5', name:'Пиржанова Зулайхо Олимч', area:50.0, price:4200, roomAmount:210000, paid:135000, baqiya:75000, history:[
     {m:'август',v:120000},{m:'сентябр',v:15000}
   ]},
@@ -650,12 +567,8 @@ BLOCKS.forEach(block => {
         const bal = (occ.baqiya === null || occ.baqiya === undefined) ? null : Number(occ.baqiya);
         ALL_OBJECTS.push({
           block, number, floor, unit,
-          name: occ.name || '',
-          area: occ.area,
-          price: occ.price,
-          roomAmount: occ.roomAmount,
-          paid: occ.paid || 0,
-          baqiya: bal,
+          name: occ.name || '', area: occ.area, price: occ.price,
+          roomAmount: occ.roomAmount, paid: occ.paid || 0, baqiya: bal,
           history: occ.history || [],
           status: !hasOwner ? 'free' : (bal === 0 ? 'sold' : 'installment')
         });
@@ -722,10 +635,8 @@ function filteredObjects() {
 function renderTabs() {
   const el = document.getElementById('tabs');
   const tabs = [
-    { id:'ALL', label: t('tabAll') },
-    { id:'А',   label: t('tabA') },
-    { id:'Б',   label: t('tabB') },
-    { id:'В',   label: t('tabV') }
+    { id:'ALL', label: t('tabAll') }, { id:'А', label: t('tabA') },
+    { id:'Б', label: t('tabB') },     { id:'В', label: t('tabV') }
   ];
   el.innerHTML = tabs.map(tb => `
     <button data-block="${tb.id}" class="px-4 py-2 rounded-xl text-sm border transition whitespace-nowrap
@@ -814,12 +725,9 @@ function renderChessboards() {
   const el = document.getElementById('chessboards');
   const blocks = state.block === 'ALL' ? BLOCKS : [state.block];
   el.innerHTML = blocks.map(b => renderChessboard(b)).join('');
-
   el.querySelectorAll('button[data-number]').forEach(btn => {
     btn.onclick = () => {
-      const block = btn.dataset.block;
-      const number = btn.dataset.number;
-      const obj = ALL_OBJECTS.find(o => o.block === block && o.number === number);
+      const obj = ALL_OBJECTS.find(o => o.block === btn.dataset.block && o.number === btn.dataset.number);
       openModal(obj);
     };
   });
@@ -835,12 +743,10 @@ function renderTable() {
   const objects = filteredObjects();
   const wrap = document.getElementById('tableWrap');
   document.getElementById('filteredCount').textContent = `${objects.length} ${t('pcs')}`;
-
   if (!objects.length) {
     wrap.innerHTML = `<div class="p-6 text-center text-sm text-slate-500">${t('notFound')}</div>`;
     return;
   }
-
   wrap.innerHTML = `
     <table class="w-full text-xs">
       <thead class="bg-[#0f1624] sticky top-0">
@@ -865,7 +771,6 @@ function renderTable() {
       </tbody>
     </table>
   `;
-
   wrap.querySelectorAll('tr[data-number]').forEach(tr => {
     tr.onclick = () => {
       const obj = ALL_OBJECTS.find(o => o.block === tr.dataset.block && o.number === tr.dataset.number);
@@ -876,34 +781,27 @@ function renderTable() {
 
 function showSheet(modal, content) {
   modal.classList.remove('hidden');
-  if (window.innerWidth <= 640) {
-    setTimeout(() => content.classList.add('open'), 10);
-  }
+  if (window.innerWidth <= 640) setTimeout(() => content.classList.add('open'), 10);
 }
 
 function hideSheet(modal, content) {
   if (window.innerWidth <= 640) {
     content.classList.remove('open');
     setTimeout(() => modal.classList.add('hidden'), 250);
-  } else {
-    modal.classList.add('hidden');
-  }
+  } else modal.classList.add('hidden');
 }
 
 function openModal(obj) {
   const modal = document.getElementById('modal');
   const content = document.getElementById('modalContent');
   document.getElementById('modalTitle').textContent = `${t('blockWord')} ${obj.block} · ${obj.number}`;
-
   const historyRows = obj.history && obj.history.length
     ? obj.history.map(h => `
         <tr class="border-b border-slate-800/60">
           <td class="py-2 text-slate-400">${h.m}</td>
           <td class="py-2 text-right font-medium">${money(h.v)}</td>
-        </tr>
-      `).join('')
+        </tr>`).join('')
     : `<tr><td colspan="2" class="py-4 text-center text-slate-500">${t('noHistory')}</td></tr>`;
-
   document.getElementById('modalBody').innerHTML = `
     <div class="space-y-4">
       <div class="grid grid-cols-2 gap-3">
@@ -932,18 +830,13 @@ function openModal(obj) {
           <div class="text-sm font-semibold text-rose-300 mt-1">${obj.baqiya !== null ? money(obj.baqiya) : '—'}</div>
         </div>
       </div>
-
       <div>
         <h4 class="text-xs uppercase tracking-wide text-slate-500 mb-2">${t('historyTitle')}</h4>
         <div class="bg-[#080c14]/60 border border-slate-800 rounded-xl overflow-hidden">
-          <table class="w-full text-sm">
-            <tbody>${historyRows}</tbody>
-          </table>
+          <table class="w-full text-sm"><tbody>${historyRows}</tbody></table>
         </div>
       </div>
-    </div>
-  `;
-
+    </div>`;
   showSheet(modal, content);
 }
 
@@ -952,14 +845,23 @@ function closeModal() {
 }
 
 /* =========================================================
-   ОТЧЁТЫ (ImgBB + резервные хостинги + localStorage)
+   ОТЧЁТЫ — FIREBASE FIRESTORE REST + ImgBB/0x0.st/catbox
+   Лимит: 10 изображений в день на каждый отчёт
+   TTL: 10 дней
    ========================================================= */
 const IMGBB_KEYS = [
   '4b7f7e2d31a3612f63e8f09ae45cb516',
   '044c84fb33e068293052ead694715174',
   'ae79450043550a3062e2c2d40308a877'
 ];
-const REPORT_TTL = 7 * 24 * 60 * 60 * 1000;
+
+const FIREBASE_PROJECT_ID = 'control-dom-509c9';
+const FIREBASE_API_KEY = 'AIzaSyCO93lwu3eW46nxJJM3BhG2qkMobp89CYE';
+const FIRESTORE_ROOT = 'https://firestore.googleapis.com/v1/projects/' + FIREBASE_PROJECT_ID + '/databases/(default)/documents';
+const REPORTS_COLLECTION = FIRESTORE_ROOT + '/reports';
+
+const REPORT_TTL = 10 * 24 * 60 * 60 * 1000;
+const DAILY_LIMIT = 10;
 
 const REPORT_IDS = ['abdulloh', 'faridun', 'firdas', 'hisrav', 'gumruk'];
 const REPORT_NAMES = {
@@ -970,60 +872,152 @@ const REPORT_NAMES = {
   gumruk:   { ru: 'ВОРИДОТ ГУМРУК', tj: 'ВОРИДОТ ГУМРУК'   }
 };
 
-function reportKey(id) { return 'reports_' + id; }
-
 function reportName(id) {
   const n = REPORT_NAMES[id];
   if (!n) return id;
   return n[lang] || n.ru;
 }
 
-function getReports(id) {
-  try {
-    const raw = localStorage.getItem(reportKey(id));
-    const arr = raw ? JSON.parse(raw) : [];
-    return Array.isArray(arr) ? arr : [];
-  } catch (e) {
-    return [];
+function toFsValue(v) {
+  if (v === null || v === undefined) return { nullValue: null };
+  if (typeof v === 'string') return { stringValue: v };
+  if (typeof v === 'boolean') return { booleanValue: v };
+  if (typeof v === 'number') return Number.isInteger(v) ? { integerValue: String(v) } : { doubleValue: v };
+  return { stringValue: String(v) };
+}
+
+function fromFsValue(v) {
+  if (!v || typeof v !== 'object') return null;
+  if ('stringValue' in v) return v.stringValue;
+  if ('integerValue' in v) return Number(v.integerValue);
+  if ('doubleValue' in v) return Number(v.doubleValue);
+  if ('booleanValue' in v) return !!v.booleanValue;
+  if ('nullValue' in v) return null;
+  if ('timestampValue' in v) return v.timestampValue;
+  return null;
+}
+
+function fsDocToReport(doc) {
+  const f = doc.fields || {};
+  return {
+    id: (doc.name || '').split('/').pop(),
+    reportType: fromFsValue(f.reportType),
+    imageUrl: fromFsValue(f.imageUrl),
+    dateUploaded: fromFsValue(f.dateUploaded),
+    deleteAfter: fromFsValue(f.deleteAfter),
+    customDate: fromFsValue(f.customDate),
+    note: fromFsValue(f.note)
+  };
+}
+
+let reportsCache = {};
+let reportsState = 'idle';
+let reportsError = '';
+REPORT_IDS.forEach(id => { reportsCache[id] = []; });
+
+function reportsFor(id) { return reportsCache[id] || []; }
+
+async function deleteReportDoc(docId) {
+  const url = REPORTS_COLLECTION + '/' + encodeURIComponent(docId) + '?key=' + encodeURIComponent(FIREBASE_API_KEY);
+  const res = await fetch(url, { method: 'DELETE' });
+  if (!res.ok && res.status !== 404) {
+    let txt = '';
+    try { txt = await res.text(); } catch (e) {}
+    throw new Error('HTTP ' + res.status + ' ' + String(txt).slice(0, 200));
   }
 }
 
-function saveReports(id, arr) {
-  try { localStorage.setItem(reportKey(id), JSON.stringify(arr)); } catch (e) {}
-}
-
-function cleanOldReports() {
-  const now = Date.now();
-  REPORT_IDS.forEach(id => {
-    const arr = getReports(id).filter(it => it && it.deleteAfter && it.deleteAfter > now);
-    saveReports(id, arr);
+async function addReportDoc(item) {
+  const body = { fields: {
+    reportType:   toFsValue(item.reportType),
+    imageUrl:     toFsValue(item.imageUrl),
+    dateUploaded: toFsValue(item.dateUploaded),
+    deleteAfter:  toFsValue(item.deleteAfter),
+    customDate:   toFsValue(item.customDate || ''),
+    note:         toFsValue(item.note || '')
+  }};
+  const url = REPORTS_COLLECTION
+    + '?key=' + encodeURIComponent(FIREBASE_API_KEY)
+    + '&documentId=' + encodeURIComponent(item.id);
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
   });
+  if (!res.ok) {
+    let txt = '';
+    try { txt = await res.text(); } catch (e) {}
+    throw new Error('HTTP ' + res.status + ' ' + String(txt).slice(0, 200));
+  }
+  return res.json();
 }
 
-/* Подготовка: canvas -> JPEG -> dataURL (лечит HEIC, EXIF, огромные файлы) */
+async function loadReportsFromServer() {
+  const fresh = {};
+  REPORT_IDS.forEach(id => { fresh[id] = []; });
+  const now = Date.now();
+  const expiredIds = [];
+  const collected = [];
+  let pageToken = '';
+  let guard = 0;
+  do {
+    guard++;
+    if (guard > 20) break;
+    let url = REPORTS_COLLECTION
+      + '?key=' + encodeURIComponent(FIREBASE_API_KEY)
+      + '&pageSize=300';
+    if (pageToken) url += '&pageToken=' + encodeURIComponent(pageToken);
+    const res = await fetch(url, { method: 'GET' });
+    if (!res.ok) {
+      let txt = '';
+      try { txt = await res.text(); } catch (e) {}
+      throw new Error('HTTP ' + res.status + ' ' + String(txt).slice(0, 200));
+    }
+    const data = await res.json();
+    const docs = Array.isArray(data.documents) ? data.documents : [];
+    docs.forEach(d => collected.push(d));
+    pageToken = data.nextPageToken || '';
+  } while (pageToken);
+
+  collected.forEach(doc => {
+    const item = fsDocToReport(doc);
+    if (!item.id) return;
+    const exp = Number(item.deleteAfter || 0);
+    if (!exp || exp <= now) { expiredIds.push(item.id); return; }
+    if (item.reportType && fresh[item.reportType]) fresh[item.reportType].push(item);
+  });
+
+  if (expiredIds.length) {
+    await Promise.all(expiredIds.map(id => deleteReportDoc(id).catch(err => {
+      console.warn('Не удалось удалить просроченный отчёт:', id, err);
+    })));
+  }
+
+  Object.keys(fresh).forEach(k => {
+    fresh[k].sort((a, b) => (Number(b.dateUploaded) || 0) - (Number(a.dateUploaded) || 0));
+  });
+
+  reportsCache = fresh;
+  return reportsCache;
+}
+
+/* ---- Подготовка изображения ---- */
 async function prepareImageDataUrl(file) {
   const MAX_ORIGINAL = 30 * 1024 * 1024;
-  if (file.size > MAX_ORIGINAL) {
-    throw new Error('Файл слишком большой (макс. 30 МБ): ' + file.name);
-  }
-  if (!file.type || !file.type.startsWith('image/')) {
-    throw new Error('Не изображение: ' + (file.name || 'файл'));
-  }
-
+  if (file.size > MAX_ORIGINAL) throw new Error('Файл слишком большой (макс. 30 МБ): ' + file.name);
+  if (!file.type || !file.type.startsWith('image/')) throw new Error('Не изображение: ' + (file.name || 'файл'));
   const dataUrl = await new Promise((resolve, reject) => {
     const fr = new FileReader();
     fr.onload = () => resolve(String(fr.result || ''));
     fr.onerror = () => reject(new Error('Не удалось прочитать файл'));
     fr.readAsDataURL(file);
   });
-
   const img = await new Promise((resolve, reject) => {
     const i = new Image();
     i.onload = () => resolve(i);
     i.onerror = () => reject(new Error('Формат не поддерживается браузером: ' + (file.name || '')));
     i.src = dataUrl;
   });
-
   const MAX_SIDE = 1800;
   let w = img.naturalWidth || img.width;
   let h = img.naturalHeight || img.height;
@@ -1033,15 +1027,12 @@ async function prepareImageDataUrl(file) {
     w = Math.max(1, Math.round(w * k));
     h = Math.max(1, Math.round(h * k));
   }
-
   const canvas = document.createElement('canvas');
-  canvas.width = w;
-  canvas.height = h;
+  canvas.width = w; canvas.height = h;
   const ctx = canvas.getContext('2d');
   ctx.fillStyle = '#ffffff';
   ctx.fillRect(0, 0, w, h);
   ctx.drawImage(img, 0, 0, w, h);
-
   return canvas.toDataURL('image/jpeg', 0.75);
 }
 
@@ -1057,29 +1048,19 @@ function dataUrlToBlob(dataUrl) {
   return new Blob([bytes], { type: mime });
 }
 
-/* Загрузка: ImgBB (3 ключа, base64 через FormData как в документации)
-   → 0x0.st → catbox.moe */
 async function uploadImageToImgBB(file) {
   const jpegDataUrl = await prepareImageDataUrl(file);
   const cleanBase64 = jpegDataUrl.split(',')[1] || '';
   const fileName = 'report_' + Date.now() + '.jpg';
-
   let lastError = null;
-
-  /* ---- 1. ImgBB: multipart/form-data с image=<cleanBase64> ---- */
   for (let i = 0; i < IMGBB_KEYS.length; i++) {
     const key = IMGBB_KEYS[i];
     try {
       const fd = new FormData();
       fd.append('image', cleanBase64);
-      const res = await fetch('https://api.imgbb.com/1/upload?key=' + key, {
-        method: 'POST',
-        body: fd
-      });
+      const res = await fetch('https://api.imgbb.com/1/upload?key=' + key, { method: 'POST', body: fd });
       let data = null;
       try { data = await res.json(); } catch (e) { data = null; }
-      console.log(`ImgBB [key ${i + 1}] status:`, res.status, data);
-
       if (res.ok && data && data.success && data.data) {
         const url = data.data.url || data.data.display_url || (data.data.image && data.data.image.url);
         if (url) return url;
@@ -1087,24 +1068,17 @@ async function uploadImageToImgBB(file) {
       const msg = (data && data.error && (data.error.message || data.error.code))
                   || (data && data.status_txt) || ('HTTP ' + res.status);
       lastError = new Error(msg + ' [key ' + (i + 1) + ']');
-    } catch (err) {
-      lastError = err;
-    }
+    } catch (err) { lastError = err; }
   }
-
-  /* ---- 2. Резерв: 0x0.st ---- */
   try {
     const blob = dataUrlToBlob(jpegDataUrl);
     const fd = new FormData();
     fd.append('file', blob, fileName);
     const res = await fetch('https://0x0.st', { method: 'POST', body: fd });
     const text = (await res.text()).trim();
-    console.log('0x0.st:', res.status, text);
     if (res.ok && /^https?:\/\//i.test(text)) return text;
     lastError = new Error('0x0.st: ' + text.slice(0, 120));
   } catch (e) { lastError = e; }
-
-  /* ---- 3. Резерв: catbox.moe ---- */
   try {
     const blob = dataUrlToBlob(jpegDataUrl);
     const fd = new FormData();
@@ -1112,11 +1086,9 @@ async function uploadImageToImgBB(file) {
     fd.append('fileToUpload', blob, fileName);
     const res = await fetch('https://catbox.moe/user/api.php', { method: 'POST', body: fd });
     const text = (await res.text()).trim();
-    console.log('catbox.moe:', res.status, text);
     if (res.ok && /^https?:\/\//i.test(text)) return text;
     lastError = new Error('catbox: ' + text.slice(0, 120));
   } catch (e) { lastError = e; }
-
   throw lastError || new Error('Все хостинги недоступны');
 }
 
@@ -1127,9 +1099,7 @@ function fmtDate(ts) {
   try {
     const loc = lang === 'tj' ? 'tg-TJ' : 'ru-RU';
     return new Date(ts).toLocaleDateString(loc, { day: '2-digit', month: '2-digit', year: 'numeric' });
-  } catch (e) {
-    return new Date(ts).toLocaleDateString();
-  }
+  } catch (e) { return new Date(ts).toLocaleDateString(); }
 }
 
 function todayISO() {
@@ -1139,14 +1109,22 @@ function todayISO() {
   return d.getFullYear() + '-' + m + '-' + day;
 }
 
+function dateOfTs(ts) {
+  const d = new Date(Number(ts) || 0);
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return d.getFullYear() + '-' + m + '-' + day;
+}
+
+function countToday(id) {
+  const today = todayISO();
+  return reportsFor(id).filter(it => it && it.dateUploaded && dateOfTs(it.dateUploaded) === today).length;
+}
+
 function renderReportStatus() {
   const el = document.getElementById('reportStatus');
   if (!el) return;
-  if (!reportStatus) {
-    el.className = 'hidden';
-    el.textContent = '';
-    return;
-  }
+  if (!reportStatus) { el.className = 'hidden'; el.textContent = ''; return; }
   const base = 'text-xs rounded-xl px-3 py-2 border ';
   const map = {
     ok:   'bg-emerald-500/10 border-emerald-500/30 text-emerald-300',
@@ -1162,22 +1140,45 @@ function renderReports() {
   const body = document.getElementById('reportsBody');
   if (!titleEl || !body) return;
 
+  if (reportsState === 'loading' || reportsState === 'idle') {
+    titleEl.textContent = t('reportsTitle');
+    body.innerHTML = `<div class="text-center text-sm text-slate-400 py-10"><div class="animate-pulse">${t('loadingReports')}</div></div>`;
+    return;
+  }
+
+  if (reportsState === 'error') {
+    titleEl.textContent = t('reportsTitle');
+    body.innerHTML = `
+      <div class="space-y-3">
+        <div class="text-xs rounded-xl px-3 py-2 border bg-rose-500/10 border-rose-500/30 text-rose-300 break-words">
+          ${t('firebaseErr')}${reportsError || ''}
+        </div>
+        <div class="text-[11px] text-slate-400 leading-relaxed">${t('rulesHint')}</div>
+        <button id="reportsRetry"
+          class="px-4 py-2 rounded-xl text-xs font-medium bg-brand-500 hover:bg-brand-600 text-slate-950 transition">
+          ${t('retry')}
+        </button>
+      </div>`;
+    const retryBtn = document.getElementById('reportsRetry');
+    if (retryBtn) retryBtn.onclick = () => reloadReports();
+    return;
+  }
+
   if (!activeReport) {
     titleEl.textContent = t('reportsTitle');
     body.innerHTML = `
       <div class="grid gap-2">
         ${REPORT_IDS.map(id => {
-          const count = getReports(id).length;
+          const count = reportsFor(id).length;
           return `
             <button data-report="${id}"
               class="flex items-center justify-between gap-3 px-4 py-3 rounded-xl bg-[#080c14]/60 border border-slate-700 hover:border-brand-500 transition text-left">
               <span class="text-sm font-medium">${reportName(id)}</span>
               <span class="text-xs text-slate-400 whitespace-nowrap">${count} ${t('pcs')}</span>
-            </button>
-          `;
+            </button>`;
         }).join('')}
       </div>
-    `;
+      <div id="reportStatus" class="hidden mt-3"></div>`;
     body.querySelectorAll('button[data-report]').forEach(btn => {
       btn.onclick = () => {
         activeReport = btn.dataset.report;
@@ -1185,21 +1186,27 @@ function renderReports() {
         renderReports();
       };
     });
+    renderReportStatus();
     return;
   }
 
-  const items = getReports(activeReport);
+  const items = reportsFor(activeReport);
   titleEl.textContent = reportName(activeReport);
+
+  const todayCount = countToday(activeReport);
+  const remaining = Math.max(0, DAILY_LIMIT - todayCount);
+  const limitReached = remaining <= 0;
 
   const gallery = items.length
     ? `<div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
         ${items.map(it => {
           const showDate = it.customDate || fmtDate(it.dateUploaded);
           const note = (it.note || '').trim();
+          const safeUrl = String(it.imageUrl || '');
           return `
           <div class="bg-[#080c14]/60 border border-slate-800 rounded-xl overflow-hidden">
-            <a href="${it.imageUrl}" target="_blank" rel="noopener">
-              <img src="${it.imageUrl}" alt="report" loading="lazy" class="w-full h-40 object-cover" />
+            <a href="${safeUrl}" target="_blank" rel="noopener">
+              <img src="${safeUrl}" alt="report" loading="lazy" class="w-full h-40 object-cover" />
             </a>
             <div class="p-3 space-y-1.5">
               <div class="text-xs font-medium text-slate-200">${t('reportDateLabel')}: <span class="text-brand-500">${showDate}</span></div>
@@ -1217,6 +1224,10 @@ function renderReports() {
       </div>`
     : `<div class="text-center text-sm text-slate-500 py-6">${t('noReports')}</div>`;
 
+  const limitBadgeClass = limitReached
+    ? 'bg-rose-500/10 border-rose-500/40 text-rose-300'
+    : (todayCount >= 8 ? 'bg-amber-500/10 border-amber-500/40 text-amber-300' : 'bg-emerald-500/10 border-emerald-500/40 text-emerald-300');
+
   body.innerHTML = `
     <div class="space-y-4">
       <div class="flex flex-wrap items-center gap-2">
@@ -1224,6 +1235,9 @@ function renderReports() {
           class="px-3 py-2 rounded-xl text-xs bg-[#080c14]/60 border border-slate-700 hover:border-slate-500 transition">
           ${t('back')}
         </button>
+        <div class="ml-auto text-[11px] rounded-xl px-3 py-2 border ${limitBadgeClass} whitespace-nowrap">
+          ${t('dailyUploadedToday')}: <b>${todayCount}</b> / ${DAILY_LIMIT}
+        </div>
       </div>
 
       <div class="bg-[#080c14]/60 border border-slate-800 rounded-xl p-3 space-y-3">
@@ -1241,10 +1255,13 @@ function renderReports() {
         </div>
         <div class="flex flex-wrap items-center gap-2">
           <button id="reportUploadBtn"
-            class="px-4 py-2 rounded-xl text-xs font-medium bg-brand-500 hover:bg-brand-600 text-slate-950 transition">
+            class="px-4 py-2 rounded-xl text-xs font-medium transition ${limitReached ? 'bg-slate-700 text-slate-400 cursor-not-allowed' : 'bg-brand-500 hover:bg-brand-600 text-slate-950'}"
+            ${limitReached ? 'disabled' : ''}>
             ⬆ ${t('uploadBtn')}
           </button>
-          <span class="text-[11px] text-slate-500">${t('selectImages')}</span>
+          <span class="text-[11px] text-slate-500">
+            ${limitReached ? t('dailyLimitReached') : t('selectImages') + ' (' + remaining + ' / ' + DAILY_LIMIT + ')'}
+          </span>
         </div>
         <input id="reportFileInput" type="file" accept="image/*" multiple class="hidden" />
       </div>
@@ -1252,8 +1269,7 @@ function renderReports() {
       <div id="reportStatus" class="hidden"></div>
 
       <div id="reportGallery">${gallery}</div>
-    </div>
-  `;
+    </div>`;
 
   document.getElementById('reportBack').onclick = () => {
     activeReport = null;
@@ -1262,15 +1278,26 @@ function renderReports() {
   };
 
   const fileInput = document.getElementById('reportFileInput');
-  document.getElementById('reportUploadBtn').onclick = () => fileInput.click();
-  fileInput.onchange = (e) => handleReportFiles(e.target.files, fileInput);
+  const uploadBtn = document.getElementById('reportUploadBtn');
+  if (uploadBtn && !limitReached) {
+    uploadBtn.onclick = () => fileInput.click();
+    fileInput.onchange = (e) => handleReportFiles(e.target.files, fileInput);
+  }
 
   body.querySelectorAll('button[data-del]').forEach(btn => {
-    btn.onclick = () => {
+    btn.onclick = async () => {
       if (!confirm(t('confirmDelete'))) return;
       const id = btn.dataset.del;
-      const arr = getReports(activeReport).filter(it => it.id !== id);
-      saveReports(activeReport, arr);
+      btn.disabled = true;
+      btn.classList.add('opacity-50');
+      try {
+        await deleteReportDoc(id);
+        reportsCache[activeReport] = reportsFor(activeReport).filter(it => it.id !== id);
+        reportStatus = { type: 'ok', text: t('delete') + ' ✓' };
+      } catch (err) {
+        console.error('Delete failed:', err);
+        reportStatus = { type: 'err', text: t('deleteErr') + (err && err.message ? err.message : 'error') };
+      }
       renderReports();
     };
   });
@@ -1282,23 +1309,33 @@ async function handleReportFiles(files, inputEl) {
   if (!files || !files.length) return;
   const list = Array.from(files);
 
+  const remaining = DAILY_LIMIT - countToday(activeReport);
+  if (remaining <= 0) {
+    if (inputEl) inputEl.value = '';
+    reportStatus = { type: 'err', text: t('dailyLimitReached') };
+    renderReports();
+    return;
+  }
+
+  const willUpload = list.slice(0, remaining);
+  const skipped = list.length - willUpload.length;
+
   const dateEl = document.getElementById('reportDate');
   const noteEl = document.getElementById('reportNote');
   const customDate = dateEl && dateEl.value ? dateEl.value : todayISO();
   const note = noteEl && noteEl.value ? noteEl.value.trim() : '';
 
-  reportStatus = { type: 'load', text: t('uploading') + ' 0/' + list.length };
+  reportStatus = { type: 'load', text: t('uploading') + ' 0/' + willUpload.length };
   renderReportStatus();
 
   let okCount = 0;
   let errText = '';
 
-  for (let i = 0; i < list.length; i++) {
+  for (let i = 0; i < willUpload.length; i++) {
     try {
-      const url = await uploadImageToImgBB(list[i]);
-      const arr = getReports(activeReport);
+      const url = await uploadImageToImgBB(willUpload[i]);
       const now = Date.now();
-      arr.push({
+      const item = {
         id: 'r' + now + '_' + Math.random().toString(36).slice(2, 8),
         reportType: activeReport,
         imageUrl: url,
@@ -1306,36 +1343,64 @@ async function handleReportFiles(files, inputEl) {
         deleteAfter: now + REPORT_TTL,
         customDate: customDate,
         note: note
-      });
-      saveReports(activeReport, arr);
+      };
+      await addReportDoc(item);
+      if (!reportsCache[activeReport]) reportsCache[activeReport] = [];
+      reportsCache[activeReport].unshift(item);
+      reportsCache[activeReport].sort((a, b) => (Number(b.dateUploaded) || 0) - (Number(a.dateUploaded) || 0));
       okCount++;
     } catch (err) {
       errText = (err && err.message) ? err.message : 'error';
       console.error('Upload failed:', err);
     }
-    reportStatus = { type: 'load', text: t('uploading') + ' ' + (i + 1) + '/' + list.length };
+    reportStatus = { type: 'load', text: t('uploading') + ' ' + (i + 1) + '/' + willUpload.length };
     renderReportStatus();
   }
 
   if (inputEl) inputEl.value = '';
 
-  if (okCount > 0 && !errText) {
+  if (okCount > 0 && !errText && skipped === 0) {
     reportStatus = { type: 'ok', text: t('uploadOk') + okCount + ' ' + t('pcs') };
+  } else if (okCount > 0 && !errText && skipped > 0) {
+    reportStatus = { type: 'err', text: t('dailyLimitPartial') + ' (загружено ' + okCount + ', пропущено ' + skipped + ')' };
   } else if (okCount > 0 && errText) {
     reportStatus = { type: 'err', text: t('uploadErr') + errText };
   } else {
-    reportStatus = { type: 'err', text: t('uploadErr') + errText };
+    reportStatus = { type: 'err', text: t('uploadErr') + (errText || 'error') };
   }
 
   renderReports();
 }
 
-function openReportsModal() {
-  cleanOldReports();
+async function reloadReports() {
+  reportsState = 'loading';
+  reportsError = '';
+  renderReports();
+  try {
+    await loadReportsFromServer();
+    reportsState = 'ready';
+  } catch (err) {
+    console.error('Firebase load error:', err);
+    reportsState = 'error';
+    reportsError = (err && err.message) ? err.message : 'unknown error';
+  }
+  renderReports();
+}
+
+async function openReportsModal() {
   activeReport = null;
   reportStatus = null;
-  renderReports();
   showSheet(document.getElementById('reportsModal'), document.getElementById('reportsContent'));
+
+  if (reportsState === 'ready') {
+    renderReports();
+    loadReportsFromServer().then(() => {
+      reportsState = 'ready';
+      if (!document.getElementById('reportsModal').classList.contains('hidden')) renderReports();
+    }).catch(err => console.warn('Firebase refresh error:', err));
+    return;
+  }
+  await reloadReports();
 }
 
 function closeReportsModal() {
@@ -1360,16 +1425,12 @@ document.getElementById('search').addEventListener('input', e => {
 
 document.getElementById('modalClose').onclick = closeModal;
 document.getElementById('modalBackdrop').onclick = closeModal;
-
 document.getElementById('reportsBtn').onclick = openReportsModal;
 document.getElementById('reportsClose').onclick = closeReportsModal;
 document.getElementById('reportsBackdrop').onclick = closeReportsModal;
 
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') {
-    closeModal();
-    closeReportsModal();
-  }
+  if (e.key === 'Escape') { closeModal(); closeReportsModal(); }
 });
 
 document.getElementById('themeBtn').addEventListener('click', () => {
@@ -1385,9 +1446,17 @@ document.getElementById('langBtn').addEventListener('click', () => {
   let savedTheme = 'dark';
   try { savedTheme = localStorage.getItem('theme') || 'dark'; } catch (e) {}
   applyTheme(savedTheme);
-
-  cleanOldReports();
   applyLanguage(lang);
+
+  /* Фоновая загрузка отчётов + авто-очистка просроченных */
+  reportsState = 'loading';
+  loadReportsFromServer()
+    .then(() => { reportsState = 'ready'; })
+    .catch(err => {
+      console.warn('Firebase init load error:', err);
+      reportsState = 'error';
+      reportsError = (err && err.message) ? err.message : 'unknown error';
+    });
 })();
 </script>
 </body>
