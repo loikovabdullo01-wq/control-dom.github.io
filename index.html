@@ -46,17 +46,71 @@
     ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 8px; }
     ::-webkit-scrollbar-thumb:hover { background: #334155; }
 
-    .cell-sold { background: rgba(16,185,129,.18); border-color: rgba(16,185,129,.55); color: #6ee7b7; }
-    .cell-sold:hover { background: rgba(16,185,129,.32); }
-    .cell-inst { background: rgba(245,158,11,.20); border-color: rgba(245,158,11,.60); color: #fcd34d; }
-    .cell-inst:hover { background: rgba(245,158,11,.34); }
-    .cell-free { background: rgba(51,65,85,.35); border-color: rgba(71,85,105,.6); color: #94a3b8; }
-    .cell-free:hover { background: rgba(51,65,85,.6); }
+    /* --- КВАДРАТНЫЕ ИКОНКИ КВАРТИР --- */
+    .apt-square {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 52px;
+      border-radius: 8px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      background: #1e293b;
+      gap: 2px;
+    }
+    
+    .status-free.apt-square { border-color: #475569; background: rgba(30, 41, 59, 0.5); color: #94a3b8; }
+    .status-free.apt-square:hover { background: rgba(51, 65, 85, 0.7); border-color: #64748b; color: #cbd5e1; }
+    
+    .status-inst.apt-square { border-color: #f59e0b; background: rgba(245, 158, 11, 0.15); color: #fcd34d; }
+    .status-inst.apt-square:hover { background: rgba(245, 158, 11, 0.25); border-color: #fbbf24; }
+    
+    .status-sold.apt-square { border-color: #10b981; background: rgba(16, 185, 129, 0.15); color: #6ee7b7; }
+    .status-sold.apt-square:hover { background: rgba(16, 185, 129, 0.25); border-color: #34d399; }
+
+    .apt-square:hover {
+      transform: translateY(-2px) scale(1.05);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      z-index: 10;
+    }
+    
+    .apt-sq-svg { width: 18px; height: 18px; }
+    .apt-sq-number { font-size: 11px; font-weight: 700; line-height: 1; letter-spacing: -0.5px; }
+
+    /* Кастомный тултип */
+    .apt-tooltip {
+      position: absolute;
+      bottom: 115%;
+      left: 50%;
+      transform: translateX(-50%) translateY(10px);
+      background: #0f1624;
+      border: 1px solid #334155;
+      color: #e2e8f0;
+      padding: 6px 10px;
+      border-radius: 8px;
+      font-size: 11px;
+      white-space: nowrap;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+      pointer-events: none;
+      z-index: 50;
+    }
+    .apt-square:hover .apt-tooltip { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+
+    /* Стили для скролла матрицы оплат */
+    #paymentsTableWrap::-webkit-scrollbar { width: 10px; height: 10px; }
+    #paymentsTableWrap::-webkit-scrollbar-track { background: #0f1624; }
+    #paymentsTableWrap::-webkit-scrollbar-thumb { background: #334155; border-radius: 5px; }
 
     @media (max-width: 640px) {
       .modal-content {
         position: fixed; left: 0; right: 0; bottom: 0; top: auto;
-        border-radius: 1.5rem 1.5rem 0 0; max-height: 88vh;
+        border-radius: 1.5rem 1.5rem 0 0; max-height: 90vh;
         transform: translateY(100%); transition: transform .25s ease;
       }
       .modal-content.open { transform: translateY(0); }
@@ -102,9 +156,16 @@
     html:not(.dark) [class*="border-slate-100"] { border-color: #0f172a !important; }
     html:not(.dark) [class*="bg-slate-700/40"] { background-color: rgba(100,116,139,.15) !important; }
     html:not(.dark) [class*="bg-slate-800/40"] { background-color: rgba(148,163,184,.15) !important; }
-    html:not(.dark) .cell-sold { background: rgba(16,185,129,.16); border-color: rgba(16,185,129,.55); color: #047857; }
-    html:not(.dark) .cell-inst { background: rgba(245,158,11,.18); border-color: rgba(245,158,11,.55); color: #b45309; }
-    html:not(.dark) .cell-free { background: rgba(148,163,184,.20); border-color: rgba(100,116,139,.45); color: #334155; }
+    
+    /* Светлая тема для новых квадратов */
+    html:not(.dark) .status-free.apt-square { border-color: #cbd5e1; background: #f8fafc; color: #64748b; }
+    html:not(.dark) .status-free.apt-square:hover { background: #f1f5f9; border-color: #94a3b8; color: #475569; }
+    html:not(.dark) .status-inst.apt-square { border-color: #d97706; background: rgba(253, 230, 138, 0.5); color: #b45309; }
+    html:not(.dark) .status-inst.apt-square:hover { background: rgba(253, 230, 138, 0.8); border-color: #f59e0b; }
+    html:not(.dark) .status-sold.apt-square { border-color: #059669; background: rgba(167, 243, 208, 0.5); color: #047857; }
+    html:not(.dark) .status-sold.apt-square:hover { background: rgba(167, 243, 208, 0.8); border-color: #10b981; }
+    html:not(.dark) .apt-tooltip { background: #ffffff; border-color: #cbd5e1; color: #0f172a; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+    
     html:not(.dark) ::-webkit-scrollbar-track { background: #e2e8f0; }
     html:not(.dark) ::-webkit-scrollbar-thumb { background: #cbd5e1; }
     html:not(.dark) ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
@@ -150,6 +211,11 @@
       <div class="sm:ml-auto w-full sm:w-auto flex flex-wrap items-center gap-2">
         <input id="search" type="text" placeholder="Поиск: ФИО или № квартиры…" data-i18n-ph="searchPlaceholder"
           class="flex-1 min-w-[150px] sm:w-72 bg-[#0f1624] border border-slate-700 rounded-xl px-4 py-2 text-sm outline-none focus:border-brand-500 placeholder:text-slate-500" />
+
+        <button id="paymentsBtn" title="Оплаты" data-i18n-title="paymentsBtn"
+          class="px-3 py-2 h-10 rounded-xl bg-[#0f1624] border border-slate-700 hover:border-brand-500 text-slate-300 text-xs font-medium transition flex items-center gap-1.5 whitespace-nowrap">
+          <span>💳</span><span>Оплаты</span>
+        </button>
 
         <button id="reportsBtn" title="Отчёты" data-i18n-title="reportsBtn"
           class="px-3 py-2 h-10 rounded-xl bg-[#0f1624] border border-slate-700 hover:border-brand-500 text-slate-300 text-xs font-medium transition flex items-center gap-1.5 whitespace-nowrap">
@@ -217,6 +283,71 @@
     </div>
   </div>
 
+  <!-- Модальное окно Оплаты -->
+  <div id="paymentsModal" class="fixed inset-0 z-[70] hidden">
+    <div id="paymentsBackdrop" class="absolute inset-0 bg-black/80 backdrop-blur-sm"></div>
+    <div id="paymentsContent" class="modal-content sm:relative sm:mx-auto sm:my-6 sm:max-w-[95vw] sm:rounded-2xl bg-[#0f1624] border border-slate-700 shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+      
+      <!-- Заголовок и переключатель -->
+      <div class="flex flex-wrap items-center justify-between px-5 py-4 border-b border-slate-800 bg-[#0f1624] shrink-0 gap-3">
+        <div class="flex items-center gap-4">
+          <h3 class="font-semibold text-lg">Помесячный учёт оплат</h3>
+          <!-- Переключатель вида -->
+          <div class="flex bg-[#080c14] rounded-lg p-1 border border-slate-700">
+            <button id="btnViewMatrix" class="px-3 py-1.5 rounded-md text-xs font-medium transition bg-slate-700 text-white">Матрица</button>
+            <button id="btnViewSingle" class="px-3 py-1.5 rounded-md text-xs font-medium transition text-slate-400 hover:text-slate-200">По месяцам</button>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <button id="paymentsClose" class="w-8 h-8 rounded-lg hover:bg-slate-800 text-slate-400 transition">✕</button>
+        </div>
+      </div>
+
+      <!-- Панель фильтров -->
+      <div class="px-5 py-3 border-b border-slate-800 bg-[#080c14]/50 flex flex-wrap gap-3 items-center shrink-0">
+        <div class="flex gap-2 items-center flex-wrap">
+          <select id="payFilterBlock" class="bg-[#0f1624] border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-200 outline-none focus:border-brand-500">
+            <option value="ALL">Все блоки</option>
+            <option value="А">Блок А</option>
+            <option value="Б">Блок Б</option>
+            <option value="В">Блок В</option>
+          </select>
+          <select id="payFilterStatus" class="bg-[#0f1624] border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-200 outline-none focus:border-brand-500">
+            <option value="all">Все статусы</option>
+            <option value="installment">В рассрочке</option>
+            <option value="sold">Продано</option>
+          </select>
+          
+          <!-- Выбор месяца (показывается только в режиме списка) -->
+          <div id="monthSelectorWrap" class="hidden items-center gap-2">
+            <span class="text-xs text-slate-400 ml-2">Месяц:</span>
+            <select id="payFilterMonth" class="bg-[#0f1624] border border-brand-500/50 rounded-lg px-3 py-1.5 text-xs text-brand-500 font-bold outline-none focus:border-brand-500">
+              <!-- Опции генерируются в JS -->
+            </select>
+          </div>
+
+          <!-- Фильтр Оплачено/Не оплачено (показывается только в режиме списка) -->
+          <select id="payFilterPayment" class="hidden bg-[#0f1624] border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-200 outline-none focus:border-brand-500">
+            <option value="all">Все оплаты</option>
+            <option value="paid">Только оплаченные</option>
+            <option value="unpaid">Только должники</option>
+          </select>
+        </div>
+        
+        <!-- Сводка -->
+        <div class="ml-auto flex items-center gap-4 text-xs bg-[#0f1624] px-3 py-1.5 rounded-lg border border-slate-700">
+          <div class="text-emerald-400">Получено: <span id="payTotalReceived" class="font-bold text-sm">0 с.</span></div>
+          <div class="text-rose-400">Должников: <span id="payTotalDebtors" class="font-bold text-sm">0</span></div>
+        </div>
+      </div>
+
+      <!-- Таблица -->
+      <div class="overflow-auto flex-1 p-0 relative" id="paymentsTableWrap">
+        <!-- Сюда рендерится таблица -->
+      </div>
+    </div>
+  </div>
+
 <script>
 /* =========================================================
    МУЛЬТИЯЗЫЧНОСТЬ (RU / TJ)
@@ -256,7 +387,8 @@ const I18N = {
     dailyUploadedToday: 'Загружено сегодня',
     dailyLimitReached: 'Достигнут дневной лимит: не более 10 изображений в день для одного отчёта.',
     dailyLimitPartial: 'Часть файлов не загружена — дневной лимит 10 шт.',
-    rulesHint: 'Если видите ошибку 403 — откройте Firebase Console → Firestore → Rules и разрешите чтение/запись для коллекции reports.'
+    rulesHint: 'Если видите ошибку 403 — откройте Firebase Console → Firestore → Rules и разрешите чтение/запись для коллекции reports.',
+    paymentsBtn: 'Оплаты'
   },
   tj: {
     appTitle: 'Директор', appSubtitle: 'кӯч. К. Хуҷандӣ · Блокҳои А, Б, В · 228 объект',
@@ -292,7 +424,8 @@ const I18N = {
     dailyUploadedToday: 'Имрӯз боргузорӣ шуд',
     dailyLimitReached: 'Лимити рӯзона расид: на бештар аз 10 тасвир дар як рӯз барои як ҳисобот.',
     dailyLimitPartial: 'Қисми файлҳо боргузорӣ нашуданд — лимити рӯзона 10 дона.',
-    rulesHint: 'Агар хатои 403 бинед — Firebase Console → Firestore → Rules кушоед ва барои коллексияи reports иҷозат диҳед.'
+    rulesHint: 'Агар хатои 403 бинед — Firebase Console → Firestore → Rules кушоед ва барои коллексияи reports иҷозат диҳед.',
+    paymentsBtn: 'Пардохтҳо'
   }
 };
 
@@ -331,6 +464,9 @@ function applyLanguage(next) {
 
   const rm = document.getElementById('reportsModal');
   if (rm && !rm.classList.contains('hidden')) renderReports();
+  
+  const pm = document.getElementById('paymentsModal');
+  if (pm && !pm.classList.contains('hidden')) renderPaymentsTable();
 }
 
 function applyTheme(theme) {
@@ -386,177 +522,196 @@ const STORAGE_VALUE = 'verified_true';
 })();
 
 /* =========================================================
-   БАЗА ДАННЫХ
+   БАЗА ДАННЫХ (Точные данные из Excel: Блок А, Б, В)
+   Годы: 2025 (авг-дек), 2026 (янв-дек)
    ========================================================= */
 const OCCUPIED = [
+  /* БЛОК А */
   {block:'А', number:'1/1', name:'Сангов Илхомуддин Боронов', area:425.0, price:10500, roomAmount:4462500, paid:1860250, baqiya:2602250, history:[
-    {m:'январ',v:1338750},{m:'март',v:178000},{m:'апрел',v:86500},{m:'май',v:90000},{m:'июнь',v:82000},{m:'июль',v:85000}
+    {m:'2026-01',v:1338750},{m:'2026-03',v:178000},{m:'2026-04',v:86500},{m:'2026-05',v:90000},{m:'2026-06',v:82000},{m:'2026-07',v:85000}
   ]},
   {block:'А', number:'1/2', name:'Начимов Рахматулло Абдук', area:100.0, price:11000, roomAmount:1100000, paid:344000, baqiya:766000, history:[
-    {m:'январ',v:150000},{m:'феврал',v:20000},{m:'март',v:20000},{m:'апрел',v:20000},{m:'май',v:20000},{m:'июнь',v:23000},{m:'июль',v:20000},{m:'сентябр',v:61000}
+    {m:'2026-01',v:150000},{m:'2026-02',v:20000},{m:'2026-03',v:20000},{m:'2026-04',v:20000},{m:'2026-05',v:20000},{m:'2026-06',v:23000},{m:'2026-07',v:20000},{m:'2026-09',v:61000}
   ]},
   {block:'А', number:'1/3', name:'Хомидов Аличон Мукимчон', area:120.0, price:12000, roomAmount:1440000, paid:691747, baqiya:748253, history:[
-    {m:'ноябр',v:300000},{m:'декабр',v:35100},{m:'январ',v:36000},{m:'феврал',v:36300},{m:'март',v:34500},{m:'апрел',v:41600},{m:'май',v:38060},{m:'июнь',v:34957},{m:'июль',v:32000},{m:'август',v:103230}
+    {m:'2025-11',v:300000},{m:'2025-12',v:35100},{m:'2026-01',v:36000},{m:'2026-02',v:36300},{m:'2026-03',v:34500},{m:'2026-04',v:41600},{m:'2026-05',v:38060},{m:'2026-06',v:34957},{m:'2026-07',v:32000},{m:'2026-08',v:103230}
   ]},
   {block:'А', number:'3/3', name:'Хабибова Сайпочо Карим', area:70.5, price:5000, roomAmount:352500, paid:140834, baqiya:211666, history:[
-    {m:'феврал',v:102500},{m:'август',v:8334},{m:'сентябр',v:20000},{m:'октябр',v:10000}
+    {m:'2026-02',v:102500},{m:'2026-08',v:8334},{m:'2026-09',v:20000},{m:'2026-10',v:10000}
   ]},
-  {block:'А', number:'3/6', name:'Бекназаров Музаффар Саит..', area:70.5, price:5500, roomAmount:387750, paid:206725, baqiya:181025, history:[
-    {m:'декабр',v:138945},{m:'март',v:7540},{m:'апрел',v:7540},{m:'май',v:7540},{m:'июнь',v:30160},{m:'октябр',v:15000}
+  {block:'А', number:'3/6', name:'Бекназаров Музаффар Саит..', area:70.5, price:5500, roomAmount:387750, paid:206725, baqiya:196025, history:[
+    {m:'2025-12',v:138945},{m:'2026-03',v:7540},{m:'2026-04',v:7540},{m:'2026-05',v:7540},{m:'2026-06',v:30160},{m:'2026-10',v:15000}
   ]},
   {block:'А', number:'4/2', name:'Шарифзода Далер Ахтамчон', area:69.3, price:5000, roomAmount:346500, paid:82600, baqiya:263900, history:[
-    {m:'июнь',v:30000},{m:'июль',v:6600},{m:'август',v:6500},{m:'сентябрь',v:6600},{m:'октябр(1)',v:6600},{m:'октябр(2)',v:26300}
+    {m:'2026-06',v:30000},{m:'2026-07',v:6600},{m:'2026-08',v:6500},{m:'2026-09',v:6600},{m:'2026-10',v:32900}
   ]},
   {block:'А', number:'5/3', name:'Нозимов Бекижон Абдушари', area:70.5, price:4500, roomAmount:317250, paid:36040, baqiya:281210, history:[
-    {m:'август',v:9000},{m:'сентябрь',v:9000},{m:'октябр',v:9020},{m:'ноябр',v:9020}
+    {m:'2026-08',v:9000},{m:'2026-09',v:9000},{m:'2026-10',v:9020},{m:'2026-11',v:9020}
   ]},
   {block:'А', number:'6/4', name:'Назаров Ривочиддин Серг', area:50.0, price:500, roomAmount:250000, paid:73000, baqiya:177000, history:[
-    {m:'август',v:50000},{m:'сентябр',v:11200},{m:'сентябр',v:5800},{m:'октябр',v:6000}
+    {m:'2026-06',v:50000},{m:'2026-07',v:11200},{m:'2026-08',v:5800},{m:'2026-09',v:6000}
   ]},
   {block:'А', number:'7/4', name:'Чумахмедова Мавлуда Абдур', area:50.0, price:4500, roomAmount:225000, paid:13000, baqiya:212000, history:[
-    {m:'июль',v:9000},{m:'август',v:1500},{m:'сентябр',v:2500}
+    {m:'2026-07',v:9000},{m:'2026-08',v:1500},{m:'2026-09',v:2500}
   ]},
   {block:'А', number:'8/4', name:'Мирзозода Рухулло Саид', area:50.0, price:5000, roomAmount:250000, paid:28000, baqiya:222000, history:[
-    {m:'октябр',v:28000}
+    {m:'2026-10',v:28000}
   ]},
-  
+
+  /* БЛОК Б */
   {block:'Б', number:'0/4', name:'Эмомов Чума Халил', area:120.0, price:12000, roomAmount:1440000, paid:400000, baqiya:1040000, history:[
-    {m:'август',v:180000},{m:'сентябр',v:120000},{m:'октябр',v:100000}
+    {m:'2026-08',v:180000},{m:'2026-09',v:120000},{m:'2026-10',v:100000}
   ]},
   {block:'Б', number:'1/1', name:'Азизов Шукрулло Махмад', area:null, price:null, roomAmount:null, paid:0, baqiya:null, history:[]},
-  {block:'Б', number:'1/2', name:'Качулов Махмадхуча Юсуф', area:120.0, price:1100, roomAmount:1320000, paid:840000, baqiya:480000, history:[{m:'феврал',v:840000}]},
-  {block:'Б', number:'1/3', name:'Шарипов Шамсиддин Саид', area:120.0, price:1200, roomAmount:1440000, paid:350000, baqiya:1090000, history:[
-    {m:'январ',v:150000},{m:'феврал',v:20000},{m:'март',v:20000},{m:'апрел',v:15000},{m:'май',v:15000},{m:'июнь',v:50000},{m:'июль',v:20000},{m:'август',v:15000}
-    ,{m:'октябр(1)',v:30000},{m:'октябр(2)',v:15000}
+  {block:'Б', number:'1/2', name:'Качулов Махмадхуча Юсуф', area:120.0, price:1100, roomAmount:1320000, paid:1040000, baqiya:280000, history:[
+    {m:'2026-02',v:840000},{m:'2026-11',v:200000}
   ]},
-  {block:'Б', number:'1/4', name:'Хомидов Аличон Муким', area:70.0, price:11500, roomAmount:805000, paid:576790, baqiya:228210, history:[
-    {m:'ноябр',v:200000},{m:'декабр',v:72500},{m:'январ',v:15000},{m:'феврал',v:45000},{m:'март',v:20000},{m:'апрел',v:80000},{m:'май',v:73000},{m:'август',v:15000},{m:'сентябр',v:15000}
-    ,{m:'октябр(1)',v:31290},{m:'октябр(2)',v:10000}
+  {block:'Б', number:'1/3', name:'Шарипов Шамсиддин Саид', area:120.0, price:1200, roomAmount:1440000, paid:350000, baqiya:1090000, history:[
+    {m:'2026-01',v:150000},{m:'2026-02',v:20000},{m:'2026-03',v:20000},{m:'2026-04',v:15000},{m:'2026-05',v:15000},{m:'2026-06',v:50000},{m:'2026-07',v:20000},{m:'2026-08',v:15000},{m:'2026-10',v:45000}
+  ]},
+  {block:'Б', number:'1/4', name:'Хамидов Аличон Муким', area:70.0, price:11500, roomAmount:805000, paid:576790, baqiya:238210, history:[
+    {m:'2025-11',v:200000},{m:'2025-12',v:72500},{m:'2026-01',v:15000},{m:'2026-02',v:45000},{m:'2026-03',v:20000},{m:'2026-04',v:80000},{m:'2026-05',v:73000},{m:'2026-08',v:15000},{m:'2026-09',v:15000},{m:'2026-10',v:41290}
   ]},
   {block:'Б', number:'1/5', name:'Точибаева Мухабатхон', area:120.0, price:1200, roomAmount:1327639, paid:602139, baqiya:725500, history:[
-    {m:'август',v:200000},{m:'сентябр',v:37400},{m:'октябр',v:40529},{m:'ноябр',v:37200},{m:'декабр',v:27900},{m:'январ',v:37400},{m:'феврал',v:33250},{m:'март',v:38400},{m:'апрел',v:28050},{m:'май',v:31650},{m:'июнь',v:25000}
-    ,{m:'июль',v:35360} ,{m:'октябр',v:30000}
+    {m:'2025-08',v:200000},{m:'2025-09',v:37400},{m:'2025-10',v:40529},{m:'2025-11',v:37200},{m:'2025-12',v:27900},{m:'2026-01',v:37400},{m:'2026-02',v:33250},{m:'2026-03',v:38400},{m:'2026-04',v:28050},{m:'2026-05',v:31650},{m:'2026-06',v:25000},{m:'2026-07',v:35360},{m:'2026-10',v:30000}
   ]},
   {block:'Б', number:'2/1', name:'Розиков Сайжамил Чалил', area:120.0, price:1200, roomAmount:1327639, paid:579310, baqiya:748329, history:[
-    {m:'август',v:345000},{m:'сентябр',v:9350},{m:'октябр',v:15725},{m:'ноябр',v:18600},{m:'декабр',v:18600},{m:'январ',v:23375},{m:'феврал',v:19000},{m:'март',v:19200},{m:'апрел',v:18700},{m:'май',v:18560}
-    ,{m:'июнь',v:34000},{m:'октябр',v:20000}
+    {m:'2025-08',v:345000},{m:'2025-09',v:9350},{m:'2025-10',v:15725},{m:'2025-11',v:18600},{m:'2025-12',v:18600},{m:'2026-01',v:23375},{m:'2026-02',v:19000},{m:'2026-03',v:19200},{m:'2026-04',v:18700},{m:'2026-05',v:18560},{m:'2026-06',v:34000},{m:'2026-10',v:20000}
   ]},
   {block:'Б', number:'3/7', name:'Сафаров Мирзоназар Саймуза', area:69.3, price:5200, roomAmount:360360, paid:188676, baqiya:171694, history:[
-    {m:'апрел',v:120000},{m:'май',v:10023},{m:'июнь',v:10607},{m:'июль',v:12530},{m:'август',v:11504},{m:'сентябр',v:12012},{m:'октябр',v:12000}
+    {m:'2026-04',v:120000},{m:'2026-05',v:10023},{m:'2026-06',v:10607},{m:'2026-07',v:12530},{m:'2026-08',v:11504},{m:'2026-09',v:12012},{m:'2026-10',v:12000}
   ]},
-  {block:'Б', number:'4/1', name:'Фозилов Хадятулло Шамс', area:118.0, price:5300, roomAmount:625400, paid:180000, baqiya:445400, history:[{m:'май',v:180000}]},
+  {block:'Б', number:'4/1', name:'Фозилов Хадятулло Шамс', area:118.0, price:5300, roomAmount:625400, paid:180000, baqiya:352400, history:[
+    {m:'2026-05',v:180000},{m:'2026-10',v:50000}
+  ]},
   {block:'Б', number:'4/2', name:'Фозилов Хадятулло Шамс', area:null, price:null, roomAmount:null, paid:0, baqiya:null, history:[]},
   {block:'Б', number:'4/4', name:'Сафаров Сангак Рач', area:49.8, price:4000, roomAmount:200000, paid:200000, baqiya:0, history:[
-    {m:'ноябр',v:100000},{m:'декабр',v:74000},{m:'июнь',v:25000}
+    {m:'2025-11',v:100000},{m:'2025-12',v:74000},{m:'2026-06',v:25000}
   ]},
-  {block:'Б', number:'4/6', name:'Умронов Амрулло Диловар', area:70.5, price:5000, roomAmount:352500, paid:200000, baqiya:152500, history:[{m:'апрел',v:200000}]},
-  {block:'Б', number:'5/3', name:'Шарипов Мухаммадчон Саф', area:70.5, price:4500, roomAmount:317250, paid:120000, baqiya:197250, history:[
-    {m:'июль',v:100000},{m:'август',v:10000},{m:'сентябр',v:10000}
+  {block:'Б', number:'4/6', name:'Умронов Амрулло Диловар', area:70.5, price:5000, roomAmount:352500, paid:200000, baqiya:152500, history:[
+    {m:'2026-04',v:200000}
+  ]},
+  {block:'Б', number:'5/3', name:'Шарипов Мухаммадчон Саф', area:70.5, price:4500, roomAmount:317250, paid:120000, baqiya:160250, history:[
+    {m:'2026-07',v:100000},{m:'2026-08',v:10000},{m:'2026-09',v:10000},{m:'2026-10',v:37000}
   ]},
   {block:'Б', number:'5/4', name:'Асроров Муродбек Давлат', area:49.8, price:4317, roomAmount:215000, paid:100027, baqiya:114973, history:[
-    {m:'апрел',v:64000},{m:'май',v:6017},{m:'июнь',v:6000},{m:'июль',v:6000},{m:'август',v:6010},{m:'сентябр',v:6000},{m:'октябр',v:6000}
+    {m:'2026-04',v:64000},{m:'2026-05',v:6017},{m:'2026-06',v:6000},{m:'2026-07',v:6000},{m:'2026-08',v:6010},{m:'2026-09',v:6000},{m:'2026-10',v:6000}
   ]},
-  {block:'Б', number:'5/5', name:'Шамсов Саймуддин Ахлид', area:49.8, price:5000, roomAmount:250000, paid:145000, baqiya:105000, history:[{m:'май',v:123000},{m:'октябр',v:22000}]},
+  {block:'Б', number:'5/5', name:'Шамсов Саймуддин Ахлид', area:49.8, price:5000, roomAmount:250000, paid:145000, baqiya:105000, history:[
+    {m:'2026-05',v:123000},{m:'2026-10',v:22000}
+  ]},
   {block:'Б', number:'5/8', name:'Икромов Умар Толибович', area:66.5, price:4850, roomAmount:322525, paid:60000, baqiya:262525, history:[
-    {m:'июль',v:22500},{m:'август',v:12500},{m:'сентябр',v:12500},{m:'октябр',v:12500}
+    {m:'2026-07',v:22500},{m:'2026-08',v:12500},{m:'2026-09',v:12500},{m:'2026-10',v:12500}
   ]},
   {block:'Б', number:'6/8', name:'Жураев Абдухолик Махм', area:66.5, price:4800, roomAmount:319200, paid:135000, baqiya:184200, history:[
-    {m:'июнь',v:100000},{m:'июль',v:5000},{m:'август',v:30000}
+    {m:'2026-06',v:100000},{m:'2026-07',v:5000},{m:'2026-08',v:30000}
   ]},
   {block:'Б', number:'7/4', name:'Мухритдинов Одилжон Ак', area:50.0, price:4300, roomAmount:215000, paid:165000, baqiya:50000, history:[
-    {m:'июль',v:150000},{m:'август',v:5000},{m:'сентябр',v:10000}
+    {m:'2026-07',v:150000},{m:'2026-08',v:5000},{m:'2026-09',v:10000}
   ]},
-   {block:'Б', number:'7/5', name:'Сангаков Убайдулло Рахматуллоевич', area:50.0, price:5000, roomAmount:250000, paid:82800, baqiya:167200, history:[
-    {m:'октябр',v:82800}
+  {block:'Б', number:'7/5', name:'Сангаков Убайдулло Рахматуллоевич', area:50.0, price:5000, roomAmount:250000, paid:82800, baqiya:167200, history:[
+    {m:'2026-10',v:82800}
   ]},
   {block:'Б', number:'8/3', name:'Муминзода Мухаммадсолех', area:70.5, price:4920, roomAmount:346860, paid:10000, baqiya:336860, history:[
-    {m:'октябр',v:10000}
+    {m:'2026-10',v:10000}
   ]},
-  {block:'Б', number:'8/5', name:'Каримова Матлубахон Джур', area:49.8, price:4000, roomAmount:200000, paid:140000, baqiya:60000, history:[
-    {m:'май',v:80000},{m:'июнь',v:60000}
+  {block:'Б', number:'8/5', name:'Каримова Матлубахон Джур', area:49.8, price:4000, roomAmount:200000, paid:170000, baqiya:30000, history:[
+    {m:'2026-05',v:80000},{m:'2026-06',v:60000},{m:'2026-10',v:30000}
   ]},
-  {block:'Б', number:'9/5', name:'Хомидов Аличон Муким', area:49.8, price:4000, roomAmount:200000, paid:82000, baqiya:118000, history:[
-    {m:'апрел',v:50000},{m:'май',v:6000},{m:'июнь',v:6000},{m:'август',v:10000},{m:'сентябр',v:10000}
+  {block:'Б', number:'9/5', name:'Хамидов Аличон Муким', area:49.8, price:4000, roomAmount:200000, paid:82000, baqiya:118000, history:[
+    {m:'2026-04',v:50000},{m:'2026-05',v:6000},{m:'2026-06',v:6000},{m:'2026-08',v:10000},{m:'2026-09',v:10000}
   ]},
+
+  /* БЛОК В */
   {block:'В', number:'0/1', name:'Ахмадчонов Зиевиддин Кием', area:70.0, price:10500, roomAmount:735000, paid:620000, baqiya:115000, history:[
-    {m:'август',v:600000},{m:'сентябр',v:10000},{m:'октябр',v:10000}
+    {m:'2026-08',v:600000},{m:'2026-09',v:10000},{m:'2026-10',v:10000}
   ]},
   {block:'В', number:'1/1', name:'Собиров Мусаябджон Махмад', area:120.0, price:9000, roomAmount:1080000, paid:155800, baqiya:924200, history:[
-    {m:'июнь',v:105800},{m:'июль',v:50000}
+    {m:'2026-06',v:105800},{m:'2026-07',v:50000}
   ]},
   {block:'В', number:'1/2', name:'Азизов Шукрулло Махмад', area:470.0, price:10500, roomAmount:4935000, paid:1465000, baqiya:3470000, history:[
-    {m:'апрел',v:1000000},{m:'август',v:465000}
+    {m:'2026-05',v:1000000},{m:'2026-08',v:465000}
   ]},
   {block:'В', number:'1/3', name:'Шодмонзода Шодмон', area:70.0, price:9286, roomAmount:650020, paid:321000, baqiya:329000, history:[
-    {m:'январ',v:200000},{m:'март',v:36000},{m:'апрел',v:20000},{m:'май',v:20000},{m:'июнь',v:20000},{m:'август',v:10000},{m:'сентябр',v:15000}
+    {m:'2026-01',v:200000},{m:'2026-03',v:36000},{m:'2026-04',v:20000},{m:'2026-05',v:20000},{m:'2026-06',v:20000},{m:'2026-08',v:10000},{m:'2026-09',v:15000}
   ]},
   {block:'В', number:'3/1', name:'Шарипов Киёмулиди Шо', area:47.0, price:4650, roomAmount:218550, paid:197000, baqiya:21550, history:[
-    {m:'ноябр',v:135000},{m:'декабр',v:17000},{m:'март',v:20000},{m:'май',v:20000},{m:'июнь',v:5000}
+    {m:'2025-11',v:135000},{m:'2025-12',v:17000},{m:'2026-03',v:20000},{m:'2026-05',v:20000},{m:'2026-06',v:5000}
   ]},
-   {block:'В', number:'3/2', name:'Абдуллаевв Робия Абдучаборовна', area:69.3, price:4000, roomAmount:277200, paid:80000, baqiya:197200, history:[
-    {m:'ноябр',v:80000}
+  {block:'В', number:'3/2', name:'Абдуллаевв Робия', area:69.3, price:4000, roomAmount:277200, paid:80000, baqiya:197200, history:[
+    {m:'2026-11',v:80000}
   ]},
-  {block:'В', number:'3/3', name:'Юлдашев Расулчон Хош', area:70.5, price:4000, roomAmount:282000, paid:96000, baqiya:186000, history:[{m:'ноябр',v:96000}]},
-  {block:'В', number:'3/4', name:'Хусаинов Олимчон Мух', area:49.8, price:5300, roomAmount:263940, paid:209380, baqiya:54560, history:[
-    {m:'сентябр',v:100000},{m:'октябр',v:9110},{m:'ноябр',v:9110},{m:'декабр',v:45540},{m:'май',v:9180},{m:'июнь',v:9110},{m:'июль',v:9110},{m:'август',v:9110},{m:'сентябр',v:9110}
+  {block:'В', number:'3/3', name:'Юлдашев Расулчон Хош', area:70.5, price:4000, roomAmount:282000, paid:96000, baqiya:186000, history:[
+    {m:'2025-11',v:96000}
+  ]},
+  {block:'В', number:'3/4', name:'Хусаинов Олимчон Мух', area:49.8, price:5300, roomAmount:263940, paid:209380, baqiya:45450, history:[
+    {m:'2025-09',v:100000},{m:'2025-10',v:9110},{m:'2025-11',v:9110},{m:'2025-12',v:45540},{m:'2026-05',v:9180},{m:'2026-06',v:9110},{m:'2026-07',v:9110},{m:'2026-08',v:9110},{m:'2026-09',v:9110},{m:'2026-10',v:9110}
   ]},
   {block:'В', number:'3/5', name:'Юлдашев Расулчон Хоч', area:49.8, price:4000, roomAmount:199200, paid:86900, baqiya:113100, history:[
-    {m:'октябр',v:74500},{m:'декабр',v:12400}
+    {m:'2025-10',v:74500},{m:'2025-12',v:12400}
   ]},
   {block:'В', number:'3/6', name:'Юсуфов Сабур Талбиев', area:70.5, price:4900, roomAmount:345450, paid:237000, baqiya:108450, history:[
-    {m:'январ',v:160000},{m:'феврал',v:18000},{m:'июнь',v:39000},{m:'сентябр',v:20000}
+    {m:'2026-02',v:160000},{m:'2026-03',v:18000},{m:'2026-06',v:39000},{m:'2026-09',v:20000}
   ]},
-  {block:'В', number:'3/7', name:'Гафоров Махмад Шераф', area:69.3, price:5500, roomAmount:381150, paid:249000, baqiya:131000, history:[{m:'январ',v:249000}]},
-  {block:'В', number:'3/8', name:'Юсуфов Мухаммад Тал', area:66.5, price:4962, roomAmount:329973, paid:330000, baqiya:0, history:[{m:'феврал',v:330000}]},
+  {block:'В', number:'3/7', name:'Гафоров Махмад Шераф', area:69.3, price:5500, roomAmount:381150, paid:249000, baqiya:131000, history:[
+    {m:'2026-01',v:249000}
+  ]},
+  {block:'В', number:'3/8', name:'Юсуфов Мухаммад Тал', area:66.5, price:4962, roomAmount:329973, paid:330000, baqiya:0, history:[
+    {m:'2026-02',v:330000}
+  ]},
   {block:'В', number:'4/3', name:'Юсуфова Файзимох Ахм', area:70.5, price:4500, roomAmount:317250, paid:300700, baqiya:16550, history:[
-    {m:'декабр',v:160000},{m:'январ',v:29000},{m:'феврал',v:35600},{m:'апрел',v:17000},{m:'июль',v:59100}
+    {m:'2025-12',v:160000},{m:'2026-01',v:29000},{m:'2026-02',v:35600},{m:'2026-04',v:17000},{m:'2026-07',v:59100}
   ]},
-  {block:'В', number:'4/4', name:'Сафаров Сангак Рачабо', area:49.8, price:4000, roomAmount:199200, paid:200000, baqiya:0, history:[{m:'октябр',v:200000}]},
+  {block:'В', number:'4/4', name:'Сафаров Сангак Рачабо', area:49.8, price:4000, roomAmount:199200, paid:200000, baqiya:0, history:[
+    {m:'2025-10',v:200000}
+  ]},
   {block:'В', number:'4/5', name:'Куватова Замира Азамо', area:49.8, price:4000, roomAmount:200000, paid:180000, baqiya:20000, history:[
-    {m:'август',v:100000},{m:'ноябр',v:80000}
+    {m:'2025-08',v:100000},{m:'2025-11',v:80000}
   ]},
   {block:'В', number:'4/6', name:'Мачидов Зокирчон Зоир', area:70.5, price:5000, roomAmount:352500, paid:181266, baqiya:171234, history:[
-    {m:'январ',v:114000},{m:'феврал',v:11000},{m:'март',v:11000},{m:'июнь',v:12000},{m:'июль',v:11500},{m:'август',v:11000},{m:'сентябр',v:10766}
+    {m:'2026-02',v:114000},{m:'2026-03',v:11000},{m:'2026-04',v:11000},{m:'2026-06',v:12000},{m:'2026-07',v:11500},{m:'2026-08',v:11000},{m:'2026-09',v:10766}
   ]},
   {block:'В', number:'4/7', name:'Миршарипов Мирзомуддин', area:69.3, price:4000, roomAmount:277200, paid:110000, baqiya:167200, history:[
-    {m:'ноябр',v:100000},{m:'фнврал',v:10000}
+    {m:'2025-11',v:100000},{m:'2026-01',v:10000}
   ]},
   {block:'В', number:'5/1', name:'Шоймардиов Баргет Сафи', area:47.0, price:5000, roomAmount:235000, paid:165370, baqiya:69630, history:[
-    {m:'март',v:75000},{m:'апрел',v:13300},{m:'май',v:13000},{m:'июнь',v:13000},{m:'июль',v:12070},{m:'август',v:13000},{m:'сентябр',v:13000},{m:'октябр',v:13000}
+    {m:'2026-03',v:75000},{m:'2026-04',v:13300},{m:'2026-05',v:13000},{m:'2026-06',v:13000},{m:'2026-07',v:12070},{m:'2026-08',v:13000},{m:'2026-09',v:13000},{m:'2026-10',v:13000}
   ]},
   {block:'В', number:'5/7', name:'Азизов Саламшо Курбона', area:69.3, price:4329, roomAmount:299999.7, paid:270930, baqiya:29050, history:[
-    {m:'сентябр',v:94860},{m:'октябр',v:20000},{m:'ноябр',v:15170},{m:'декабр',v:13100},{m:'январ',v:13300},{m:'феврал',v:14300},{m:'март',v:13200},{m:'апрел',v:16070},{m:'май',v:14680},{m:'июнь',v:14450},{m:'июль',v:14000},{m:'август',v:14100}
-    ,{m:'сентябр',v:6200} ,{m:'октябр',v:7500}
+    {m:'2025-09',v:94860},{m:'2025-10',v:20000},{m:'2025-11',v:15170},{m:'2025-12',v:13100},{m:'2026-01',v:13300},{m:'2026-02',v:14300},{m:'2026-03',v:13200},{m:'2026-04',v:16070},{m:'2026-05',v:14680},{m:'2026-06',v:14450},{m:'2026-07',v:14000},{m:'2026-08',v:14100},{m:'2026-09',v:6200},{m:'2026-10',v:7500}
   ]},
   {block:'В', number:'5/8', name:'Болтаев Курбон Садикович', area:66.5, price:5250, roomAmount:349125, paid:212000, baqiya:137125, history:[
-    {m:'январ',v:160000},{m:'феврал',v:24000},{m:'июнь',v:10000},{m:'июль',v:10000},{m:'октябр',v:8000}
+    {m:'2026-02',v:160000},{m:'2026-03',v:24000},{m:'2026-06',v:10000},{m:'2026-07',v:10000},{m:'2026-10',v:8000}
   ]},
   {block:'В', number:'6/1', name:'Рахматова Мадина Кут...', area:47.0, price:4000, roomAmount:188000, paid:138000, baqiya:50000, history:[
-    {m:'апрел',v:110000},{m:'сентябр',v:28000}
+    {m:'2026-04',v:110000},{m:'2026-09',v:28000}
   ]},
   {block:'В', number:'6/4', name:'Абдуллоев Саидакрам К...', area:49.8, price:4000, roomAmount:199200, paid:148000, baqiya:51200, history:[
-    {m:'ноябр',v:60000},{m:'декабр',v:8000},{m:'январ',v:8000},{m:'феврал',v:8000},{m:'март',v:8000},{m:'апрел',v:8000},{m:'май',v:8000},{m:'июнь',v:8000},{m:'июль',v:8000},{m:'август',v:8000},{m:'сентябр',v:8000}
-    ,{m:'октябр',v:8000}
+    {m:'2025-11',v:60000},{m:'2025-12',v:8000},{m:'2026-01',v:8000},{m:'2026-02',v:8000},{m:'2026-03',v:8000},{m:'2026-04',v:8000},{m:'2026-05',v:8000},{m:'2026-06',v:8000},{m:'2026-07',v:8000},{m:'2026-08',v:8000},{m:'2026-09',v:8000},{m:'2026-10',v:8000}
   ]},
-  {block:'В', number:'6/5', name:'Хомидов Аличон Муким', area:49.8, price:4300, roomAmount:215000, paid:215000, baqiya:0, history:[{m:'июнь',v:215000}]},
-  {block:'В', number:'7/1', name:'суфиева Махина Сироч...', area:47.0, price:3700, roomAmount:173900, paid:116520, baqiya:57380, history:[
-    {m:'апрел',v:60000},{m:'май',v:9420},{m:'июнь',v:9420},{m:'июль',v:9420},{m:'август',v:9420},{m:'октябр(1)',v:9420},{m:'октябр(2)',v:9420}
+  {block:'В', number:'6/5', name:'Хомидов Аличон Муким', area:49.8, price:4300, roomAmount:215000, paid:215000, baqiya:0, history:[
+    {m:'2026-06',v:215000}
+  ]},
+  {block:'В', number:'7/1', name:'Суфиева Махина Сироч...', area:47.0, price:3700, roomAmount:173900, paid:116520, baqiya:57380, history:[
+    {m:'2026-04',v:60000},{m:'2026-05',v:9420},{m:'2026-06',v:9420},{m:'2026-07',v:9420},{m:'2026-08',v:9420},{m:'2026-10',v:18840}
   ]},
   {block:'В', number:'7/4', name:'Шодмонзода Комрон Ш...', area:49.8, price:4000, roomAmount:200000, paid:40000, baqiya:160000, history:[
-    {m:'май',v:25000},{m:'июнь',v:15000}
+    {m:'2026-05',v:25000},{m:'2026-06',v:15000}
   ]},
   {block:'В', number:'7/5', name:'Курбонова Максуда Ма...', area:49.8, price:4000, roomAmount:200000, paid:120000, baqiya:80000, history:[
-    {m:'май',v:100000},{m:'август',v:20000}
+    {m:'2026-05',v:100000},{m:'2026-08',v:20000}
   ]},
   {block:'В', number:'8/1', name:'Хасанова Фируза Авазовна', area:47.0, price:5000, roomAmount:235000, paid:60270, baqiya:174730, history:[
-    {m:'сентябр',v:50000},{m:'октябр',v:10270}
+    {m:'2026-09',v:50000},{m:'2026-10',v:10270}
   ]},
-  {block:'В', number:'8/4', name:'Шоев Абдулманон Одиочонов', area:50.0, price:4300, roomAmount:215000, paid:205000, baqiya:10000, history:[{m:'сентябр',v:205000}]},
+  {block:'В', number:'8/4', name:'Шоев Абдулманон Одилчон', area:50.0, price:4300, roomAmount:215000, paid:205000, baqiya:10000, history:[
+    {m:'2026-09',v:205000}
+  ]},
   {block:'В', number:'8/5', name:'Пиржанова Зулайхо Олимч', area:50.0, price:4200, roomAmount:210000, paid:135000, baqiya:75000, history:[
-    {m:'август',v:120000},{m:'сентябр',v:15000}
+    {m:'2026-08',v:120000},{m:'2026-09',v:15000}
   ]},
-  {block:'В', number:'9/1', name:'Шоймардиов Баргет Сафи', area:47.0, price:4600, roomAmount:216200, paid:143267, baqiya:72933, history:[
-    {m:'май',v:110200},{m:'июнь',v:7067},{m:'июль',v:26000}
+  {block:'В', number:'9/1', name:'Шоймардиов Баргет Сафи', area:47.0, price:4600, roomAmount:216200, paid:143267, baqiya:65933, history:[
+    {m:'2026-05',v:110200},{m:'2026-06',v:7067},{m:'2026-07',v:26000},{m:'2026-10',v:7000}
   ]}
 ];
 
@@ -687,16 +842,15 @@ function renderStatusFilter() {
   });
 }
 
-function cellClass(status) {
-  if (status === 'sold') return 'cell-sold';
-  if (status === 'installment') return 'cell-inst';
-  return 'cell-free';
-}
-
 function renderChessboard(block) {
   const objects = ALL_OBJECTS.filter(o => o.block === block);
   const floors = [...new Set(LAYOUT.map(l => l.floor))].sort((a,b) => b - a);
   const maxUnits = Math.max(...LAYOUT.map(l => l.units.length));
+
+  const houseSvg = `<svg class="apt-sq-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+  </svg>`;
 
   let rows = '';
   floors.forEach(floor => {
@@ -705,19 +859,28 @@ function renderChessboard(block) {
     for (let i = 1; i <= maxUnits; i++) {
       if (units.includes(i)) {
         const obj = objects.find(o => o.floor === floor && o.unit === i);
+        const statusClass = obj.status === 'sold' ? 'status-sold' : obj.status === 'installment' ? 'status-inst' : 'status-free';
+        
+        let tooltipText = `${obj.number} · `;
+        if (obj.status === 'free') {
+          tooltipText += 'Свободно';
+        } else {
+          tooltipText += `${obj.name} | Оплачено: ${money(obj.paid)}`;
+        }
+
         cells += `
-          <button data-block="${block}" data-number="${obj.number}"
-            class="cell ${cellClass(obj.status)} border rounded-lg h-9 sm:h-10 text-[10px] sm:text-xs font-medium transition hover:scale-[1.03]"
-            title="${obj.number} · ${obj.name || t('freeWord')}">
-            ${obj.number}
-          </button>
+          <div class="apt-square ${statusClass}" data-block="${block}" data-number="${obj.number}">
+            ${houseSvg}
+            <span class="apt-sq-number">${obj.number}</span>
+            <div class="apt-tooltip">${tooltipText}</div>
+          </div>
         `;
       } else {
-        cells += `<div class="h-9 sm:h-10"></div>`;
+        cells += `<div class="h-[52px]"></div>`;
       }
     }
     rows += `
-      <div class="flex items-center gap-1.5">
+      <div class="flex items-center gap-2 mb-1">
         <div class="w-7 text-[10px] text-slate-500 text-right">${floor}</div>
         <div class="grid flex-1 gap-1.5" style="grid-template-columns: repeat(${maxUnits}, minmax(0,1fr));">${cells}</div>
       </div>
@@ -727,15 +890,15 @@ function renderChessboard(block) {
   const k = calcKpi(objects);
   return `
     <div class="bg-[#0f1624] border border-slate-800 rounded-2xl p-4">
-      <div class="flex items-center justify-between mb-3 flex-wrap gap-2">
-        <h3 class="font-semibold">${t('blockWord')} ${block}</h3>
-        <div class="text-[10px] text-slate-400 flex gap-3">
+      <div class="flex items-center justify-between mb-4 flex-wrap gap-2">
+        <h3 class="font-semibold text-lg">${t('blockWord')} ${block}</h3>
+        <div class="text-[11px] font-medium text-slate-400 flex gap-3 bg-[#080c14]/60 px-3 py-1.5 rounded-lg border border-slate-800">
           <span class="text-emerald-400">${t('stSold')}: ${k.sold}</span>
           <span class="text-amber-400">${t('stInst')}: ${k.inst}</span>
-          <span>${t('stFree')}: ${k.free}</span>
+          <span class="text-sky-400">${t('stFree')}: ${k.free}</span>
         </div>
       </div>
-      <div class="space-y-1.5 overflow-x-auto">${rows}</div>
+      <div class="space-y-1.5 overflow-x-auto pb-2">${rows}</div>
     </div>
   `;
 }
@@ -744,9 +907,10 @@ function renderChessboards() {
   const el = document.getElementById('chessboards');
   const blocks = state.block === 'ALL' ? BLOCKS : [state.block];
   el.innerHTML = blocks.map(b => renderChessboard(b)).join('');
-  el.querySelectorAll('button[data-number]').forEach(btn => {
-    btn.onclick = () => {
-      const obj = ALL_OBJECTS.find(o => o.block === btn.dataset.block && o.number === btn.dataset.number);
+  
+  el.querySelectorAll('.apt-square').forEach(square => {
+    square.onclick = () => {
+      const obj = ALL_OBJECTS.find(o => o.block === square.dataset.block && o.number === square.dataset.number);
       openModal(obj);
     };
   });
@@ -815,11 +979,17 @@ function openModal(obj) {
   const content = document.getElementById('modalContent');
   document.getElementById('modalTitle').textContent = `${t('blockWord')} ${obj.block} · ${obj.number}`;
   const historyRows = obj.history && obj.history.length
-    ? obj.history.map(h => `
+    ? obj.history.map(h => {
+        // Форматируем YYYY-MM в читаемый вид
+        const [year, month] = h.m.split('-');
+        const monthNames = ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'];
+        const displayMonth = `${monthNames[parseInt(month) - 1]} ${year}`;
+        return `
         <tr class="border-b border-slate-800/60">
-          <td class="py-2 text-slate-400">${h.m}</td>
+          <td class="py-2 text-slate-400">${displayMonth}</td>
           <td class="py-2 text-right font-medium">${money(h.v)}</td>
-        </tr>`).join('')
+        </tr>`;
+      }).join('')
     : `<tr><td colspan="2" class="py-4 text-center text-slate-500">${t('noHistory')}</td></tr>`;
   document.getElementById('modalBody').innerHTML = `
     <div class="space-y-4">
@@ -851,7 +1021,7 @@ function openModal(obj) {
       </div>
       <div>
         <h4 class="text-xs uppercase tracking-wide text-slate-500 mb-2">${t('historyTitle')}</h4>
-        <div class="bg-[#080c14]/60 border border-slate-800 rounded-xl overflow-hidden">
+        <div class="bg-[#080c14]/60 border border-slate-800 rounded-xl overflow-hidden max-h-[300px] overflow-y-auto">
           <table class="w-full text-sm"><tbody>${historyRows}</tbody></table>
         </div>
       </div>
@@ -864,9 +1034,296 @@ function closeModal() {
 }
 
 /* =========================================================
-   ОТЧЁТЫ — FIREBASE FIRESTORE REST + ImgBB/0x0.st/catbox
-   Лимит: 10 изображений в день на каждый отчёт
-   TTL: 10 дней
+   РАЗДЕЛ ОПЛАТЫ (МАТРИЦА И СПИСОК)
+   ========================================================= */
+const generateMonths = () => {
+  const months = [];
+  const monthNames = ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'];
+  let d = new Date(2025, 7, 1); // Август 2025
+  const end = new Date(2028, 11, 31); // Декабрь 2028
+  
+  while (d <= end) {
+    months.push({
+      id: `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`,
+      label: `${monthNames[d.getMonth()]} ${String(d.getFullYear()).slice(2)}`
+    });
+    d.setMonth(d.getMonth() + 1);
+  }
+  return months;
+};
+
+const PAYMENT_MONTHS = generateMonths();
+let PAYMENTS_DB = {};
+
+// Настройки раздела оплат
+const payState = {
+  viewMode: 'matrix', // 'matrix' или 'single'
+  selectedMonth: '2026-01' // По умолчанию Январь 2026, где много данных
+};
+
+function syncPaymentsFromHistory() {
+  PAYMENTS_DB = {};
+  ALL_OBJECTS.forEach(obj => {
+    if (!obj.history || obj.history.length === 0) return;
+    const key = `${obj.block}-${obj.number}`;
+    if (!PAYMENTS_DB[key]) PAYMENTS_DB[key] = {};
+    
+    obj.history.forEach(h => {
+      if (h.m) {
+        PAYMENTS_DB[key][h.m] = (PAYMENTS_DB[key][h.m] || 0) + h.v;
+      }
+    });
+  });
+  savePaymentsDB();
+}
+
+function savePaymentsDB() {
+  localStorage.setItem('paymentsDB', JSON.stringify(PAYMENTS_DB));
+}
+
+// Заполнение выпадающего списка месяцев
+function initMonthSelector() {
+  const sel = document.getElementById('payFilterMonth');
+  sel.innerHTML = PAYMENT_MONTHS.map(m => `<option value="${m.id}">${m.label}</option>`).join('');
+  sel.value = payState.selectedMonth;
+  
+  sel.onchange = (e) => {
+    payState.selectedMonth = e.target.value;
+    renderPaymentsTable();
+  };
+}
+
+// Переключение режимов
+document.getElementById('btnViewMatrix').onclick = () => {
+  payState.viewMode = 'matrix';
+  document.getElementById('btnViewMatrix').className = 'px-3 py-1.5 rounded-md text-xs font-medium transition bg-slate-700 text-white';
+  document.getElementById('btnViewSingle').className = 'px-3 py-1.5 rounded-md text-xs font-medium transition text-slate-400 hover:text-slate-200';
+  document.getElementById('monthSelectorWrap').classList.add('hidden');
+  document.getElementById('monthSelectorWrap').classList.remove('flex');
+  document.getElementById('payFilterPayment').classList.add('hidden');
+  renderPaymentsTable();
+};
+
+document.getElementById('btnViewSingle').onclick = () => {
+  payState.viewMode = 'single';
+  document.getElementById('btnViewSingle').className = 'px-3 py-1.5 rounded-md text-xs font-medium transition bg-slate-700 text-white';
+  document.getElementById('btnViewMatrix').className = 'px-3 py-1.5 rounded-md text-xs font-medium transition text-slate-400 hover:text-slate-200';
+  document.getElementById('monthSelectorWrap').classList.remove('hidden');
+  document.getElementById('monthSelectorWrap').classList.add('flex');
+  document.getElementById('payFilterPayment').classList.remove('hidden');
+  renderPaymentsTable();
+};
+
+function renderPaymentsTable() {
+  const wrap = document.getElementById('paymentsTableWrap');
+  const filterBlock = document.getElementById('payFilterBlock').value;
+  const filterStatus = document.getElementById('payFilterStatus').value;
+  
+  let objects = ALL_OBJECTS.filter(o => o.status !== 'free');
+  if (filterBlock !== 'ALL') objects = objects.filter(o => o.block === filterBlock);
+  if (filterStatus !== 'all') objects = objects.filter(o => o.status === filterStatus);
+
+  // Фильтрация по оплате (только для режима Списка)
+  if (payState.viewMode === 'single') {
+    const filterPayment = document.getElementById('payFilterPayment').value;
+    if (filterPayment !== 'all') {
+      objects = objects.filter(obj => {
+        const key = `${obj.block}-${obj.number}`;
+        const val = (PAYMENTS_DB[key] && PAYMENTS_DB[key][payState.selectedMonth]) || 0;
+        if (filterPayment === 'paid') return val > 0;
+        if (filterPayment === 'unpaid') return val === 0;
+        return true;
+      });
+    }
+  }
+
+  if (!objects.length) {
+    wrap.innerHTML = `<div class="p-10 text-center text-slate-500 text-sm">Нет объектов по выбранным фильтрам</div>`;
+    return;
+  }
+
+  const now = new Date();
+  const currentMonthId = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+
+  // ==========================================
+  // РЕЖИМ 1: СПИСОК ЗА КОНКРЕТНЫЙ МЕСЯЦ
+  // ==========================================
+  if (payState.viewMode === 'single') {
+    const month = payState.selectedMonth;
+    const monthLabel = PAYMENT_MONTHS.find(m => m.id === month)?.label || month;
+    
+    let totalReceived = 0;
+    let debtorsCount = 0;
+
+    let rows = '';
+    objects.forEach((obj, index) => {
+      const key = `${obj.block}-${obj.number}`;
+      const val = (PAYMENTS_DB[key] && PAYMENTS_DB[key][month]) || 0;
+      const isPaid = val > 0;
+      
+      if (isPaid) totalReceived += val;
+      else debtorsCount++;
+
+      rows += `
+        <tr class="border-b border-slate-800 hover:bg-slate-800/30 transition">
+          <td class="px-4 py-3 text-xs text-slate-500 whitespace-nowrap">${index + 1}</td>
+          <td class="px-4 py-3 text-xs font-medium whitespace-nowrap">${key}</td>
+          <td class="px-4 py-3 text-xs text-slate-300">${obj.name}</td>
+          <td class="px-4 py-3">
+            ${isPaid 
+              ? `<span class="px-2 py-1 rounded bg-emerald-500/20 text-emerald-400 text-[10px] font-bold">Оплачено</span>`
+              : `<span class="px-2 py-1 rounded bg-rose-500/20 text-rose-400 text-[10px] font-bold">Не оплачено</span>`
+            }
+          </td>
+          <td class="px-4 py-3 text-right text-xs font-bold ${isPaid ? 'text-emerald-300' : 'text-slate-500'}">
+            ${isPaid ? money(val) : '—'}
+          </td>
+          <td class="px-4 py-3 text-center">
+            <button onclick="togglePayment('${key}', '${month}', ${month > currentMonthId})" 
+              class="px-3 py-1.5 rounded-lg text-[10px] font-medium transition whitespace-nowrap
+              ${isPaid 
+                ? 'bg-rose-500/10 text-rose-300 border border-rose-500/30 hover:bg-rose-500/20' 
+                : 'bg-brand-500 text-slate-950 hover:bg-brand-600'}">
+              ${isPaid ? 'Отменить оплату' : '➕ Внести оплату'}
+            </button>
+          </td>
+        </tr>
+      `;
+    });
+
+    document.getElementById('payTotalReceived').textContent = money(totalReceived);
+    document.getElementById('payTotalDebtors').textContent = debtorsCount;
+
+    wrap.innerHTML = `
+      <div class="bg-[#080c14]/50 px-4 py-2 border-b border-slate-700 text-xs font-semibold text-brand-500 flex justify-between items-center sticky top-0 z-20 backdrop-blur">
+        <span>Список оплат за: ${monthLabel}</span>
+      </div>
+      <table class="w-full text-left border-collapse">
+        <thead class="bg-[#0f1624] sticky top-[33px] z-10 shadow-sm">
+          <tr class="text-slate-400 text-[10px] uppercase tracking-wider">
+            <th class="px-4 py-2 font-medium border-b border-slate-800">№</th>
+            <th class="px-4 py-2 font-medium border-b border-slate-800">Квартира</th>
+            <th class="px-4 py-2 font-medium border-b border-slate-800">Покупатель</th>
+            <th class="px-4 py-2 font-medium border-b border-slate-800">Статус</th>
+            <th class="px-4 py-2 font-medium text-right border-b border-slate-800">Сумма</th>
+            <th class="px-4 py-2 font-medium text-center border-b border-slate-800">Действие</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+    `;
+    return;
+  }
+
+  // ==========================================
+  // РЕЖИМ 2: МАТРИЦА (ВСЕ МЕСЯЦЫ)
+  // ==========================================
+  let totalReceived = 0;
+  let debtorsCount = 0;
+
+  let thead = `<tr>
+    <th class="sticky left-0 top-0 z-30 bg-[#0f1624] px-3 py-3 text-center text-xs font-semibold text-slate-300 border-b border-r border-slate-700 w-[50px] min-w-[50px]">№</th>
+    <th class="sticky left-[50px] top-0 z-30 bg-[#0f1624] px-3 py-3 text-left text-xs font-semibold text-slate-300 border-b border-r border-slate-700 min-w-[120px]">Квартира</th>
+    <th class="sticky left-[170px] top-0 z-30 bg-[#0f1624] px-3 py-3 text-left text-xs font-semibold text-slate-300 border-b border-r border-slate-700 min-w-[150px]">Покупатель</th>`;
+  
+  PAYMENT_MONTHS.forEach(m => {
+    thead += `<th class="sticky top-0 z-20 bg-[#0f1624] px-2 py-3 text-center text-[10px] font-medium text-slate-400 border-b border-r border-slate-800 min-w-[70px]">${m.label}</th>`;
+  });
+  thead += `</tr>`;
+
+  let tbody = '';
+  objects.forEach((obj, index) => {
+    const key = `${obj.block}-${obj.number}`;
+    const objPayments = PAYMENTS_DB[key] || {};
+    
+    let row = `<tr class="hover:bg-slate-800/30 transition">
+      <td class="sticky left-0 z-10 bg-[#0f1624] px-3 py-2 text-center text-xs text-slate-500 border-b border-r border-slate-800">${index + 1}</td>
+      <td class="sticky left-[50px] z-10 bg-[#0f1624] px-3 py-2 text-xs font-medium border-b border-r border-slate-800 whitespace-nowrap">${key}</td>
+      <td class="sticky left-[170px] z-10 bg-[#0f1624] px-3 py-2 text-xs text-slate-300 border-b border-r border-slate-800 truncate max-w-[150px]" title="${obj.name}">${obj.name || '—'}</td>`;
+
+    PAYMENT_MONTHS.forEach(m => {
+      const val = objPayments[m.id] || 0;
+      const isPaid = val > 0;
+      const isFuture = m.id > currentMonthId;
+      
+      let cellClass = "text-center border-b border-r border-slate-800 p-1 cursor-pointer transition";
+      let content = '';
+
+      if (isFuture) {
+        cellClass += " bg-[#080c14]/30";
+        content = `<span class="text-[10px] text-slate-600">—</span>`;
+      } else if (isPaid) {
+        cellClass += " bg-emerald-500/20 hover:bg-emerald-500/30";
+        content = `<span class="text-[10px] text-emerald-300 font-bold">${money(val)}</span>`;
+        totalReceived += val;
+      } else {
+        cellClass += " bg-rose-500/10 hover:bg-rose-500/20";
+        content = `<span class="text-[10px] text-rose-400/80 font-medium">Не оплачено</span>`;
+        debtorsCount++;
+      }
+
+      row += `<td class="${cellClass}" onclick="togglePayment('${key}', '${m.id}', ${isFuture})">${content}</td>`;
+    });
+    row += `</tr>`;
+    tbody += row;
+  });
+
+  document.getElementById('payTotalReceived').textContent = money(totalReceived);
+  document.getElementById('payTotalDebtors').textContent = debtorsCount;
+
+  wrap.innerHTML = `
+    <table class="w-full text-left border-collapse">
+      <thead>${thead}</thead>
+      <tbody>${tbody}</tbody>
+    </table>
+  `;
+}
+
+window.togglePayment = function(objKey, monthId, isFuture) {
+  if (isFuture) return;
+  
+  if (!PAYMENTS_DB[objKey]) PAYMENTS_DB[objKey] = {};
+  
+  if (PAYMENTS_DB[objKey][monthId] > 0) {
+    if(confirm(`Отменить оплату для ${objKey} за ${monthId}?`)) {
+      delete PAYMENTS_DB[objKey][monthId];
+    }
+  } else {
+    const obj = ALL_OBJECTS.find(o => `${o.block}-${o.number}` === objKey);
+    const defaultAmount = obj.roomAmount ? Math.round((obj.roomAmount / 12) / 100) * 100 : 5000; 
+    
+    const input = prompt(`Введите сумму оплаты для ${objKey} за ${monthId}:`, defaultAmount);
+    if (input !== null) {
+      const amount = parseFloat(input.replace(/\s/g, '').replace(',', '.'));
+      if (!isNaN(amount) && amount > 0) {
+        PAYMENTS_DB[objKey][monthId] = amount;
+      }
+    }
+  }
+  savePaymentsDB();
+  renderPaymentsTable();
+};
+
+document.getElementById('paymentsBtn').onclick = () => {
+  document.getElementById('paymentsModal').classList.remove('hidden');
+  if (!document.getElementById('payFilterMonth').options.length) {
+    initMonthSelector();
+  }
+  renderPaymentsTable();
+};
+document.getElementById('paymentsClose').onclick = () => {
+  document.getElementById('paymentsModal').classList.add('hidden');
+};
+document.getElementById('paymentsBackdrop').onclick = () => {
+  document.getElementById('paymentsModal').classList.add('hidden');
+};
+document.getElementById('payFilterBlock').onchange = renderPaymentsTable;
+document.getElementById('payFilterStatus').onchange = renderPaymentsTable;
+document.getElementById('payFilterPayment').onchange = renderPaymentsTable;
+
+
+/* =========================================================
+   ОТЧЁТЫ (Firebase)
    ========================================================= */
 const IMGBB_KEYS = [
   '4b7f7e2d31a3612f63e8f09ae45cb516',
@@ -1020,7 +1477,6 @@ async function loadReportsFromServer() {
   return reportsCache;
 }
 
-/* ---- Подготовка изображения ---- */
 async function prepareImageDataUrl(file) {
   const MAX_ORIGINAL = 30 * 1024 * 1024;
   if (file.size > MAX_ORIGINAL) throw new Error('Файл слишком большой (макс. 30 МБ): ' + file.name);
@@ -1449,7 +1905,11 @@ document.getElementById('reportsClose').onclick = closeReportsModal;
 document.getElementById('reportsBackdrop').onclick = closeReportsModal;
 
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') { closeModal(); closeReportsModal(); }
+  if (e.key === 'Escape') {
+    closeModal();
+    closeReportsModal();
+    document.getElementById('paymentsModal').classList.add('hidden');
+  }
 });
 
 document.getElementById('themeBtn').addEventListener('click', () => {
@@ -1466,6 +1926,9 @@ document.getElementById('langBtn').addEventListener('click', () => {
   try { savedTheme = localStorage.getItem('theme') || 'dark'; } catch (e) {}
   applyTheme(savedTheme);
   applyLanguage(lang);
+
+  /* СИНХРОНИЗАЦИЯ ОПЛАТ ИЗ МАССИВА */
+  syncPaymentsFromHistory();
 
   /* Фоновая загрузка отчётов + авто-очистка просроченных */
   reportsState = 'loading';
