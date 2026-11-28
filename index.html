@@ -46,7 +46,6 @@
     ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 8px; }
     ::-webkit-scrollbar-thumb:hover { background: #334155; }
 
-    /* --- КВАДРАТНЫЕ ИКОНКИ КВАРТИР --- */
     .apt-square {
       position: relative;
       display: flex;
@@ -61,13 +60,10 @@
       background: #1e293b;
       gap: 2px;
     }
-    
     .status-free.apt-square { border-color: #475569; background: rgba(30, 41, 59, 0.5); color: #94a3b8; }
     .status-free.apt-square:hover { background: rgba(51, 65, 85, 0.7); border-color: #64748b; color: #cbd5e1; }
-    
     .status-inst.apt-square { border-color: #f59e0b; background: rgba(245, 158, 11, 0.15); color: #fcd34d; }
     .status-inst.apt-square:hover { background: rgba(245, 158, 11, 0.25); border-color: #fbbf24; }
-    
     .status-sold.apt-square { border-color: #10b981; background: rgba(16, 185, 129, 0.15); color: #6ee7b7; }
     .status-sold.apt-square:hover { background: rgba(16, 185, 129, 0.25); border-color: #34d399; }
 
@@ -76,11 +72,9 @@
       box-shadow: 0 4px 12px rgba(0,0,0,0.3);
       z-index: 10;
     }
-    
     .apt-sq-svg { width: 18px; height: 18px; }
     .apt-sq-number { font-size: 11px; font-weight: 700; line-height: 1; letter-spacing: -0.5px; }
 
-    /* Кастомный тултип */
     .apt-tooltip {
       position: absolute;
       bottom: 115%;
@@ -102,12 +96,22 @@
     }
     .apt-square:hover .apt-tooltip { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
 
-    /* Стили для скролла матрицы оплат */
     #paymentsTableWrap::-webkit-scrollbar { width: 6px; height: 6px; }
     #paymentsTableWrap::-webkit-scrollbar-track { background: #0f1624; }
     #paymentsTableWrap::-webkit-scrollbar-thumb { background: #334155; border-radius: 5px; }
 
-    /* --- МОБИЛЬНАЯ АДАПТАЦИЯ --- */
+    /* === ФИКС: первая строка матрицы оплат не прячется под sticky-шапкой === */
+    #paymentsTableWrap table {
+      border-collapse: separate;
+      border-spacing: 0;
+    }
+    #paymentsTableWrap thead th {
+      background-clip: padding-box;
+    }
+    #paymentsTableWrap tbody tr:first-child td {
+      border-top: 1px solid transparent;
+    }
+
     @media (max-width: 640px) {
       .modal-content {
         position: fixed; left: 0; right: 0; bottom: 0; top: auto;
@@ -115,16 +119,10 @@
         transform: translateY(100%); transition: transform .25s ease;
       }
       .modal-content.open { transform: translateY(0); }
-      
-      /* Уменьшаем квадраты шахматки на телефоне */
       .apt-square { height: 44px; border-radius: 6px; }
       .apt-sq-svg { width: 14px; height: 14px; }
       .apt-sq-number { font-size: 9px; }
-      
-      /* Скрываем колонку № в Матрице, чтобы освободить место */
       .hide-on-mobile { display: none !important; }
-      
-      /* Убираем sticky с первой колонки (номера), оставляем на квартире */
       .matrix-sticky-apt { left: 0 !important; min-width: 70px !important; }
       .matrix-sticky-buyer { left: 70px !important; min-width: 110px !important; }
     }
@@ -169,8 +167,7 @@
     html:not(.dark) [class*="border-slate-100"] { border-color: #0f172a !important; }
     html:not(.dark) [class*="bg-slate-700/40"] { background-color: rgba(100,116,139,.15) !important; }
     html:not(.dark) [class*="bg-slate-800/40"] { background-color: rgba(148,163,184,.15) !important; }
-    
-    /* Светлая тема для новых квадратов */
+
     html:not(.dark) .status-free.apt-square { border-color: #cbd5e1; background: #f8fafc; color: #64748b; }
     html:not(.dark) .status-free.apt-square:hover { background: #f1f5f9; border-color: #94a3b8; color: #475569; }
     html:not(.dark) .status-inst.apt-square { border-color: #d97706; background: rgba(253, 230, 138, 0.5); color: #b45309; }
@@ -178,7 +175,7 @@
     html:not(.dark) .status-sold.apt-square { border-color: #059669; background: rgba(167, 243, 208, 0.5); color: #047857; }
     html:not(.dark) .status-sold.apt-square:hover { background: rgba(167, 243, 208, 0.8); border-color: #10b981; }
     html:not(.dark) .apt-tooltip { background: #ffffff; border-color: #cbd5e1; color: #0f172a; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-    
+
     html:not(.dark) ::-webkit-scrollbar-track { background: #e2e8f0; }
     html:not(.dark) ::-webkit-scrollbar-thumb { background: #cbd5e1; }
     html:not(.dark) ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
@@ -222,7 +219,6 @@
             <p class="text-[10px] sm:text-xs text-slate-400" data-i18n="appSubtitle">ул. К. Худжанди · Блоки А, Б, В · 228 объектов</p>
           </div>
         </div>
-        <!-- Мобильные кнопки (Тема, Язык, Выход) -->
         <div class="flex sm:hidden items-center gap-1">
           <button id="themeBtnMob" class="w-8 h-8 rounded-lg bg-[#0f1624] border border-slate-700 text-slate-300 text-xs">☀️</button>
           <button id="langBtnMob" class="w-8 h-8 rounded-lg bg-[#0f1624] border border-slate-700 text-slate-300 text-[10px] font-semibold">RU</button>
@@ -237,7 +233,7 @@
         <div class="flex gap-1.5 sm:gap-2 w-full sm:w-auto">
           <button id="paymentsBtn" title="Оплаты" data-i18n-title="paymentsBtn"
             class="flex-1 sm:flex-none justify-center px-3 py-1.5 h-9 rounded-lg bg-[#0f1624] border border-slate-700 hover:border-brand-500 text-slate-300 text-[11px] font-medium transition flex items-center gap-1.5 whitespace-nowrap">
-            <span>💳</span><span>Оплаты</span>
+            <span>💳</span><span data-i18n="paymentsBtn">Оплаты</span>
           </button>
 
           <button id="reportsBtn" title="Отчёты" data-i18n-title="reportsBtn"
@@ -245,7 +241,6 @@
             <span>📊</span><span data-i18n="reportsBtn">Отчёты</span>
           </button>
 
-          <!-- Десктопные кнопки -->
           <div class="hidden sm:flex gap-2">
             <button id="themeBtn" title="Тема" data-i18n-title="themeTitle"
               class="w-9 h-9 rounded-lg bg-[#0f1624] border border-slate-700 hover:border-brand-500 text-slate-300 text-sm transition">☀️</button>
@@ -301,27 +296,23 @@
     <div id="reportsBackdrop" class="absolute inset-0 bg-black/70 backdrop-blur-sm"></div>
     <div id="reportsContent" class="modal-content sm:relative sm:mx-auto sm:my-10 sm:max-w-2xl sm:rounded-2xl bg-[#0f1624] border border-slate-700 shadow-2xl overflow-hidden">
       <div class="flex items-center justify-between px-4 py-3 border-b border-slate-800">
-        <h3 id="reportsModalTitle" class="font-semibold text-sm sm:text-base">Отчёты</h3>
+        <h3 id="reportsModalTitle" class="font-semibold text-sm sm:text-base" data-i18n="reportsTitle">Отчёты</h3>
         <button id="reportsClose" class="w-8 h-8 rounded-lg hover:bg-slate-800 text-slate-400">✕</button>
       </div>
       <div id="reportsBody" class="p-3 sm:p-4 overflow-auto max-h-[75vh]"></div>
     </div>
   </div>
 
-  <!-- Модальное окно Оплаты -->
   <div id="paymentsModal" class="fixed inset-0 z-[70] hidden">
     <div id="paymentsBackdrop" class="absolute inset-0 bg-black/80 backdrop-blur-sm"></div>
     <div id="paymentsContent" class="modal-content sm:relative sm:mx-auto sm:my-6 sm:max-w-[95vw] sm:rounded-2xl bg-[#0f1624] border border-slate-700 shadow-2xl overflow-hidden flex flex-col max-h-[92vh] sm:max-h-[90vh]">
-      
-      <!-- Заголовок и переключатель -->
+
       <div class="flex flex-col sm:flex-row sm:items-center justify-between px-3 py-3 sm:px-5 sm:py-4 border-b border-slate-800 bg-[#0f1624] shrink-0 gap-2">
         <div class="flex items-center justify-between w-full sm:w-auto">
-          <h3 class="font-semibold text-sm sm:text-lg">Оплаты</h3>
+          <h3 class="font-semibold text-sm sm:text-lg" data-i18n="paymentsBtn">Оплаты</h3>
           <button id="paymentsClose" class="sm:hidden w-7 h-7 rounded-lg hover:bg-slate-800 text-slate-400 transition">✕</button>
         </div>
-        
         <div class="flex items-center gap-2 w-full sm:w-auto">
-          <!-- Переключатель вида -->
           <div class="flex flex-1 sm:flex-none bg-[#080c14] rounded-lg p-0.5 sm:p-1 border border-slate-700">
             <button id="btnViewMatrix" class="flex-1 sm:flex-none px-2 py-1 sm:px-3 sm:py-1.5 rounded-md text-[10px] sm:text-xs font-medium transition bg-slate-700 text-white">Матрица</button>
             <button id="btnViewSingle" class="flex-1 sm:flex-none px-2 py-1 sm:px-3 sm:py-1.5 rounded-md text-[10px] sm:text-xs font-medium transition text-slate-400 hover:text-slate-200">По месяцам</button>
@@ -330,7 +321,6 @@
         </div>
       </div>
 
-      <!-- Панель фильтров -->
       <div class="px-3 py-2 sm:px-5 sm:py-3 border-b border-slate-800 bg-[#080c14]/50 flex flex-col sm:flex-row flex-wrap gap-2 sm:gap-3 items-start sm:items-center shrink-0">
         <div class="flex flex-wrap gap-1.5 w-full sm:w-auto">
           <select id="payFilterBlock" class="flex-1 sm:flex-none bg-[#0f1624] border border-slate-700 rounded-lg px-2 py-1.5 text-[11px] sm:text-xs text-slate-200 outline-none focus:border-brand-500">
@@ -344,36 +334,29 @@
             <option value="installment">В рассрочке</option>
             <option value="sold">Продано</option>
           </select>
-          
-          <!-- Выбор месяца (только для списка) -->
+
           <div id="monthSelectorWrap" class="hidden w-full sm:w-auto items-center gap-1 mt-1 sm:mt-0">
             <span class="text-[10px] sm:text-xs text-slate-400">Месяц:</span>
-            <select id="payFilterMonth" class="flex-1 sm:flex-none bg-[#0f1624] border border-brand-500/50 rounded-lg px-2 py-1.5 text-[11px] sm:text-xs text-brand-500 font-bold outline-none focus:border-brand-500">
-              <!-- Опции -->
-            </select>
+            <select id="payFilterMonth" class="flex-1 sm:flex-none bg-[#0f1624] border border-brand-500/50 rounded-lg px-2 py-1.5 text-[11px] sm:text-xs text-brand-500 font-bold outline-none focus:border-brand-500"></select>
           </div>
 
-          <!-- Фильтр оплаты (только для списка) -->
           <select id="payFilterPayment" class="hidden flex-1 sm:flex-none bg-[#0f1624] border border-slate-700 rounded-lg px-2 py-1.5 text-[11px] sm:text-xs text-slate-200 outline-none focus:border-brand-500 mt-1 sm:mt-0">
             <option value="all">Все оплаты</option>
             <option value="paid">Только оплаченные</option>
             <option value="unpaid">Только должники</option>
           </select>
         </div>
-        
-        <!-- Сводка -->
+
         <div class="flex items-center gap-3 sm:gap-4 text-[10px] sm:text-xs bg-[#0f1624] px-2 sm:px-3 py-1.5 rounded-lg border border-slate-700 w-full sm:w-auto sm:ml-auto mt-1 sm:mt-0 justify-center sm:justify-start">
           <div class="text-emerald-400">Получено: <span id="payTotalReceived" class="font-bold text-xs sm:text-sm">0 с.</span></div>
           <div class="text-rose-400">Должников: <span id="payTotalDebtors" class="font-bold text-xs sm:text-sm">0</span></div>
         </div>
       </div>
 
-      <!-- Таблица -->
-      <div class="overflow-auto flex-1 p-0 relative" id="paymentsTableWrap">
-        <!-- Рендерится JS -->
-      </div>
+      <div class="overflow-auto flex-1 p-0 relative" id="paymentsTableWrap"></div>
     </div>
   </div>
+
 <script>
 /* =========================================================
    МУЛЬТИЯЗЫЧНОСТЬ (RU / TJ)
@@ -414,7 +397,9 @@ const I18N = {
     dailyLimitReached: 'Достигнут дневной лимит: не более 10 изображений в день для одного отчёта.',
     dailyLimitPartial: 'Часть файлов не загружена — дневной лимит 10 шт.',
     rulesHint: 'Если видите ошибку 403 — откройте Firebase Console → Firestore → Rules и разрешите чтение/запись для коллекции reports.',
-    paymentsBtn: 'Оплаты'
+    paymentsBtn: 'Оплаты',
+    callBtn: 'Звонок',
+    messageBtn: 'Сообщение'
   },
   tj: {
     appTitle: 'Директор', appSubtitle: 'кӯч. К. Хуҷандӣ · Блокҳои А, Б, В · 228 объект',
@@ -451,7 +436,9 @@ const I18N = {
     dailyLimitReached: 'Лимити рӯзона расид: на бештар аз 10 тасвир дар як рӯз барои як ҳисобот.',
     dailyLimitPartial: 'Қисми файлҳо боргузорӣ нашуданд — лимити рӯзона 10 дона.',
     rulesHint: 'Агар хатои 403 бинед — Firebase Console → Firestore → Rules кушоед ва барои коллексияи reports иҷозат диҳед.',
-    paymentsBtn: 'Пардохтҳо'
+    paymentsBtn: 'Пардохтҳо',
+    callBtn: 'Занг',
+    messageBtn: 'Паём'
   }
 };
 
@@ -483,7 +470,6 @@ function applyLanguage(next) {
     if (v) el.title = v;
   });
 
-  // Обновляем кнопки языков (для мобильной и десктопной версии)
   document.querySelectorAll('#langBtn, #langBtnMob').forEach(btn => {
     if (btn) btn.textContent = lang === 'ru' ? 'RU' : 'TJ';
   });
@@ -492,7 +478,7 @@ function applyLanguage(next) {
 
   const rm = document.getElementById('reportsModal');
   if (rm && !rm.classList.contains('hidden')) renderReports();
-  
+
   const pm = document.getElementById('paymentsModal');
   if (pm && !pm.classList.contains('hidden')) renderPaymentsTable();
 }
@@ -501,7 +487,6 @@ function applyTheme(theme) {
   const isDark = theme !== 'light';
   document.documentElement.classList.toggle('dark', isDark);
   try { localStorage.setItem('theme', isDark ? 'dark' : 'light'); } catch (e) {}
-  
   document.querySelectorAll('#themeBtn, #themeBtnMob').forEach(btn => {
     if (btn) btn.textContent = isDark ? '☀️' : '🌙';
   });
@@ -556,7 +541,7 @@ const STORAGE_VALUE = 'verified_true';
 })();
 
 /* =========================================================
-   БАЗА ДАННЫХ (Точные данные из Excel: Блок А, Б, В)
+   БАЗА ДАННЫХ
    ========================================================= */
 const OCCUPIED = [
   /* БЛОК А */
@@ -657,7 +642,6 @@ const OCCUPIED = [
   ]},
   {block:'Б', number:'6/7', name:'№66 Додарбеков Рахмончон  Карим', area:69.3, price:4850, roomAmount:360000, paid:108000, baqiya:252000, history:[
     {m:'2026-11',v:108000}
-
   ]},
   {block:'Б', number:'6/8', name:'№46 Жураев Абдухолик Махм', area:66.5, price:4800, roomAmount:319200, paid:135000, baqiya:184200, history:[
     {m:'2026-06',v:100000},{m:'2026-07',v:5000},{m:'2026-08',v:30000}
@@ -923,14 +907,12 @@ function renderChessboard(block) {
       if (units.includes(i)) {
         const obj = objects.find(o => o.floor === floor && o.unit === i);
         const statusClass = obj.status === 'sold' ? 'status-sold' : obj.status === 'installment' ? 'status-inst' : 'status-free';
-        
         let tooltipText = `${obj.number} · `;
         if (obj.status === 'free') {
           tooltipText += 'Свободно';
         } else {
           tooltipText += `${obj.name} | Оплачено: ${money(obj.paid)}`;
         }
-
         cells += `
           <div class="apt-square ${statusClass}" data-block="${block}" data-number="${obj.number}">
             ${houseSvg}
@@ -970,7 +952,6 @@ function renderChessboards() {
   const el = document.getElementById('chessboards');
   const blocks = state.block === 'ALL' ? BLOCKS : [state.block];
   el.innerHTML = blocks.map(b => renderChessboard(b)).join('');
-  
   el.querySelectorAll('.apt-square').forEach(square => {
     square.onclick = () => {
       const obj = ALL_OBJECTS.find(o => o.block === square.dataset.block && o.number === square.dataset.number);
@@ -1025,6 +1006,14 @@ function renderTable() {
   });
 }
 
+function renderAll() {
+  renderKpi();
+  renderTabs();
+  renderStatusFilter();
+  renderChessboards();
+  renderTable();
+}
+
 function showSheet(modal, content) {
   modal.classList.remove('hidden');
   if (window.innerWidth <= 640) setTimeout(() => content.classList.add('open'), 10);
@@ -1037,10 +1026,47 @@ function hideSheet(modal, content) {
   } else modal.classList.add('hidden');
 }
 
+/* === Хелперы для кнопок связи === */
+function extractClientName(fullName) {
+  if (!fullName) return '';
+  let name = fullName.replace(/^№\s*\d+\s*/i, '').trim();
+  name = name.replace(/^\d+\s*/, '').trim();
+  const parts = name.split(/\s+/).filter(Boolean);
+  return parts.slice(0, 2).join(' ');
+}
+
+function formatDateShort(d) {
+  const dd = String(d.getDate()).padStart(2, '0');
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const yy = String(d.getFullYear()).slice(-2);
+  return `${dd}.${mm}.${yy}`;
+}
+
 function openModal(obj) {
   const modal = document.getElementById('modal');
   const content = document.getElementById('modalContent');
   document.getElementById('modalTitle').textContent = `${t('blockWord')} ${obj.block} · ${obj.number}`;
+
+  /* === Кнопки Звонок / Сообщение === */
+  const hasBuyer = !!obj.name;
+  const clientName = extractClientName(obj.name) || 'клиент';
+  const todayStr = formatDateShort(new Date());
+  const messageText = `Салом ${clientName}, шумо имрӯз пардохт доред ${todayStr}, лутфан фаромӯш накунед. Бо эҳтиром, Хисрав Сохтмон`;
+  const telHref = 'tel:+992';
+  const smsHref = 'sms:+992?body=' + encodeURIComponent(messageText);
+
+  const contactBlock = hasBuyer ? `
+    <div class="flex gap-2">
+      <a href="${telHref}"
+         class="flex-1 flex items-center justify-center gap-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl py-2.5 text-xs sm:text-sm font-medium transition">
+        <span>📞</span><span>${t('callBtn')}</span>
+      </a>
+      <a href="${smsHref}"
+         class="flex-1 flex items-center justify-center gap-1.5 bg-brand-500 hover:bg-brand-600 text-slate-950 rounded-xl py-2.5 text-xs sm:text-sm font-medium transition">
+        <span>💬</span><span>${t('messageBtn')}</span>
+      </a>
+    </div>` : '';
+
   const historyRows = obj.history && obj.history.length
     ? obj.history.map(h => {
         const [year, month] = h.m.split('-');
@@ -1053,8 +1079,10 @@ function openModal(obj) {
         </tr>`;
       }).join('')
     : `<tr><td colspan="2" class="py-4 text-center text-xs text-slate-500">${t('noHistory')}</td></tr>`;
+
   document.getElementById('modalBody').innerHTML = `
     <div class="space-y-3 sm:space-y-4">
+      ${contactBlock}
       <div class="grid grid-cols-2 gap-2 sm:gap-3">
         <div class="bg-[#080c14]/60 border border-slate-800 rounded-xl p-2 sm:p-3">
           <div class="text-[9px] sm:text-[10px] text-slate-500 uppercase">${t('buyerLabel')}</div>
@@ -1096,14 +1124,13 @@ function closeModal() {
 }
 
 /* =========================================================
-   РАЗДЕЛ ОПЛАТЫ (МАТРИЦА И СПИСОК)
+   РАЗДЕЛ ОПЛАТЫ
    ========================================================= */
 const generateMonths = () => {
   const months = [];
   const monthNames = ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'];
-  let d = new Date(2025, 7, 1); // Август 2025
-  const end = new Date(2028, 11, 31); // Декабрь 2028
-  
+  let d = new Date(2025, 7, 1);
+  const end = new Date(2028, 11, 31);
   while (d <= end) {
     months.push({
       id: `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`,
@@ -1128,7 +1155,6 @@ function syncPaymentsFromHistory() {
     if (!obj.history || obj.history.length === 0) return;
     const key = `${obj.block}-${obj.number}`;
     if (!PAYMENTS_DB[key]) PAYMENTS_DB[key] = {};
-    
     obj.history.forEach(h => {
       if (h.m) {
         PAYMENTS_DB[key][h.m] = (PAYMENTS_DB[key][h.m] || 0) + h.v;
@@ -1146,7 +1172,6 @@ function initMonthSelector() {
   const sel = document.getElementById('payFilterMonth');
   sel.innerHTML = PAYMENT_MONTHS.map(m => `<option value="${m.id}">${m.label}</option>`).join('');
   sel.value = payState.selectedMonth;
-  
   sel.onchange = (e) => {
     payState.selectedMonth = e.target.value;
     renderPaymentsTable();
@@ -1177,7 +1202,7 @@ function renderPaymentsTable() {
   const wrap = document.getElementById('paymentsTableWrap');
   const filterBlock = document.getElementById('payFilterBlock').value;
   const filterStatus = document.getElementById('payFilterStatus').value;
-  
+
   let objects = ALL_OBJECTS.filter(o => o.status !== 'free');
   if (filterBlock !== 'ALL') objects = objects.filter(o => o.block === filterBlock);
   if (filterStatus !== 'all') objects = objects.filter(o => o.status === filterStatus);
@@ -1197,22 +1222,19 @@ function renderPaymentsTable() {
 
   if (!objects.length) {
     wrap.innerHTML = `<div class="p-8 text-center text-slate-500 text-xs sm:text-sm">Нет объектов по выбранным фильтрам</div>`;
+    wrap.scrollTop = 0;
     return;
   }
 
   const now = new Date();
   const currentMonthId = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
 
-  // ==========================================
-  // РЕЖИМ 1: СПИСОК ЗА КОНКРЕТНЫЙ МЕСЯЦ
-  // ==========================================
+  /* === РЕЖИМ 1: СПИСОК ЗА КОНКРЕТНЫЙ МЕСЯЦ === */
   if (payState.viewMode === 'single') {
     const month = payState.selectedMonth;
     const monthLabel = PAYMENT_MONTHS.find(m => m.id === month)?.label || month;
-    
     let totalReceived = 0;
     let debtorsCount = 0;
-
     let desktopRows = '';
     let mobileCards = '';
 
@@ -1220,18 +1242,16 @@ function renderPaymentsTable() {
       const key = `${obj.block}-${obj.number}`;
       const val = (PAYMENTS_DB[key] && PAYMENTS_DB[key][month]) || 0;
       const isPaid = val > 0;
-      
       if (isPaid) totalReceived += val;
       else debtorsCount++;
 
-      // Десктопная строка
       desktopRows += `
         <tr class="border-b border-slate-800 hover:bg-slate-800/30 transition">
           <td class="px-4 py-3 text-xs text-slate-500 whitespace-nowrap">${index + 1}</td>
           <td class="px-4 py-3 text-xs font-medium whitespace-nowrap">${key}</td>
           <td class="px-4 py-3 text-xs text-slate-300">${obj.name}</td>
           <td class="px-4 py-3">
-            ${isPaid 
+            ${isPaid
               ? `<span class="px-2 py-1 rounded bg-emerald-500/20 text-emerald-400 text-[10px] font-bold">Оплачено</span>`
               : `<span class="px-2 py-1 rounded bg-rose-500/20 text-rose-400 text-[10px] font-bold">Не оплачено</span>`
             }
@@ -1240,10 +1260,10 @@ function renderPaymentsTable() {
             ${isPaid ? money(val) : '—'}
           </td>
           <td class="px-4 py-3 text-center">
-            <button onclick="togglePayment('${key}', '${month}', ${month > currentMonthId})" 
+            <button onclick="togglePayment('${key}', '${month}', ${month > currentMonthId})"
               class="px-3 py-1.5 rounded-lg text-[10px] font-medium transition whitespace-nowrap
-              ${isPaid 
-                ? 'bg-rose-500/10 text-rose-300 border border-rose-500/30 hover:bg-rose-500/20' 
+              ${isPaid
+                ? 'bg-rose-500/10 text-rose-300 border border-rose-500/30 hover:bg-rose-500/20'
                 : 'bg-brand-500 text-slate-950 hover:bg-brand-600'}">
               ${isPaid ? 'Отменить' : '➕ Внести'}
             </button>
@@ -1251,12 +1271,11 @@ function renderPaymentsTable() {
         </tr>
       `;
 
-      // Мобильная карточка
       mobileCards += `
         <div class="bg-[#0f1624] border border-slate-800 p-3 rounded-xl flex flex-col gap-2">
           <div class="flex justify-between items-center">
             <span class="font-bold text-brand-500 text-sm">${key}</span>
-            ${isPaid 
+            ${isPaid
               ? `<span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 text-[10px] font-bold">Оплачено</span>`
               : `<span class="px-2 py-0.5 rounded bg-rose-500/20 text-rose-400 text-[10px] font-bold">Не оплачено</span>`
             }
@@ -1268,10 +1287,10 @@ function renderPaymentsTable() {
               ${isPaid ? money(val) : '—'}
             </span>
           </div>
-          <button onclick="togglePayment('${key}', '${month}', ${month > currentMonthId})" 
+          <button onclick="togglePayment('${key}', '${month}', ${month > currentMonthId})"
             class="w-full mt-1 px-3 py-2 rounded-lg text-xs font-medium transition
-            ${isPaid 
-              ? 'bg-rose-500/10 text-rose-300 border border-rose-500/30 hover:bg-rose-500/20' 
+            ${isPaid
+              ? 'bg-rose-500/10 text-rose-300 border border-rose-500/30 hover:bg-rose-500/20'
               : 'bg-brand-500 text-slate-950 hover:bg-brand-600'}">
             ${isPaid ? 'Отменить оплату' : '➕ Внести оплату'}
           </button>
@@ -1286,13 +1305,7 @@ function renderPaymentsTable() {
       <div class="bg-[#080c14]/80 px-3 py-2 sm:px-4 sm:py-2 border-b border-slate-700 text-xs sm:text-sm font-semibold text-brand-500 flex justify-between items-center sticky top-0 z-20 backdrop-blur">
         <span>Оплаты за: ${monthLabel}</span>
       </div>
-      
-      <!-- Мобильный вид (Карточки) -->
-      <div class="md:hidden block p-3 space-y-2">
-        ${mobileCards}
-      </div>
-
-      <!-- Десктопный вид (Таблица) -->
+      <div class="md:hidden block p-3 space-y-2">${mobileCards}</div>
       <div class="hidden md:block overflow-x-auto">
         <table class="w-full text-left border-collapse">
           <thead class="bg-[#0f1624] sticky top-[37px] z-10 shadow-sm">
@@ -1309,21 +1322,19 @@ function renderPaymentsTable() {
         </table>
       </div>
     `;
+    wrap.scrollTop = 0;
     return;
   }
 
-  // ==========================================
-  // РЕЖИМ 2: МАТРИЦА (ВСЕ МЕСЯЦЫ)
-  // ==========================================
+  /* === РЕЖИМ 2: МАТРИЦА === */
   let totalReceived = 0;
   let debtorsCount = 0;
 
-  // Заголовки: скрываем колонку № на мобилке
   let thead = `<tr>
     <th class="hide-on-mobile sticky left-0 top-0 z-30 bg-[#0f1624] px-2 py-2 sm:px-3 sm:py-3 text-center text-[10px] sm:text-xs font-semibold text-slate-300 border-b border-r border-slate-700 w-[30px] min-w-[30px]">№</th>
     <th class="matrix-sticky-apt sticky left-0 sm:left-[30px] top-0 z-30 bg-[#0f1624] px-2 py-2 sm:px-3 sm:py-3 text-left text-[10px] sm:text-xs font-semibold text-slate-300 border-b border-r border-slate-700 min-w-[60px] sm:min-w-[90px]">Кв.</th>
     <th class="matrix-sticky-buyer sticky left-[60px] sm:left-[120px] top-0 z-30 bg-[#0f1624] px-2 py-2 sm:px-3 sm:py-3 text-left text-[10px] sm:text-xs font-semibold text-slate-300 border-b border-r border-slate-700 min-w-[100px] sm:min-w-[150px]">Покупатель</th>`;
-  
+
   PAYMENT_MONTHS.forEach(m => {
     thead += `<th class="sticky top-0 z-20 bg-[#0f1624] px-1 py-2 sm:px-2 sm:py-3 text-center text-[9px] sm:text-[10px] font-medium text-slate-400 border-b border-r border-slate-800 min-w-[60px] sm:min-w-[70px]">${m.label}</th>`;
   });
@@ -1333,7 +1344,6 @@ function renderPaymentsTable() {
   objects.forEach((obj, index) => {
     const key = `${obj.block}-${obj.number}`;
     const objPayments = PAYMENTS_DB[key] || {};
-    
     let row = `<tr class="hover:bg-slate-800/30 transition">
       <td class="hide-on-mobile sticky left-0 z-10 bg-[#0f1624] px-2 py-2 sm:px-3 text-center text-[10px] sm:text-xs text-slate-500 border-b border-r border-slate-800">${index + 1}</td>
       <td class="matrix-sticky-apt sticky left-0 sm:left-[30px] z-10 bg-[#0f1624] px-2 py-2 sm:px-3 text-[10px] sm:text-xs font-medium border-b border-r border-slate-800 whitespace-nowrap">${key}</td>
@@ -1343,10 +1353,8 @@ function renderPaymentsTable() {
       const val = objPayments[m.id] || 0;
       const isPaid = val > 0;
       const isFuture = m.id > currentMonthId;
-      
       let cellClass = "text-center border-b border-r border-slate-800 p-1 cursor-pointer transition";
       let content = '';
-
       if (isFuture) {
         cellClass += " bg-[#080c14]/30";
         content = `<span class="text-[9px] sm:text-[10px] text-slate-600">—</span>`;
@@ -1359,7 +1367,6 @@ function renderPaymentsTable() {
         content = `<span class="text-[9px] sm:text-[10px] text-rose-400/80 font-medium">Не опл.</span>`;
         debtorsCount++;
       }
-
       row += `<td class="${cellClass}" onclick="togglePayment('${key}', '${m.id}', ${isFuture})">${content}</td>`;
     });
     row += `</tr>`;
@@ -1375,21 +1382,20 @@ function renderPaymentsTable() {
       <tbody>${tbody}</tbody>
     </table>
   `;
+  /* === ФИКС: сбрасываем скролл, чтобы первая строка была видна === */
+  wrap.scrollTop = 0;
 }
 
 window.togglePayment = function(objKey, monthId, isFuture) {
   if (isFuture) return;
-  
   if (!PAYMENTS_DB[objKey]) PAYMENTS_DB[objKey] = {};
-  
   if (PAYMENTS_DB[objKey][monthId] > 0) {
-    if(confirm(`Отменить оплату для ${objKey} за ${monthId}?`)) {
+    if (confirm(`Отменить оплату для ${objKey} за ${monthId}?`)) {
       delete PAYMENTS_DB[objKey][monthId];
     }
   } else {
     const obj = ALL_OBJECTS.find(o => `${o.block}-${o.number}` === objKey);
-    const defaultAmount = obj.roomAmount ? Math.round((obj.roomAmount / 12) / 100) * 100 : 5000; 
-    
+    const defaultAmount = obj.roomAmount ? Math.round((obj.roomAmount / 12) / 100) * 100 : 5000;
     const input = prompt(`Введите сумму оплаты для ${objKey} за ${monthId}:`, defaultAmount);
     if (input !== null) {
       const amount = parseFloat(input.replace(/\s/g, '').replace(',', '.'));
@@ -1410,7 +1416,6 @@ document.getElementById('paymentsBtn').onclick = () => {
   renderPaymentsTable();
 };
 
-// Закрытие модалки (Мобильная и Десктопная кнопка)
 document.querySelectorAll('#paymentsClose, #paymentsCloseDesk').forEach(btn => {
   if (btn) btn.onclick = () => {
     document.getElementById('paymentsModal').classList.add('hidden');
@@ -1422,7 +1427,6 @@ document.getElementById('paymentsBackdrop').onclick = () => {
 document.getElementById('payFilterBlock').onchange = renderPaymentsTable;
 document.getElementById('payFilterStatus').onchange = renderPaymentsTable;
 document.getElementById('payFilterPayment').onchange = renderPaymentsTable;
-
 
 /* =========================================================
    ОТЧЁТЫ (Firebase)
@@ -1627,425 +1631,198 @@ function dataUrlToBlob(dataUrl) {
 
 async function uploadImageToImgBB(file) {
   const jpegDataUrl = await prepareImageDataUrl(file);
-  const cleanBase64 = jpegDataUrl.split(',')[1] || '';
-  const fileName = 'report_' + Date.now() + '.jpg';
-  let lastError = null;
-  for (let i = 0; i < IMGBB_KEYS.length; i++) {
-    const key = IMGBB_KEYS[i];
+  const blob = dataUrlToBlob(jpegDataUrl);
+  const form = new FormData();
+  form.append('image', blob, 'report.jpg');
+  let lastErr = null;
+  for (const key of IMGBB_KEYS) {
     try {
-      const fd = new FormData();
-      fd.append('image', cleanBase64);
-      const res = await fetch('https://api.imgbb.com/1/upload?key=' + key, { method: 'POST', body: fd });
-      let data = null;
-      try { data = await res.json(); } catch (e) { data = null; }
-      if (res.ok && data && data.success && data.data) {
-        const url = data.data.url || data.data.display_url || (data.data.image && data.data.image.url);
-        if (url) return url;
+      const res = await fetch('https://api.imgbb.com/1/upload?key=' + key, {
+        method: 'POST',
+        body: form
+      });
+      if (!res.ok) {
+        let txt = '';
+        try { txt = await res.text(); } catch (e) {}
+        throw new Error('HTTP ' + res.status + ' ' + String(txt).slice(0, 200));
       }
-      const msg = (data && data.error && (data.error.message || data.error.code))
-                  || (data && data.status_txt) || ('HTTP ' + res.status);
-      lastError = new Error(msg + ' [key ' + (i + 1) + ']');
-    } catch (err) { lastError = err; }
+      const data = await res.json();
+      if (data && data.data && data.data.url) return data.data.url;
+      throw new Error('Пустой ответ ImgBB');
+    } catch (e) { lastErr = e; }
   }
-  try {
-    const blob = dataUrlToBlob(jpegDataUrl);
-    const fd = new FormData();
-    fd.append('file', blob, fileName);
-    const res = await fetch('https://0x0.st', { method: 'POST', body: fd });
-    const text = (await res.text()).trim();
-    if (res.ok && /^https?:\/\//i.test(text)) return text;
-    lastError = new Error('0x0.st: ' + text.slice(0, 120));
-  } catch (e) { lastError = e; }
-  try {
-    const blob = dataUrlToBlob(jpegDataUrl);
-    const fd = new FormData();
-    fd.append('reqtype', 'fileupload');
-    fd.append('fileToUpload', blob, fileName);
-    const res = await fetch('https://catbox.moe/user/api.php', { method: 'POST', body: fd });
-    const text = (await res.text()).trim();
-    if (res.ok && /^https?:\/\//i.test(text)) return text;
-    lastError = new Error('catbox: ' + text.slice(0, 120));
-  } catch (e) { lastError = e; }
-  throw lastError || new Error('Все хостинги недоступны');
+  throw lastErr || new Error('Не удалось загрузить изображение');
 }
 
-let activeReport = null;
-let reportStatus = null;
-
-function fmtDate(ts) {
-  try {
-    const loc = lang === 'tj' ? 'tg-TJ' : 'ru-RU';
-    return new Date(ts).toLocaleDateString(loc, { day: '2-digit', month: '2-digit', year: 'numeric' });
-  } catch (e) { return new Date(ts).toLocaleDateString(); }
-}
-
-function todayISO() {
+function todayKey() {
   const d = new Date();
-  const m = String(d.getMonth() + 1).padStart(2, '0');
-  const day = String(d.getDate()).padStart(2, '0');
-  return d.getFullYear() + '-' + m + '-' + day;
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 }
 
-function dateOfTs(ts) {
-  const d = new Date(Number(ts) || 0);
-  const m = String(d.getMonth() + 1).padStart(2, '0');
-  const day = String(d.getDate()).padStart(2, '0');
-  return d.getFullYear() + '-' + m + '-' + day;
+function getDailyCount() {
+  try {
+    const raw = localStorage.getItem('dailyUploadCount') || '{}';
+    const obj = JSON.parse(raw);
+    return obj[todayKey()] || 0;
+  } catch (e) { return 0; }
 }
 
-function countToday(id) {
-  const today = todayISO();
-  return reportsFor(id).filter(it => it && it.dateUploaded && dateOfTs(it.dateUploaded) === today).length;
+function incDailyCount(n = 1) {
+  try {
+    const raw = localStorage.getItem('dailyUploadCount') || '{}';
+    const obj = JSON.parse(raw);
+    const k = todayKey();
+    obj[k] = (obj[k] || 0) + n;
+    Object.keys(obj).forEach(dk => { if (dk !== k) delete obj[dk]; });
+    localStorage.setItem('dailyUploadCount', JSON.stringify(obj));
+  } catch (e) {}
 }
 
-function renderReportStatus() {
-  const el = document.getElementById('reportStatus');
-  if (!el) return;
-  if (!reportStatus) { el.className = 'hidden'; el.textContent = ''; return; }
-  const base = 'text-xs rounded-xl px-3 py-2 border ';
-  const map = {
-    ok:   'bg-emerald-500/10 border-emerald-500/30 text-emerald-300',
-    err:  'bg-rose-500/10 border-rose-500/30 text-rose-300',
-    load: 'bg-sky-500/10 border-sky-500/30 text-sky-300'
-  };
-  el.className = base + (map[reportStatus.type] || map.load);
-  el.textContent = reportStatus.text;
-}
-
-function renderReports() {
-  const titleEl = document.getElementById('reportsModalTitle');
+async function renderReports() {
   const body = document.getElementById('reportsBody');
-  if (!titleEl || !body) return;
-
-  if (reportsState === 'loading' || reportsState === 'idle') {
-    titleEl.textContent = t('reportsTitle');
-    body.innerHTML = `<div class="text-center text-sm text-slate-400 py-10"><div class="animate-pulse">${t('loadingReports')}</div></div>`;
-    return;
+  if (!body) return;
+  body.innerHTML = `<div class="text-center py-8 text-slate-500 text-xs">${t('loadingReports')}</div>`;
+  try {
+    await loadReportsFromServer();
+    reportsState = 'loaded';
+    reportsError = '';
+  } catch (e) {
+    reportsState = 'error';
+    reportsError = String(e.message || e);
   }
-
   if (reportsState === 'error') {
-    titleEl.textContent = t('reportsTitle');
     body.innerHTML = `
-      <div class="space-y-3">
-        <div class="text-xs rounded-xl px-3 py-2 border bg-rose-500/10 border-rose-500/30 text-rose-300 break-words">
-          ${t('firebaseErr')}${reportsError || ''}
-        </div>
-        <div class="text-[11px] text-slate-400 leading-relaxed">${t('rulesHint')}</div>
-        <button id="reportsRetry"
-          class="px-4 py-2 rounded-xl text-xs font-medium bg-brand-500 hover:bg-brand-600 text-slate-950 transition">
-          ${t('retry')}
-        </button>
+      <div class="text-center py-6">
+        <div class="text-rose-400 text-xs mb-2">${t('firebaseErr')}${reportsError}</div>
+        <button onclick="renderReports()" class="px-3 py-1.5 rounded-lg bg-brand-500 text-slate-950 text-xs font-medium">${t('retry')}</button>
+        <p class="text-[10px] text-slate-500 mt-3 max-w-md mx-auto">${t('rulesHint')}</p>
       </div>`;
-    const retryBtn = document.getElementById('reportsRetry');
-    if (retryBtn) retryBtn.onclick = () => reloadReports();
     return;
   }
-
-  if (!activeReport) {
-    titleEl.textContent = t('reportsTitle');
-    body.innerHTML = `
-      <div class="grid gap-2">
-        ${REPORT_IDS.map(id => {
-          const count = reportsFor(id).length;
-          return `
-            <button data-report="${id}"
-              class="flex items-center justify-between gap-3 px-3 py-2.5 sm:px-4 sm:py-3 rounded-xl bg-[#080c14]/60 border border-slate-700 hover:border-brand-500 transition text-left">
-              <span class="text-xs sm:text-sm font-medium">${reportName(id)}</span>
-              <span class="text-[10px] sm:text-xs text-slate-400 whitespace-nowrap">${count} ${t('pcs')}</span>
-            </button>`;
-        }).join('')}
-      </div>
-      <div id="reportStatus" class="hidden mt-3"></div>`;
-    body.querySelectorAll('button[data-report]').forEach(btn => {
-      btn.onclick = () => {
-        activeReport = btn.dataset.report;
-        reportStatus = null;
-        renderReports();
-      };
-    });
-    renderReportStatus();
-    return;
-  }
-
-  const items = reportsFor(activeReport);
-  titleEl.textContent = reportName(activeReport);
-
-  const todayCount = countToday(activeReport);
-  const remaining = Math.max(0, DAILY_LIMIT - todayCount);
-  const limitReached = remaining <= 0;
-
-  const gallery = items.length
-    ? `<div class="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
-        ${items.map(it => {
-          const showDate = it.customDate || fmtDate(it.dateUploaded);
-          const note = (it.note || '').trim();
-          const safeUrl = String(it.imageUrl || '');
-          return `
-          <div class="bg-[#080c14]/60 border border-slate-800 rounded-xl overflow-hidden">
-            <a href="${safeUrl}" target="_blank" rel="noopener">
-              <img src="${safeUrl}" alt="report" loading="lazy" class="w-full h-32 sm:h-40 object-cover" />
-            </a>
-            <div class="p-2 sm:p-3 space-y-1">
-              <div class="text-[10px] sm:text-xs font-medium text-slate-200">${t('reportDateLabel')}: <span class="text-brand-500">${showDate}</span></div>
-              ${note ? `<div class="text-[10px] sm:text-xs text-slate-300 break-words">${t('reportNoteLabel')}: ${note}</div>` : `<div class="text-[10px] sm:text-xs text-slate-500">${t('reportNoteLabel')}: ${t('reportNoteEmpty')}</div>`}
-              <div class="text-[9px] sm:text-[10px] text-slate-500 pt-1 border-t border-slate-800/60">
-                ${t('uploadedAt')}: ${fmtDate(it.dateUploaded)} · ${t('expiresAt')}: ${fmtDate(it.deleteAfter)}
-              </div>
-              <button data-del="${it.id}"
-                class="w-full mt-1 px-2 py-1 rounded-lg text-[9px] sm:text-[10px] bg-rose-500/15 text-rose-300 border border-rose-500/30 hover:bg-rose-500/25 transition">
-                ${t('delete')}
-              </button>
-            </div>
-          </div>`;
-        }).join('')}
-      </div>`
-    : `<div class="text-center text-xs sm:text-sm text-slate-500 py-6">${t('noReports')}</div>`;
-
-  const limitBadgeClass = limitReached
-    ? 'bg-rose-500/10 border-rose-500/40 text-rose-300'
-    : (todayCount >= 8 ? 'bg-amber-500/10 border-amber-500/40 text-amber-300' : 'bg-emerald-500/10 border-emerald-500/40 text-emerald-300');
-
+  const daily = getDailyCount();
   body.innerHTML = `
-    <div class="space-y-3 sm:space-y-4">
-      <div class="flex flex-wrap items-center gap-2">
-        <button id="reportBack"
-          class="px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-lg sm:rounded-xl text-[10px] sm:text-xs bg-[#080c14]/60 border border-slate-700 hover:border-slate-500 transition">
-          ${t('back')}
-        </button>
-        <div class="ml-auto text-[9px] sm:text-[11px] rounded-lg sm:rounded-xl px-2 py-1.5 sm:px-3 sm:py-2 border ${limitBadgeClass} whitespace-nowrap">
-          ${t('dailyUploadedToday')}: <b>${todayCount}</b> / ${DAILY_LIMIT}
-        </div>
-      </div>
-
-      <div class="bg-[#080c14]/60 border border-slate-800 rounded-xl p-2 sm:p-3 space-y-2 sm:space-y-3">
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
-          <div>
-            <label class="block text-[9px] sm:text-[10px] uppercase tracking-wide text-slate-500 mb-1">${t('reportDateLabel')}</label>
-            <input id="reportDate" type="date" value="${todayISO()}"
-              class="w-full bg-[#0f1624] border border-slate-700 rounded-lg sm:rounded-xl px-2 py-1.5 sm:px-3 sm:py-2 text-xs sm:text-sm outline-none focus:border-brand-500 report-input" />
-          </div>
-          <div>
-            <label class="block text-[9px] sm:text-[10px] uppercase tracking-wide text-slate-500 mb-1">${t('reportNoteLabel')}</label>
-            <input id="reportNote" type="text" placeholder="${t('reportNotePlaceholder')}"
-              class="w-full bg-[#0f1624] border border-slate-700 rounded-lg sm:rounded-xl px-2 py-1.5 sm:px-3 sm:py-2 text-xs sm:text-sm outline-none focus:border-brand-500 placeholder:text-slate-500 report-input" />
-          </div>
-        </div>
-        <div class="flex flex-wrap items-center gap-2">
-          <button id="reportUploadBtn"
-            class="px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg sm:rounded-xl text-[10px] sm:text-xs font-medium transition ${limitReached ? 'bg-slate-700 text-slate-400 cursor-not-allowed' : 'bg-brand-500 hover:bg-brand-600 text-slate-950'}"
-            ${limitReached ? 'disabled' : ''}>
-            ⬆ ${t('uploadBtn')}
-          </button>
-          <span class="text-[9px] sm:text-[11px] text-slate-500">
-            ${limitReached ? t('dailyLimitReached') : t('selectImages') + ' (' + remaining + ' / ' + DAILY_LIMIT + ')'}
-          </span>
-        </div>
-        <input id="reportFileInput" type="file" accept="image/*" multiple class="hidden" />
-      </div>
-
-      <div id="reportStatus" class="hidden"></div>
-
-      <div id="reportGallery">${gallery}</div>
-    </div>`;
-
-  document.getElementById('reportBack').onclick = () => {
-    activeReport = null;
-    reportStatus = null;
-    renderReports();
-  };
-
-  const fileInput = document.getElementById('reportFileInput');
-  const uploadBtn = document.getElementById('reportUploadBtn');
-  if (uploadBtn && !limitReached) {
-    uploadBtn.onclick = () => fileInput.click();
-    fileInput.onchange = (e) => handleReportFiles(e.target.files, fileInput);
-  }
-
-  body.querySelectorAll('button[data-del]').forEach(btn => {
-    btn.onclick = async () => {
-      if (!confirm(t('confirmDelete'))) return;
-      const id = btn.dataset.del;
-      btn.disabled = true;
-      btn.classList.add('opacity-50');
-      try {
-        await deleteReportDoc(id);
-        reportsCache[activeReport] = reportsFor(activeReport).filter(it => it.id !== id);
-        reportStatus = { type: 'ok', text: t('delete') + ' ✓' };
-      } catch (err) {
-        console.error('Delete failed:', err);
-        reportStatus = { type: 'err', text: t('deleteErr') + (err && err.message ? err.message : 'error') };
-      }
-      renderReports();
-    };
+    <div class="mb-4 p-3 bg-[#080c14]/60 border border-slate-800 rounded-xl">
+      <span class="text-xs text-slate-400">${t('dailyUploadedToday')}: <b class="text-brand-500">${daily}/${DAILY_LIMIT}</b></span>
+    </div>
+    <div class="space-y-6">
+      ${REPORT_IDS.map(id => renderReportCard(id)).join('')}
+    </div>
+  `;
+  REPORT_IDS.forEach(id => {
+    const inp = document.getElementById('upload-' + id);
+    if (inp) inp.onchange = () => handleUpload(id, inp.files);
   });
-
-  renderReportStatus();
 }
 
-async function handleReportFiles(files, inputEl) {
+function renderReportCard(id) {
+  const list = reportsFor(id);
+  const items = list.length
+    ? list.map(r => `
+        <div class="bg-[#080c14]/60 border border-slate-800 rounded-lg p-2 mb-2 flex gap-2 items-start">
+          <a href="${r.imageUrl}" target="_blank" class="shrink-0">
+            <img src="${r.imageUrl}" class="w-16 h-16 object-cover rounded border border-slate-700" />
+          </a>
+          <div class="flex-1 min-w-0">
+            <div class="text-[11px] text-slate-300">${r.customDate || t('reportNoteEmpty')} · ${r.note || t('reportNoteEmpty')}</div>
+            <div class="text-[10px] text-slate-500 mt-0.5">${t('uploadedAt')}: ${new Date(Number(r.dateUploaded)).toLocaleString()}</div>
+            <div class="text-[10px] text-amber-400/80">${t('expiresAt')}: ${new Date(Number(r.deleteAfter)).toLocaleString()}</div>
+          </div>
+          <button onclick="deleteReport('${r.id}')" class="text-rose-400 hover:text-rose-300 text-xs px-1">✕</button>
+        </div>
+      `).join('')
+    : `<div class="text-[11px] text-slate-500 text-center py-2">${t('noReports')}</div>`;
+  return `
+    <div class="border border-slate-800 rounded-xl overflow-hidden">
+      <div class="px-3 py-2 bg-[#0f1624] border-b border-slate-800">
+        <h4 class="text-xs font-semibold">${reportName(id)}</h4>
+      </div>
+      <div class="p-3">
+        ${items}
+        <label class="block mt-2">
+          <input type="file" id="upload-${id}" accept="image/*" multiple class="hidden" />
+          <span class="block text-center text-[11px] py-2 rounded-lg bg-brand-500/10 border border-brand-500/30 text-brand-500 cursor-pointer hover:bg-brand-500/20 transition">${t('uploadBtn')}</span>
+        </label>
+      </div>
+    </div>
+  `;
+}
+
+async function handleUpload(reportId, files) {
   if (!files || !files.length) return;
-  const list = Array.from(files);
-
-  const remaining = DAILY_LIMIT - countToday(activeReport);
-  if (remaining <= 0) {
-    if (inputEl) inputEl.value = '';
-    reportStatus = { type: 'err', text: t('dailyLimitReached') };
-    renderReports();
-    return;
-  }
-
-  const willUpload = list.slice(0, remaining);
-  const skipped = list.length - willUpload.length;
-
-  const dateEl = document.getElementById('reportDate');
-  const noteEl = document.getElementById('reportNote');
-  const customDate = dateEl && dateEl.value ? dateEl.value : todayISO();
-  const note = noteEl && noteEl.value ? noteEl.value.trim() : '';
-
-  reportStatus = { type: 'load', text: t('uploading') + ' 0/' + willUpload.length };
-  renderReportStatus();
-
-  let okCount = 0;
-  let errText = '';
-
-  for (let i = 0; i < willUpload.length; i++) {
+  const daily = getDailyCount();
+  const remaining = DAILY_LIMIT - daily;
+  if (remaining <= 0) { alert(t('dailyLimitReached')); return; }
+  const toUpload = Array.from(files).slice(0, remaining);
+  if (toUpload.length < files.length) alert(t('dailyLimitPartial'));
+  for (const file of toUpload) {
     try {
-      const url = await uploadImageToImgBB(willUpload[i]);
+      const url = await uploadImageToImgBB(file);
       const now = Date.now();
       const item = {
-        id: 'r' + now + '_' + Math.random().toString(36).slice(2, 8),
-        reportType: activeReport,
+        id: 'r_' + now + '_' + Math.random().toString(36).slice(2, 8),
+        reportType: reportId,
         imageUrl: url,
         dateUploaded: now,
         deleteAfter: now + REPORT_TTL,
-        customDate: customDate,
-        note: note
+        customDate: '',
+        note: ''
       };
       await addReportDoc(item);
-      if (!reportsCache[activeReport]) reportsCache[activeReport] = [];
-      reportsCache[activeReport].unshift(item);
-      reportsCache[activeReport].sort((a, b) => (Number(b.dateUploaded) || 0) - (Number(a.dateUploaded) || 0));
-      okCount++;
-    } catch (err) {
-      errText = (err && err.message) ? err.message : 'error';
-      console.error('Upload failed:', err);
+      incDailyCount(1);
+    } catch (e) {
+      alert(t('uploadErr') + String(e.message || e));
     }
-    reportStatus = { type: 'load', text: t('uploading') + ' ' + (i + 1) + '/' + willUpload.length };
-    renderReportStatus();
   }
-
-  if (inputEl) inputEl.value = '';
-
-  if (okCount > 0 && !errText && skipped === 0) {
-    reportStatus = { type: 'ok', text: t('uploadOk') + okCount + ' ' + t('pcs') };
-  } else if (okCount > 0 && !errText && skipped > 0) {
-    reportStatus = { type: 'err', text: t('dailyLimitPartial') + ' (загружено ' + okCount + ', пропущено ' + skipped + ')' };
-  } else if (okCount > 0 && errText) {
-    reportStatus = { type: 'err', text: t('uploadErr') + errText };
-  } else {
-    reportStatus = { type: 'err', text: t('uploadErr') + (errText || 'error') };
-  }
-
-  renderReports();
+  await renderReports();
 }
 
-async function reloadReports() {
-  reportsState = 'loading';
-  reportsError = '';
-  renderReports();
+async function deleteReport(docId) {
+  if (!confirm(t('confirmDelete'))) return;
   try {
-    await loadReportsFromServer();
-    reportsState = 'ready';
-  } catch (err) {
-    console.error('Firebase load error:', err);
-    reportsState = 'error';
-    reportsError = (err && err.message) ? err.message : 'unknown error';
+    await deleteReportDoc(docId);
+    await renderReports();
+  } catch (e) {
+    alert(t('deleteErr') + String(e.message || e));
   }
+}
+
+/* === Обработчики модалок и кнопок === */
+document.getElementById('reportsBtn').onclick = () => {
+  document.getElementById('reportsModal').classList.remove('hidden');
   renderReports();
-}
-
-async function openReportsModal() {
-  activeReport = null;
-  reportStatus = null;
-  showSheet(document.getElementById('reportsModal'), document.getElementById('reportsContent'));
-
-  if (reportsState === 'ready') {
-    renderReports();
-    loadReportsFromServer().then(() => {
-      reportsState = 'ready';
-      if (!document.getElementById('reportsModal').classList.contains('hidden')) renderReports();
-    }).catch(err => console.warn('Firebase refresh error:', err));
-    return;
-  }
-  await reloadReports();
-}
-
-function closeReportsModal() {
-  hideSheet(document.getElementById('reportsModal'), document.getElementById('reportsContent'));
-}
-
-/* =========================================================
-   INIT
-   ========================================================= */
-function renderAll() {
-  renderKpi();
-  renderTabs();
-  renderStatusFilter();
-  renderChessboards();
-  renderTable();
-}
-
-document.getElementById('search').addEventListener('input', e => {
-  state.search = e.target.value.trim();
-  renderTable();
-});
+};
+document.getElementById('reportsClose').onclick = () => {
+  document.getElementById('reportsModal').classList.add('hidden');
+};
+document.getElementById('reportsBackdrop').onclick = () => {
+  document.getElementById('reportsModal').classList.add('hidden');
+};
 
 document.getElementById('modalClose').onclick = closeModal;
 document.getElementById('modalBackdrop').onclick = closeModal;
-document.getElementById('reportsBtn').onclick = openReportsModal;
-document.getElementById('reportsClose').onclick = closeReportsModal;
-document.getElementById('reportsBackdrop').onclick = closeReportsModal;
 
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') {
-    closeModal();
-    closeReportsModal();
-    document.getElementById('paymentsModal').classList.add('hidden');
-  }
-});
+document.getElementById('search').oninput = (e) => {
+  state.search = e.target.value;
+  renderAll();
+};
 
-// Обработчики кнопок (Десктоп и Мобильные)
-document.querySelectorAll('#themeBtn, #themeBtnMob').forEach(btn => {
-  if (btn) btn.addEventListener('click', () => {
+document.querySelectorAll('#themeBtn, #themeBtnMob').forEach(b => {
+  if (b) b.onclick = () => {
     const isDark = document.documentElement.classList.contains('dark');
     applyTheme(isDark ? 'light' : 'dark');
-  });
+  };
 });
-
-document.querySelectorAll('#langBtn, #langBtnMob').forEach(btn => {
-  if (btn) btn.addEventListener('click', () => {
+document.querySelectorAll('#langBtn, #langBtnMob').forEach(b => {
+  if (b) b.onclick = () => {
     applyLanguage(lang === 'ru' ? 'tj' : 'ru');
-  });
+  };
 });
 
-(function init() {
-  let savedTheme = 'dark';
-  try { savedTheme = localStorage.getItem('theme') || 'dark'; } catch (e) {}
-  applyTheme(savedTheme);
+/* === Инициализация === */
+(function initApp() {
+  applyTheme(localStorage.getItem('theme') || 'dark');
   applyLanguage(lang);
-
-  /* СИНХРОНИЗАЦИЯ ОПЛАТ ИЗ МАССИВА */
   syncPaymentsFromHistory();
-
-  /* Фоновая загрузка отчётов + авто-очистка просроченных */
-  reportsState = 'loading';
-  loadReportsFromServer()
-    .then(() => { reportsState = 'ready'; })
-    .catch(err => {
-      console.warn('Firebase init load error:', err);
-      reportsState = 'error';
-      reportsError = (err && err.message) ? err.message : 'unknown error';
-    });
 })();
 </script>
 </body>
