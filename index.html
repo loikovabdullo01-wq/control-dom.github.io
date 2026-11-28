@@ -1051,7 +1051,10 @@ function openModal(obj) {
   const hasBuyer = !!obj.name;
   const clientName = extractClientName(obj.name) || 'клиент';
   const todayStr = formatDateShort(new Date());
-  const messageText = `Салом ${clientName}, шумо имрӯз пардохт доред ${todayStr}, лутфан фаромӯш накунед. Бо эҳтиром, Хисрав Сохтмон`;
+  const messageText = `Салом ${clientName}, Хотиррасон менамоем, ки имрӯз, ${todayStr}, муҳлати пардохти моҳонаи манзили шумо фаро расидааст. Лутфан, пардохти моҳонаро сари вақт анҷом диҳед.
+Ташаккур барои эътимод ва таваҷҷӯҳ!
+Бо эҳтиром,
+Хисрав Сохтмон`;
   
   const clientPhone = obj.phone || '+992'; 
   const telHref = `tel:${clientPhone}`;
